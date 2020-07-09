@@ -1,0 +1,47 @@
+.square {
+  border: 1px solid white;
+  width: 50px;
+  height: 50px;
+  background-color: #eeebde;
+}
+
+.tile {
+  height: 90%;
+  width: 90%;
+  display:flex;
+  font-size: xx-large;
+  justify-content: center;
+  background-color: #f3dbc3;
+  margin: auto;
+}
+
+.blank {
+  color: #a0a0a0; 
+}
+
+.word3, .word2, .center2, .letter3, .letter2 {
+  background-image: url('../images/sprites.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.letter2 {
+  background-color: #b8d5f3;
+  background-position: 0px 0px;
+}
+.letter3 {
+  background-color: #2886cf;
+  background-position: 0px -52px;
+}
+.word2 {
+  background-color: #f3bcc8;
+  background-position: 0px -104px;
+}
+.word3 {
+  background-color: #e34274;
+  background-position: 0px -156px;
+}
+.center2 {
+  background-color: #f3bcc8;
+  background-position: 0px -208px;
+}

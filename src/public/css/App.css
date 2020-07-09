@@ -1,0 +1,26 @@
+.App {
+  display: flex;
+  text-align: center;
+  width: 100%;
+}
+
+.left, .mid, .right {
+  display: inline-flex;
+  width: max-content;
+  height: max-content;
+  
+}
+
+.left, .right {
+  padding: 0% 2%;
+}
+.left {
+  margin: auto 0%;
+}
+.mid {
+  flex-grow: 100;
+  flex-direction: column;
+}
+.right {
+  float: right;
+}

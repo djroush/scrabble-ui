@@ -1,0 +1,10 @@
+.board {
+  display:block;
+  position:relative;
+  float: right;
+}
+table {
+  display: inline-block;
+  margin-left:auto; 
+  margin-right:auto;
+}

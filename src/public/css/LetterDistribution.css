@@ -1,0 +1,18 @@
+.letterDist {
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+  font-size: 1.2em;
+  
+}
+.letterDist ul {
+  list-style: none;
+  border: 2px solid crimson;
+  padding: 2% 4%;
+  min-width: fit-content;
+  text-align: left;
+}
+.letterDist ul li pre {
+  padding: 0;
+  margin: 1.0%;
+}

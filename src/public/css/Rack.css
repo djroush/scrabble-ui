@@ -1,0 +1,19 @@
+.rack {
+  display: inline-block;
+  border: 2px solid tan;
+  width: 100%;
+  height: max-content;
+  margin: 2%;
+}
+
+.rackTile {
+  display: inline-flex;
+  float: left;
+  border: 3px solid white;
+  width:75px;
+  height: 75px;
+  justify-content: center;
+  font-size: 4em;
+  background-color: #f3dbc3;
+  color: #000000;
+}
