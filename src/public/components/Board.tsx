@@ -4,9 +4,10 @@ import '../css/Board.css';
 
 import Square from '../components/Square';
 
-type BoardState = {
+export type BoardState = {
   activeIndex: number;
-  dirHoriz: boolean;
+  direction: "horizontal" | "vertical" | null;
+  squares : Square[];
 }
 
 class Board extends React.Component<unknown, BoardState> {
@@ -14,7 +15,6 @@ class Board extends React.Component<unknown, BoardState> {
   static HEIGHT: number = 15; 
  /* scrabbleClient: Scrabble.Client = ScrabbleClientFactory.getInstance(); */
 
-  squares : Square[] = [];
   constructor(props: unknown) {
     super(props);
     this.squareOnClick = this.squareOnClick.bind(this);
@@ -27,37 +27,49 @@ class Board extends React.Component<unknown, BoardState> {
      const col = parseInt(target.getAttribute('data-col'));
      const eventActiveIndex = row*Board.WIDTH + col;   
      console.log("active square: (" + row + ", " + col + ")");
-     const {activeIndex} = this.state;
+     let {activeIndex, direction} = this.state;
      if (activeIndex !== null && activeIndex === eventActiveIndex) {
-//      this.board.changeActiveDirection();
+        if (direction === "horizontal") {
+          direction = "vertical";
+        } else {
+          direction = "horizontal";
+        }
      } else {
-        this.setState({
-          activeIndex: eventActiveIndex
-        });
-    }   
+      activeIndex = eventActiveIndex
+      direction = "horizontal"
+    }
+    this.setState({
+        activeIndex: activeIndex,
+          direction: direction,
+    })
   };
   
   squareOnKeyPress = () => {
     
   };
-
+  squareOnBlur = (event: React.MouseEvent) => {
+    const a = event.target;
+    const b = event.currentTarget;
+    const c = event.relatedTarget;
+  };
 
   render(): JSX.Element {
-    const {activeIndex, dirHoriz} = this.state;
+    const {activeIndex, direction, squares} = this.state;
     
     const rowsElems: JSX.Element[] = [];
     for(let row = 0; row < Board.HEIGHT; row++) {
       const rowElems : JSX.Element[] = [];
       for(let col = 0; col < Board.WIDTH; col++) {
         const index = row * Board.WIDTH + col;
-        const direction = activeIndex === index ? dirHoriz : null   
+        const activeSquare: boolean = index === activeIndex;
         const square = <Square key={index} 
           index={index} 
-          direction={direction}
+          direction={activeSquare ? direction : null}
           onClick={this.squareOnClick} 
-          onKeyPress={this.squareOnKeyPress} 
+          onKeyPress={this.squareOnKeyPress}
+          onBlur={this.squareOnBlur} 
           ref={(node) => {
-            this.squares.push(node);
+            squares.push(node);
           }} 
         />;
         rowElems.push(square);
@@ -80,7 +92,8 @@ class Board extends React.Component<unknown, BoardState> {
 
 Board.prototype.state = {
   activeIndex: null,
-  dirHoriz: true,
+  direction: null,
+  squares: [],
 };
 
 export default Board;

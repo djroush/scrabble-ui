@@ -4,9 +4,10 @@ import '../css/Square.css'
 
 type SquareProps = {
   index: number,
-  direction: boolean
+  direction: "horizontal" | "vertical" | null;
   onClick: (event: React.MouseEvent) => void;
   onKeyPress: (event: React.KeyboardEvent) => void;
+  onBlur: (event: React.MouseEvent) => void;
 };
 
 type SquareState = {
@@ -54,7 +55,7 @@ class Square extends React.PureComponent<SquareProps, SquareState> {
     const hasTile = tile !== undefined && tile !== null;
     const isBlank = hasTile && tile === " ";
     const modifier: string = this.getModifier();
-    const dirClass: string = direction == null ? "" : (direction ? " horizontal" : " vertical");
+    const dirClass: string = direction === null || direction === undefined ? "" : " " + direction;
     const squareClass="square " + modifier + dirClass;
     const blank = isBlank ? " blank" : "";
     const tileClass= (hasTile ? "tile" : "") + blank;

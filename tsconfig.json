@@ -4,7 +4,7 @@
       "jsx":"react",
       "moduleResolution":"node",
       "module":"es6",
-      "baseUrl":"src/",
+      "baseUrl":"src/public",
       "outDir":"dist/",
       "sourceMap":true,
       "pretty":true,
@@ -23,7 +23,7 @@
       "noEmitHelpers":true
    },
    "include":[ 
-      "src/**/*"
+      "src/public/**/*"
    ],
    "exclude":[ 
       "dist",

@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../css/Rack.css';
 
-type RackState = {
+export type RackState = {
   letters: string[];
 }
 

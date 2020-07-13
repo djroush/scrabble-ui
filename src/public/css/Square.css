@@ -19,7 +19,15 @@
   color: #a0a0a0; 
 }
 
-.word3, .word2, .center2, .letter3, .letter2 {
+.square.horizontal {
+  background-position: 0px -258px;
+}
+.square.vertical {
+  background-position: 0px -258px;
+  transform: rotate(90deg);
+}
+
+.word3, .word2, .center2, .letter3, .letter2, .square.horizontal, .square.vertical {
   background-image: url('../images/sprites.png');
   background-repeat: no-repeat;
   background-size: cover;
