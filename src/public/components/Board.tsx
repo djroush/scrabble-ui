@@ -3,12 +3,7 @@ import React from 'react';
 import '../css/Board.css';
 
 import Square from '../components/Square';
-
-export type BoardState = {
-  activeIndex: number;
-  direction: "horizontal" | "vertical" | null;
-  squares : Square[];
-}
+import {BoardState} from '../reducers/State'
 
 class Board extends React.Component<unknown, BoardState> {
   static WIDTH: number = 15;
@@ -53,9 +48,8 @@ class Board extends React.Component<unknown, BoardState> {
     const c = event.relatedTarget;
   };
 
-  render(): JSX.Element {
-    const {activeIndex, direction, squares} = this.state;
-    
+  render(): JSX.Element { 
+    const {activeIndex, direction, squares} = this.state
     const rowsElems: JSX.Element[] = [];
     for(let row = 0; row < Board.HEIGHT; row++) {
       const rowElems : JSX.Element[] = [];
@@ -91,9 +85,9 @@ class Board extends React.Component<unknown, BoardState> {
 }
 
 Board.prototype.state = {
-  activeIndex: null,
-  direction: null,
-  squares: [],
-};
+    activeIndex: null,
+    direction: null,
+    squares: [],
+  }
 
 export default Board;

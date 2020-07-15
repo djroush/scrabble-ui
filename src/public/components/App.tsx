@@ -1,26 +1,25 @@
 import React from 'react';
+
 import '../css/App.css';
 
-import Actions from '../components/Actions';
+import PlayerActions from '../components/PlayerActions';
 import Board from '../components/Board';
 import LetterDistribution from '../components/LetterDistribution';
-import Players from '../components/Players';
+import PlayersDisplay from '../components/PlayersDisplay' 
 import Rack from '../components/Rack';
+import {getStore} from '../reducers/AppReducer';
 
-type AppProps = {
-};
+const store = getStore();
 
-class App extends React.Component<AppProps, unknown> {
+export type AppDispatch = typeof store.dispatch
+
+
+class App extends React.Component<unknown, unknown> {
   board: Board;
-  players: Players;  
-  rack: Rack;
-  actions: Actions;
 
-  constructor(props: AppProps) {
+  constructor(props: unknown) {
     super(props);
   }
-  
-  
   
   render(): JSX.Element {
     return (
@@ -29,18 +28,9 @@ class App extends React.Component<AppProps, unknown> {
           <LetterDistribution/>
         </div>
         <div className="mid">          
-          <Rack ref={(node) => {
-              this.rack = node;
-            }}
-          />
-          <Players ref={(node) => {
-              this.players = node;
-            }}
-          />
-          <Actions ref={(node) => {
-              this.actions = node;
-            }}
-          />
+          <Rack />
+          <PlayersDisplay />
+          <PlayerActions />
         </div>
         <div className="right">
         <Board

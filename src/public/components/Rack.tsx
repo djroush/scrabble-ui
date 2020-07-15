@@ -2,33 +2,26 @@ import React from 'react';
 
 import '../css/Rack.css';
 
-export type RackState = {
-  letters: string[];
+type RackProps = {
+  letters: string[], 
 }
 
-class Rack extends React.PureComponent<unknown, RackState> {
-  constructor(props: unknown) {
-    super(props);
-  }
 
-  render(): JSX.Element {
-    
-    const {letters} = this.state;
-    
-    const rackTiles = !letters ? "" : letters.map((letter: String, index: number) => (
-      <div key={index} className="rackTile"><span>{letter}</span></div>
-    ));
-    
-    return (
-    <div className="rack">
-      {rackTiles} 
-    </div>
-    );
-  }
+const Rack = (props: RackProps)  => {
+  const {letters} = props;
+  const rackTiles = !letters ? "" : letters.map((letter: String, index: number) => (
+    <div key={index} className="rackTile"><span>{letter}</span></div>
+  ));
+  
+  return (
+  <div className="rack">
+    {rackTiles} 
+  </div>
+  );
 }
 
-Rack.prototype.state = {
-  letters: ['T','E','S','T','I','N','G'],
-};
+Rack.defaultProps = {
+  letters: ['T','E','S','T','I','N','G'] 
+}
 
 export default Rack;

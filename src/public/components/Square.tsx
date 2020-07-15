@@ -2,32 +2,42 @@ import React from 'react';
 
 import '../css/Square.css'
 
+type Direction = 'horizontal' | 'vertical' | null;
+type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2'; 
+
+type SquareState = {
+  modifier: Modifier;
+  tile?: string;
+}
+
 type SquareProps = {
-  index: number,
-  direction: "horizontal" | "vertical" | null;
+  index: number;
+  direction: Direction;
   onClick: (event: React.MouseEvent) => void;
   onKeyPress: (event: React.KeyboardEvent) => void;
   onBlur: (event: React.MouseEvent) => void;
 };
 
-type SquareState = {
-  tile: String,  
-};
 
 class Square extends React.PureComponent<SquareProps, SquareState> {
-   row: number;
-   col: number;
- 
   constructor(props: SquareProps) {
     super(props);
     const {index} = props;
-    this.row = Math.floor(index / 15);
-    this.col = index % 15; //does this go negative?
+    
+    const modifier = this.getModifier(index);
+    this.setState({
+      modifier: modifier,
+      tile: null
+    })
   }
 
-  getModifier = (): string => {
-    const row = this.row;
-    const col = this.col;
+  //THis is blurring logic, d
+  getModifier = (index: number): Modifier => {
+    
+    const row = Math.floor(index / 15);
+    const col = index % 15;
+
+    //This logic should be elsehwere?
     if (row == 7 && col == 7) {
       return 'center2';
     } else if ((row % 7 == 0 && col % 8 ==  3) ||
@@ -49,26 +59,32 @@ class Square extends React.PureComponent<SquareProps, SquareState> {
     return '';
   };
   
+  //TODO: need to add set tile somewhere
+  
+  //ToDO: move this back to render and worry about making it a pure function later 
   render(): JSX.Element {
-    const { direction, onClick, onKeyPress } = this.props;
-    const { tile } = this.state;
+    const { index, direction, onClick, onKeyPress } = this.props;
+    const {tile, modifier} = this.state;
+    
     const hasTile = tile !== undefined && tile !== null;
     const isBlank = hasTile && tile === " ";
-    const modifier: string = this.getModifier();
-    const dirClass: string = direction === null || direction === undefined ? "" : " " + direction;
+    const dirClass: string = direction === null  ? "" : " " + direction;
     const squareClass="square " + modifier + dirClass;
     const blank = isBlank ? " blank" : "";
     const tileClass= (hasTile ? "tile" : "") + blank;
     const innerSpan = !hasTile ? '' : <span className={tileClass}>{tile}</span>  
  
     return (
-      <td data-row={this.row} data-col={this.col} className={squareClass} onClick={onClick} onKeyPress={onKeyPress}>
+      <td data-index={index} className={squareClass} onClick={onClick} onKeyPress={onKeyPress}>
       {innerSpan}</td>
     );
   }
 }
 
 Square.prototype.state = {
-  tile: null
-};
+    tile: null,
+    modifier: ''
+}
+
+
 export default Square;
