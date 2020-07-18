@@ -8,7 +8,6 @@
     "dev:build": "node ./node_modules/parcel-bundler/bin/cli build ./src/public/index.html --out-dir ./dist/public",
     "start": "node ./node_modules/npm-run-all/bin/npm-run-all -p -r dev:serve",
     "lint": "node ./node_modules/eslint/bin/eslint . --ext .jsx,.js --fix"
-
   },
   "repository": "https://github.com/djroush/scrabble-ui",
   "keywords": [],
@@ -30,6 +29,7 @@
     "@babel/preset-typescript": "^7.10.4",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
+    "@types/react-redux": "^7.1.9",
     "eslint": "^7.4.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",

@@ -1,0 +1,30 @@
+.playerDisplay {
+  display: inline-flex;
+  flex-direction: row;
+  border: 2px solid black;
+  margin: 2% 0%;
+  padding: 0%;
+  width: auto;
+  justify-content: space-evenly;
+}
+
+.player {
+  list-style: none;
+  list-style-type: none;
+  width: 25%;
+  text-align: left;
+  margin: 1% 2%;
+  padding: 1% 2%;
+}
+
+.player.active {
+  border: 2px dotted black;
+}
+
+.player.self {
+  background-color: rgba(35, 98, 220, 0.3);
+  color: #2f4f4f;
+  font-style: italic;
+  font-weight: bold;
+  
+}

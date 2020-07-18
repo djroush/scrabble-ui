@@ -1,20 +1,27 @@
-import ActionTypes from './ActionTypes'
-import {RackState} from './State'
+import { PLAY_RACK_LETTER, RETURN_RACK_LETTERS, UPDATE_ACTIVE_SQUARE } from './ActionTypes'
 
-export type AppAction = RackAction;
+export type AppAction = RackAction | BoardAction;
+export type RackAction =  PlayRackLetterAction | ReturnRackLettersAction;
+export type BoardAction = UpdateActiveSquareAction 
 
-export type RackAction = {
-  type: ActionTypes
-  letters: string[]
-};
+export interface PlayRackLetterAction {
+  type: typeof PLAY_RACK_LETTER
+  payload: {
+    index: number,
+    letter: string
+  }
+}
 
-/* Action */
-export const playRackLetters = (rack: RackState) : RackAction => ({
-  type: ActionTypes.PLAY_RACK_LETTERS,
-  letters: rack.letters
-})
-export const returnRackLetters = (rack: RackState) : RackAction => ({
-  type: ActionTypes.RETURN_RACK_LETTERS,
-  letters: rack.letters
-})
-/* Actions */
+export interface ReturnRackLettersAction {
+  type: typeof RETURN_RACK_LETTERS
+  payload: {
+    letters: string[]
+  }
+}
+
+export interface UpdateActiveSquareAction {
+  type: typeof UPDATE_ACTIVE_SQUARE,
+  payload: {
+    index: number
+  }
+}

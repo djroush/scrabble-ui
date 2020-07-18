@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../css/Players.css';
+import '../css/PlayersDisplay.css';
 
 import {PlayerState} from '../reducers/State'; 
 
@@ -25,14 +25,15 @@ type PlayersDisplayProps = {
   );
 }
 
+//This is duplicated by the AppReducer state, remove this eventually after dispatching state
 PlayersDisplay.defaultProps = {
   players: [
-      {name: 'Dough',score:26},
+      {name: 'Rutherford',score:26},
       {name: 'Friedrich',score:18},
       {name: 'Sebastian',score:28},
       {name: 'Theodore',score:11}
     ], 
-  activePlayerIndex: -1, 
+  activePlayerIndex: 0, 
 };
 
 export default PlayersDisplay;

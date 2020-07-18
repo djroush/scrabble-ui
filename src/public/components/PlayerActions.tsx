@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../css/Actions.css';
+import '../css/PlayerActions.css';
 
 /*  
   exchange: () => void,
@@ -14,12 +14,19 @@ import '../css/Actions.css';
 const PlayerActions = () => {
   return (
   <div className="actions">
+      <button id="shuffleButton" type="button">
+        Shuffle tiles
+      </button>
       <button id="playButton" type="button">
-        Play turn
+        Play tiles
+      </button>
+      <button id="returnButton" type="button">
+        Return tiles
       </button>
       <button id="exchangeButton" type="button">
         Exchange tiles
       </button>
+
       <button id="passButton" type="button">
         Pass turn
       </button>

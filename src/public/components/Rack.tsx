@@ -6,7 +6,6 @@ type RackProps = {
   letters: string[], 
 }
 
-
 const Rack = (props: RackProps)  => {
   const {letters} = props;
   const rackTiles = !letters ? "" : letters.map((letter: String, index: number) => (

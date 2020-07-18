@@ -1,39 +1,31 @@
-import { Dispatch } from 'redux';
-import { AppState, RackState } from './State';
-import { playRackLetters } from './Actions'
-/* TODO  add types for messages! */
+import { AppState, BoardState, RackState } from './State';
 
-
-
-
-export const takeFromRack = (dispatch: Dispatch, getState: () => AppState) => {
-  const appState: AppState = getState();
-  const rack :RackState = appState.rack;
-  let lettersExist: boolean = true;
-  var lettersCopy: String[] = [...rack.letters];
-  //make a copy of current letters 
+const RACK_MAX_SIZE = 7;
+const RACK_MIN_SIZE = 0;
+//This is for middleware and incorrect
+export const takeFromRack = (appState: AppState, letter: string, index: number ) => {
+  const rackState: RackState = appState.rack;
+  const boardState: BoardState = appState.board;
   
-  const test: String[] = ['T','A','B','O','U','L','I'];
+  if (boardState.tiles[index] !== null) {
+    return;
+  }
   
-  rack.letters.forEach(letter => {
-    const index = test.findIndex((letter2) => letter2 == letter );  
-    if (index > 0) {
-      lettersCopy = lettersCopy.splice(index, 1);
-    } else {
-      lettersExist = false;
+  let rackIndex: number = 0;
+  let blankIndex: number = -1;
+  for (index = 0; index < rackState.letters.length; index++) {
+    const rackLetter = rackState.letters[index]; 
+    if (rackLetter == letter) {
+      break;
+    } else if (' ' == rackLetter) {
+      blankIndex = rackIndex;
     }
-    
-    if (!lettersExist) {
-      dispatch({
-        type: 'error',
-        error: 'Message goes here'
-      })
-    }
-    //TODO: figure out blank
-  });
-  dispatch(playRackLetters(rack));
+    rackIndex++;
+  };
+  
+  if (rackIndex < RACK_MAX_SIZE || blankIndex >= RACK_MIN_SIZE) {
+      const playedLetterIndex = rackIndex < RACK_MAX_SIZE ? rackIndex : blankIndex;
+      rackState.letters.splice(playedLetterIndex, 1);
+      boardState.tiles[index] == letter;
+  }
 }
-
-
-
-

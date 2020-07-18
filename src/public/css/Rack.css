@@ -1,19 +1,28 @@
 .rack {
   display: inline-block;
   border: 2px solid tan;
-  width: 100%;
+  background-color: #ecd8be;
+  width: auto;
   height: max-content;
-  margin: 2%;
+  justify-content: center;
+  align-items: center;
+  padding: 1% 2% 0% 2%;
+  margin: 1% 0%;
 }
 
 .rackTile {
   display: inline-flex;
   float: left;
-  border: 3px solid white;
-  width:75px;
-  height: 75px;
+  border: 2px solid black;
+  width:11.3%;
+  height:11%;
   justify-content: center;
   font-size: 4em;
   background-color: #f3dbc3;
   color: #000000;
+  margin: 1% 1% 0% 1%;
+}
+
+.rackTile.played {
+  color: rgba(0, 0, 0, 0.1);
 }

@@ -7,12 +7,6 @@ import Board from '../components/Board';
 import LetterDistribution from '../components/LetterDistribution';
 import PlayersDisplay from '../components/PlayersDisplay' 
 import Rack from '../components/Rack';
-import {getStore} from '../reducers/AppReducer';
-
-const store = getStore();
-
-export type AppDispatch = typeof store.dispatch
-
 
 class App extends React.Component<unknown, unknown> {
   board: Board;

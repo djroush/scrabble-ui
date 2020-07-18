@@ -20,7 +20,7 @@
       "noImplicitAny":true,
       "noImplicitReturns":false,
       "noImplicitUseStrict":false,
-      "noEmitHelpers":true
+      "noEmitHelpers":false
    },
    "include":[ 
       "src/public/**/*"

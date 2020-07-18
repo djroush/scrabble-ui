@@ -18,6 +18,7 @@
   margin: auto 0%;
 }
 .mid {
+  padding: 0% 1%;
   flex-grow: 100;
   flex-direction: column;
 }
