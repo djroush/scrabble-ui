@@ -1,0 +1,7 @@
+
+//Rack stuff
+export const PLAY_RACK_LETTER = 'PLAY_RACK_LETTER'
+export const RETURN_RACK_LETTERS = 'RETURN_RACK_LETTERS'
+
+// Board stuff
+export const UPDATE_ACTIVE_SQUARE = 'UPDATE_ACTIVE_SQUARE'

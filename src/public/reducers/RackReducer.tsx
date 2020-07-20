@@ -1,8 +1,8 @@
-import { AppState, BoardState, RackState } from './State';
+import { AppState, BoardState, RackState } from '../store/State';
 
 const RACK_MAX_SIZE = 7;
 const RACK_MIN_SIZE = 0;
-//This is for middleware and incorrect
+
 export const takeFromRack = (appState: AppState, letter: string, index: number ) => {
   const rackState: RackState = appState.rack;
   const boardState: BoardState = appState.board;
@@ -28,4 +28,5 @@ export const takeFromRack = (appState: AppState, letter: string, index: number )
       rackState.letters.splice(playedLetterIndex, 1);
       boardState.tiles[index] == letter;
   }
+  return appState;
 }

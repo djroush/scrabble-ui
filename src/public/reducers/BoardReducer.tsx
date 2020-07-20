@@ -1,4 +1,4 @@
-import { AppState } from './State';
+import { AppState } from '../store/State';
 
 export const updateActiveSquare = (appState: AppState, eventIndex: number) => {
   let {direction, activeIndex, ...others} = appState.board;
@@ -16,4 +16,5 @@ export const updateActiveSquare = (appState: AppState, eventIndex: number) => {
   appState.board = {
     activeIndex,direction,...others
   } 
+  return appState;
 };

@@ -1,8 +1,8 @@
-import * as ActionType from './ActionTypes'
-import { AppState } from './State';
+import {AppAction, PlayRackLetterAction, UpdateActiveSquareAction} from '../actions/Actions';
+import * as ActionType from '../actions/ActionTypes'
+import { AppState } from '../store/State';
 import {takeFromRack} from './RackReducer';
 import {updateActiveSquare} from './BoardReducer';
-import {AppAction, PlayRackLetterAction, UpdateActiveSquareAction} from './Actions';
 
 const initialState : AppState = {
   rack: {
@@ -28,18 +28,18 @@ const AppReducer = (state: AppState = initialState, action: AppAction) => {
     case ActionType.PLAY_RACK_LETTER: {
       const playRackLetterAction: PlayRackLetterAction = action; 
       const {index, letter} = playRackLetterAction.payload;
-      takeFromRack(state, letter, index);
+      state = takeFromRack(state, letter, index);
       break;
     }
-    case ActionType.UPDATE_ACTIVE_SQUARE:
+    case ActionType.UPDATE_ACTIVE_SQUARE: {
      const updateActiveSquareAction: UpdateActiveSquareAction = action;
      const {index} = updateActiveSquareAction.payload;
-     updateActiveSquare(state, index);
+     state = updateActiveSquare(state, index);
     break;
+    }
     default:
-    
-      return state;
   }
+  return state;
 }
 
 export default AppReducer;

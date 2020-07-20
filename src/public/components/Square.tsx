@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '../css/Square.css'
-import {Direction} from '../reducers/State'
+import {Direction} from '../store/State'
 
 type SquareProps = {
   index: number;

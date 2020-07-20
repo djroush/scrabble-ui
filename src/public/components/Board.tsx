@@ -3,9 +3,9 @@ import React from 'react';
 import '../css/Board.css';
 
 import Square, {Modifier} from '../components/Square';
-import {BoardState} from '../reducers/State';
-import store from '../reducers/Store';
-import * as Actions from '../reducers/ActionCreator';
+import {BoardState} from '../store/State';
+import store from '../store/Store';
+import * as Actions from '../actions/ActionCreator';
 
 class Board extends React.Component<unknown, BoardState> {
   static WIDTH: number = 15;
