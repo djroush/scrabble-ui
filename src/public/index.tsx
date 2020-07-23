@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import './index.css';
 import App from './components/App';
-import AppStore from './reducers/Store';
+import AppStore from './store/Store';
 
 const store = AppStore;
 

@@ -1,4 +1,7 @@
-button {
+.playerActions  {
+  margin: 0% 3%;
+}
+.playerActions button {
   padding: 2%;
   margin: 2%;
 }

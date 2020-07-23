@@ -1,30 +1,20 @@
 import React from 'react';
 
-import '../css/Square.css'
-import {Direction} from '../store/State'
+import '../css/Square.css';
 
-type SquareProps = {
-  index: number;
-  tile?: string;
-  modifier: Modifier;
-  direction: Direction;
-  onMouseDown: (event: React.MouseEvent) => void;
-  onKeyPress: (event: React.KeyboardEvent) => void;
-};
-export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2'; 
+import {SquareProps} from '../containers/Square'; 
 
-
-//TODO: make this a pure function
-const Square = (props: SquareProps) => {
-  const { index, tile, modifier, direction, onMouseDown, onKeyPress } = props;
+const SquareView = (props: SquareProps) => {
   
-  const hasTile = tile !== undefined && tile !== null;
-  const isBlank = hasTile && tile === " ";
+  const {index, letter, direction, modifier, onMouseDown, onKeyPress} = props;
+  
+  const hasTile = letter !== undefined && letter !== null;
+  const isBlank = hasTile && letter === " ";
   const dirClass: string = direction === null  ? "" : " " + direction;
   const squareClass="square " + modifier + dirClass;
   const blank = isBlank ? " blank" : "";
   const tileClass= (hasTile ? "tile" : "") + blank;
-  const innerSpan = !hasTile ? '' : <span className={tileClass}>{tile}</span>  
+  const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>  
    return (
     <td tabIndex={index} 
         data-index={index} 
@@ -36,4 +26,4 @@ const Square = (props: SquareProps) => {
   );
 }
 
-export default Square;
+export default SquareView;

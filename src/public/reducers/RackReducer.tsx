@@ -7,8 +7,8 @@ export const takeFromRack = (appState: AppState, letter: string, index: number )
   const rackState: RackState = appState.rack;
   const boardState: BoardState = appState.board;
   
-  if (boardState.tiles[index] !== null) {
-    return;
+  if (!!boardState.squares[index].letter) {
+    return appState;
   }
   
   let rackIndex: number = 0;
@@ -26,7 +26,7 @@ export const takeFromRack = (appState: AppState, letter: string, index: number )
   if (rackIndex < RACK_MAX_SIZE || blankIndex >= RACK_MIN_SIZE) {
       const playedLetterIndex = rackIndex < RACK_MAX_SIZE ? rackIndex : blankIndex;
       rackState.letters.splice(playedLetterIndex, 1);
-      boardState.tiles[index] == letter;
+      boardState.squares[index].letter = letter;
   }
   return appState;
 }

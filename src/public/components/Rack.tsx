@@ -1,10 +1,7 @@
 import React from 'react';
 
 import '../css/Rack.css';
-
-type RackProps = {
-  letters: string[], 
-}
+import { RackProps } from '../containers/Rack' 
 
 const Rack = (props: RackProps)  => {
   const {letters} = props;
@@ -19,8 +16,5 @@ const Rack = (props: RackProps)  => {
   );
 }
 
-Rack.defaultProps = {
-  letters: ['T','E','S','T','I','N','G'] 
-}
-
 export default Rack;
+

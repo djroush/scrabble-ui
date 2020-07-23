@@ -1,27 +1,47 @@
-import { PLAY_RACK_LETTER, RETURN_RACK_LETTERS, UPDATE_ACTIVE_SQUARE } from './ActionTypes'
+import * as ActionTypes from './ActionTypes'
 
-export type AppAction = RackAction | BoardAction;
-export type RackAction =  PlayRackLetterAction | ReturnRackLettersAction;
-export type BoardAction = UpdateActiveSquareAction 
+export type AppAction = RackAction | BoardAction | SquareAction;
+export type RackAction =  PlayRackLetter | ReturnRackLetters;
+export type BoardAction = InitializeBoardSquares | UpdateActiveSquare; 
+export type SquareAction = SquareClicked  | SquareKeyPress;
 
-export interface PlayRackLetterAction {
-  type: typeof PLAY_RACK_LETTER
+export interface PlayRackLetter {
+  type: typeof ActionTypes.PLAY_RACK_LETTER
   payload: {
     index: number,
     letter: string
   }
 }
 
-export interface ReturnRackLettersAction {
-  type: typeof RETURN_RACK_LETTERS
+export interface ReturnRackLetters {
+  type: typeof ActionTypes.RETURN_RACK_LETTERS
   payload: {
     letters: string[]
   }
 }
 
-export interface UpdateActiveSquareAction {
-  type: typeof UPDATE_ACTIVE_SQUARE,
+export interface InitializeBoardSquares {
+  type: typeof ActionTypes.INITIALIZE_BOARD_SQUARES
+  payload: {}
+}
+
+
+export interface UpdateActiveSquare {
+  type: typeof ActionTypes.UPDATE_ACTIVE_SQUARE,
   payload: {
     index: number
+  }
+}
+export interface SquareClicked {
+  type: typeof ActionTypes.SQUARE_CLICKED,
+  payload: {
+    index: number
+  }
+}
+export interface SquareKeyPress {
+  type: typeof ActionTypes.SQUARE_KEYPRESS,
+  payload: {
+    index: number,
+    key: string
   }
 }

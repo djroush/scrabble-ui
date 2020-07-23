@@ -13,7 +13,7 @@ import '../css/PlayerActions.css';
 
 const PlayerActions = () => {
   return (
-  <div className="actions">
+  <div className="playerActions">
       <button id="shuffleButton" type="button">
         Shuffle tiles
       </button>

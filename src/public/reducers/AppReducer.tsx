@@ -1,8 +1,9 @@
-import {AppAction, PlayRackLetterAction, UpdateActiveSquareAction} from '../actions/Actions';
-import * as ActionType from '../actions/ActionTypes'
+import * as Actions from '../actions/Actions';
+import * as ActionTypes from '../actions/ActionTypes';
+
 import { AppState } from '../store/State';
 import {takeFromRack} from './RackReducer';
-import {updateActiveSquare} from './BoardReducer';
+import {getNewBoard, updateActiveSquare} from './BoardReducer';
 
 const initialState : AppState = {
   rack: {
@@ -10,8 +11,7 @@ const initialState : AppState = {
   },
   board: {
     activeIndex: null,
-    direction: null,
-    tiles: new Array<string>(255),
+    squares: null,
   },
   playerDisplay: {
     players: [
@@ -23,23 +23,29 @@ const initialState : AppState = {
     activePlayerIndex: 0
   }
 };
-const AppReducer = (state: AppState = initialState, action: AppAction) => {
+const AppReducer = (state: AppState = initialState, action: Actions.AppAction) => {
+  let newState: AppState = {...state};
   switch (action.type) {
-    case ActionType.PLAY_RACK_LETTER: {
-      const playRackLetterAction: PlayRackLetterAction = action; 
+    //RackReducer
+    case ActionTypes.PLAY_RACK_LETTER: {
+      const playRackLetterAction: Actions.PlayRackLetter = action; 
       const {index, letter} = playRackLetterAction.payload;
-      state = takeFromRack(state, letter, index);
+      newState = takeFromRack(newState, letter, index);
       break;
     }
-    case ActionType.UPDATE_ACTIVE_SQUARE: {
-     const updateActiveSquareAction: UpdateActiveSquareAction = action;
-     const {index} = updateActiveSquareAction.payload;
-     state = updateActiveSquare(state, index);
-    break;
+    //BoardReducer
+    case ActionTypes.INITIALIZE_BOARD_SQUARES: {
+      newState.board = getNewBoard();
+      break;
     }
+    case ActionTypes.SQUARE_CLICKED: {
+     const squareClickedAction: Actions.SquareClicked = action
+     const {index} = squareClickedAction.payload;
+     newState = updateActiveSquare(newState, index); 
+    } 
     default:
   }
-  return state;
+  return newState;
 }
 
 export default AppReducer;
