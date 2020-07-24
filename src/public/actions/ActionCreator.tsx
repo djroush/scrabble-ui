@@ -40,3 +40,8 @@ export const squareKeyPress = (index: number, key: string) : Actions.SquareKeyPr
     index, key
   }
 });
+
+export const shuffleLetters = () : Actions.ShuffleTiles => ({
+  type: ActionTypes.SHUFFLE_LETTERS,
+  payload: {}
+});

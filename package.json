@@ -4,9 +4,8 @@
   "description": "A UI for the game of scrabble",
   "main": "./dist/index.js",
   "scripts": {
-    "dev:serve": "node ./node_modules/parcel-bundler/bin/cli serve ./src/public/index.html --out-dir ./dist/public --port 8888",
-    "dev:build": "node ./node_modules/parcel-bundler/bin/cli build ./src/public/index.html --out-dir ./dist/public",
-    "start": "node ./node_modules/npm-run-all/bin/npm-run-all -p -r dev:serve",
+    "start": "node ./node_modules/parcel-bundler/bin/cli serve ./src/public/index.html --out-dir ./dist/public --port 8888",
+    "build": "node ./node_modules/parcel-bundler/bin/cli build ./src/public/index.html --out-dir ./dist/public",
     "lint": "node ./node_modules/eslint/bin/eslint . --ext .jsx,.js --fix"
   },
   "repository": "https://github.com/djroush/scrabble-ui",

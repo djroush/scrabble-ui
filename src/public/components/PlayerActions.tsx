@@ -3,18 +3,22 @@ import React from 'react';
 import '../css/PlayerActions.css';
 
 /*  
+  shuffle: () => void,
   exchange: () => void,
+  return; () => void,
   play: () => void,
   pass: () => void,
   challenge: () => void,
   forfeit: () => void
 */  
 
+import {PlayerActionsProps} from '../containers/PlayerActions'
 
-const PlayerActions = () => {
+const PlayerActions = (props: PlayerActionsProps) => {
+  const {clickShuffle} = props;
   return (
   <div className="playerActions">
-      <button id="shuffleButton" type="button">
+      <button id="shuffleButton" type="button" onClick={clickShuffle}>
         Shuffle tiles
       </button>
       <button id="playButton" type="button">

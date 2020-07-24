@@ -15,12 +15,13 @@
   justify-content: center;
   background-color: #f3dbc3;
   margin: auto;
+  transform: rotate(0deg);
+  
 }
 
 .blank {
   color: #a0a0a0; 
 }
-
 
 .word3, .word2, .center2, .letter3, .letter2, .horizontal, .vertical {
   background-image: url('../images/sprites.png');

@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 import { AppState } from '../store/State';
 import RackView from '../components/Rack';
 
+
+type RackOwnProps =  {}
+type RackStateProps = {
+  letters: string[];
+}; 
+export type RackProps = RackOwnProps & RackStateProps
+
 const mapStateToProps = (state: AppState) => (
   {
     letters: state.rack.letters
@@ -14,10 +21,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
     playLetter: (letter: string, index: number) => dispatch(playRackLetter(letter, index)),
 });
 */
-
-export type RackProps = {
-  letters: string[], 
-}
 
 class Rack extends React.Component<RackProps, unknown> {
   render() {

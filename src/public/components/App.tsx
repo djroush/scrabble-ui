@@ -2,21 +2,21 @@ import React from 'react';
 
 import '../css/App.css';
 
-import PlayerActions from '../components/PlayerActions';
+import PlayerActions from '../containers/PlayerActions';
 import Board from '../components/Board';
-import LetterDistribution from '../components/LetterDistribution';
-import PlayersDisplay from '../components/PlayersDisplay' 
+import LetterDistributionView from '../components/LetterDistribution';
+import PlayersDisplayView from '../components/PlayersDisplay' 
 import Rack from '../containers/Rack';
 
 const App = () => {
   return (
   <div className="App">
     <div className="left">
-      <LetterDistribution/>
+      <LetterDistributionView/>
     </div>
     <div className="mid">          
       <Rack />
-      <PlayersDisplay />
+      <PlayersDisplayView />
       <PlayerActions />
     </div>
     <div className="right">

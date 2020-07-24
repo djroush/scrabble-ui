@@ -1,9 +1,10 @@
 import * as ActionTypes from './ActionTypes'
 
-export type AppAction = RackAction | BoardAction | SquareAction;
+export type AppAction = RackAction | BoardAction | SquareAction | PlayerActionsAction;
 export type RackAction =  PlayRackLetter | ReturnRackLetters;
 export type BoardAction = InitializeBoardSquares | UpdateActiveSquare; 
 export type SquareAction = SquareClicked  | SquareKeyPress;
+export type PlayerActionsAction = ShuffleTiles | PlayTiles | ReturnTiles | ExchangeTiles | PassTurn | ChallengeTurn | ForfeitGame
 
 export interface PlayRackLetter {
   type: typeof ActionTypes.PLAY_RACK_LETTER
@@ -45,3 +46,41 @@ export interface SquareKeyPress {
     key: string
   }
 }
+
+export interface ShuffleTiles {
+  type: typeof ActionTypes.SHUFFLE_LETTERS,
+  payload: {} 
+}
+export interface PlayTiles {
+  type: typeof ActionTypes.PLAY_TILES,
+  payload: {
+    tiles: [{
+      index: number,
+      letter: string
+    }]
+  } 
+}
+export interface ReturnTiles {
+  type: typeof ActionTypes.RETURN_TILES,
+  payload: {} 
+} 
+
+export interface ExchangeTiles {
+  type: typeof ActionTypes.EXCHANGE_LETTERS,
+  payload: {
+    indices: number[]
+  } 
+}
+export interface PassTurn {
+  type: typeof ActionTypes.PASS_TURN,
+  payload: {} 
+}
+export interface ChallengeTurn {
+  type: typeof ActionTypes.CHALLENGE_TURN,
+  payload: {} 
+}
+export interface ForfeitGame {
+  type: typeof ActionTypes.FORFEIT_GAME,
+  payload: {} 
+}
+

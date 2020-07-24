@@ -6,6 +6,7 @@ export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2
 export type AppState = {
   rack: RackState,
   board: BoardState,
+  turn: TurnState,
   playerDisplay: PlayerDisplayState,
   /* Game stuff */
 };
@@ -24,6 +25,13 @@ export type PlayerState = {
   name: string,
   score: number,
 };
+export type TurnState = {
+  tiles: Tile[]
+}
+export type Tile = {
+    index: number,
+    letter: string
+}
 
 export type SquareState = {
   letter: string,

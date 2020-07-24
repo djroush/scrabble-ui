@@ -7,6 +7,8 @@ import {AppState, Modifier, Direction} from '../store/State'
 
 import {squareKeyPress, squareClick} from '../actions/ActionCreator'
 
+export type SquareProps = SquareOwnProps & SquareStateProps & SquareDispatchProps
+
 type SquareOwnProps =  {
   index: number;
 }
@@ -20,24 +22,9 @@ type SquareDispatchProps = {
   onKeyPress: (event: React.KeyboardEvent) => void;
 }; 
 
-export type SquareProps = SquareOwnProps & SquareStateProps & SquareDispatchProps
-
-function Square(props: SquareProps){
-    return (
-      <SquareView
-        index={props.index}
-        letter={props.letter}
-        modifier={props.modifier}
-        direction={props.direction}
-        onMouseDown={props.onMouseDown}
-        onKeyPress={props.onKeyPress}
-      />
-    );
-};
-
-export const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
+const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
   return {
-    tile: state.board.squares[props.index].letter,
+    letter: state.board.squares[props.index].letter,
     modifier: state.board.squares[props.index].modifier,
     direction: state.board.squares[props.index].direction,
   }
@@ -47,6 +34,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>, props: SquareOwnProps
     onMouseDown: () => dispatch(squareClick(props.index)),
     onKeyPress: (event: React.KeyboardEvent) => dispatch(squareKeyPress(props.index, event.key))
   }
+};
+
+function Square(props: SquareProps){
+  return <SquareView {...props} />;
 };
 
 export default connect(
