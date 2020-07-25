@@ -11,9 +11,6 @@ import Rack from '../containers/Rack';
 const App = () => {
   return (
   <div className="App">
-    <div className="left">
-      <LetterDistributionView/>
-    </div>
     <div className="mid">          
       <Rack />
       <PlayersDisplayView />
@@ -21,6 +18,9 @@ const App = () => {
     </div>
     <div className="right">
     <Board/>
+    </div>
+    <div className="left">
+      <LetterDistributionView/>
     </div>
   </div>
   );

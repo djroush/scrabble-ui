@@ -1,6 +1,8 @@
 .board {
   display:block;
   position:relative;
+  background-color: white;
+  height: fit-content;
   float: right;
 }
 table {

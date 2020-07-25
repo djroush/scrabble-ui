@@ -18,11 +18,6 @@
   transform: rotate(0deg);
 }
 
-.square:focus {
-  outline-color: #42e132;
-  outline-width: thick;
-}
-
 .blank {
   color: #a0a0a0; 
 }
@@ -60,5 +55,8 @@
   background-position: 0px -258px;
   transform: rotate(90deg);
 }
-
-
+.square:focus {
+  outline-color: #42e132;
+  outline-style: outset;
+  outline-width: medium;
+}

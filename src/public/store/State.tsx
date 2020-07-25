@@ -4,11 +4,17 @@ export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2
 
 
 export type AppState = {
+  game: GameState,
   rack: RackState,
   board: BoardState,
   turn: TurnState,
   playerDisplay: PlayerDisplayState,
   /* Game stuff */
+};
+export type GameState = {
+  gameId: string,
+  playerId: string,
+  status: string, 
 };
 export type RackState = {
   letters: string[],
@@ -38,4 +44,4 @@ export type SquareState = {
   letter: string,
   modifier: string,
   direction: Direction,
-}
+ }
