@@ -1,12 +1,19 @@
 import { AppState, BoardState, RackState, TurnState, SquareState, Tile } from '../store/State';
+import { returnLetters, returnLetter } from '../reducers/Rack';
 import Board from '../components/Board';
 
-export const squareClick = (appState: AppState, newIndex: number) => {
-  let {activeIndex, squares} = appState.board;
-  const oldIndex = activeIndex;
-  const oldSquare = squares[oldIndex];
-  const newSquare = squares[newIndex];
+export const squareMouseDown = (appState: AppState, newIndex: number) => {
+  let {activeIndex, focusedIndex, squares} = appState.board;
 
+  focusedIndex = newIndex;  
+  
+  //ignore clicks if tiles are already played on the board
+  const areTilesPlayed = appState.turn.tiles.length > 0   
+  if (!areTilesPlayed) {
+    const oldIndex = activeIndex;
+    const oldSquare = squares[oldIndex];
+    const newSquare = squares[newIndex];
+  
     if (oldIndex !== null && oldIndex === newIndex) {
       if (!oldSquare.letter) {
         if (oldSquare.direction === "horizontal") {
@@ -24,14 +31,24 @@ export const squareClick = (appState: AppState, newIndex: number) => {
         oldSquare.direction = null;
       }
     }
+  }
   
   appState.board = {
-    activeIndex,squares
+    activeIndex,focusedIndex,squares
   } 
   return appState;
 };
 
-export const squareKeyPress = (appState: AppState, newIndex: number, letter: string) => {
+export const squareMouseUp = (appState: AppState) => {
+  const newBoard : BoardState = {...appState.board};
+  newBoard.focusedIndex = newBoard.activeIndex;
+  
+  appState.board = newBoard;
+  return appState;
+};
+
+
+export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
   const boardState: BoardState = appState.board;
   const rackState: RackState = appState.rack;
   const turnState: TurnState = appState.turn;
@@ -41,16 +58,32 @@ export const squareKeyPress = (appState: AppState, newIndex: number, letter: str
   const newTiles: Tile[] = [...turnState.tiles] 
 
   //Do nothing if a tile already exists in this spot on the board
-  if (newSquare.letter) {
+  
+  const areTilesPlayed: boolean = turnState.tiles.length > 0;
+  if (key === 'BACKSPACE' && areTilesPlayed) {
+    if (shiftKey) {
+      return returnLetters(appState);
+    } else {
+      return returnLetter(appState); 
+    }
+  }
+  if (key === ' ') {
+    squareMouseDown(appState, newIndex);
+  }
+  
+  const isAlphabetic: boolean = key >= 'A' && key <= 'Z';
+  if (newSquare.letter || !isAlphabetic || newIndex != appState.board.activeIndex) {
     return appState;
   }
   
   //Check if this letter (or a blank) exists on the rack
+  
+  
   let rackIndex: number = 0;
   let blankIndex: number = -1;
   for (let index = 0; index < rackState.letters.length; index++) {
     const rackLetter = rackState.letters[index]; 
-    if (rackLetter == letter) {
+    if (rackLetter == key) {
       break;
     } else if (' ' == rackLetter) {
       blankIndex = rackIndex;
@@ -64,12 +97,12 @@ export const squareKeyPress = (appState: AppState, newIndex: number, letter: str
       const playedLetterIndex = rackIndex < rackSize ? rackIndex : blankIndex;
       newLetters.splice(playedLetterIndex, 1)[0];
       //TODO: DO I NEED TO DO SOME SHENANIGANS HERE FOR BLANKS?
-      newSquare.letter = letter ;
+      newSquare.letter = key;
       rackState.letters = newLetters;
       boardState.squares[newIndex] = newSquare
       const newTile: Tile = {
         index: newIndex,
-        letter: letter
+        letter: key
       }
       newTiles.push(newTile);
       turnState.tiles = newTiles;
@@ -87,7 +120,7 @@ export const squareKeyPress = (appState: AppState, newIndex: number, letter: str
       nextActiveSquare.direction = newSquare.direction;
       newSquare.direction = null;
       boardState.activeIndex = nextActiveIndex;
-      //TODO: focus on nextActiveSquare
+      boardState.focusedIndex = nextActiveIndex;
     }
   } else {
     const row = newIndex / Board.HEIGHT;
@@ -97,12 +130,9 @@ export const squareKeyPress = (appState: AppState, newIndex: number, letter: str
       nextActiveSquare.direction = newSquare.direction;
       newSquare.direction = null;
       boardState.activeIndex = nextActiveIndex;
+      boardState.focusedIndex = nextActiveIndex;
     }
   }
-  //These aren't needed right?
-//  appState.board = boardState;
-//  appState.rack = rackState;
-//  appState.turn = turnState;
   
   return appState;
 };

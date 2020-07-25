@@ -5,15 +5,14 @@ import '../css/Square.css';
 import {SquareProps} from '../containers/Square'; 
 
 const SquareView = (props: SquareProps) => {
-  
   const tdElem = useRef(null);
   useEffect(() => {
-    const current = tdElem.current;
-    console.log("current:  " + current);
-    current.focus();
+    if (props.isActive) {
+      tdElem.current.focus();
+    }
   });
   
-  const {index, letter, direction, modifier, onMouseDown, onKeyPress} = props;
+  const {index, letter, direction, modifier, onMouseUp, onMouseDown, onKeyDown} = props;
   
   const hasTile = !!letter;
   const isBlank = hasTile && letter === " ";
@@ -26,8 +25,9 @@ const SquareView = (props: SquareProps) => {
     <td ref={tdElem}
         tabIndex={index} 
         data-index={index} 
+        onMouseUp={onMouseUp}
         onMouseDown={onMouseDown} 
-        onKeyPress={onKeyPress} 
+        onKeyDown={onKeyDown} 
         className={squareClass}>
       {innerSpan}
     </td>

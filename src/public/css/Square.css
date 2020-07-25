@@ -16,7 +16,11 @@
   background-color: #f3dbc3;
   margin: auto;
   transform: rotate(0deg);
-  
+}
+
+.square:focus {
+  outline-color: #42e132;
+  outline-width: thick;
 }
 
 .blank {
@@ -56,4 +60,5 @@
   background-position: 0px -258px;
   transform: rotate(90deg);
 }
+
 

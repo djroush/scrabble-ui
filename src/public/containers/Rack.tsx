@@ -11,16 +11,9 @@ type RackStateProps = {
 }; 
 export type RackProps = RackOwnProps & RackStateProps
 
-const mapStateToProps = (state: AppState) => (
-  {
+const mapStateToProps = (state: AppState) => ({
     letters: state.rack.letters
-  }
-)
-/*
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => ({
-    playLetter: (letter: string, index: number) => dispatch(playRackLetter(letter, index)),
-});
-*/
+})
 
 class Rack extends React.Component<RackProps, unknown> {
   render() {
@@ -34,6 +27,5 @@ class Rack extends React.Component<RackProps, unknown> {
 
 export default connect(
   mapStateToProps,
-  /* mapDispatchToProps */
 )(Rack)
 

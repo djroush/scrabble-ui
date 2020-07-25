@@ -2,18 +2,19 @@
   display: flex;
   text-align: center;
   width: 100%;
+  overflow:hidden;
 }
 
 .left, .mid, .right {
   display: inline-flex;
   width: max-content;
-  height: max-content;
-  min-width:max-content;
-  min-height:max-content;  
+  min-width:min-content;
+  min-height:max-content;
+  height: auto;  
 }
 
 .left, .right {
-  padding: 0% 2%;
+  padding: 0% 1%;
 }
 .left {
   margin: auto 0%;
@@ -24,5 +25,6 @@
   flex-direction: column;
 }
 .right {
+  margin-top: 1%;
   float: right;
 }

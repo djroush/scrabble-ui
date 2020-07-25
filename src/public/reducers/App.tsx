@@ -2,9 +2,9 @@ import * as Actions from '../actions/Actions';
 import * as ActionTypes from '../actions/ActionTypes';
 
 import { AppState } from '../store/State';
-import {shuffleLetters} from '../reducers/Rack';
+import {shuffleLetters, returnLetters} from '../reducers/Rack';
 import {getNewBoard} from '../reducers/Board';
-import {squareClick, squareKeyPress} from '../reducers/Square';
+import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 
 const initialState : AppState = {
   rack: {
@@ -12,6 +12,7 @@ const initialState : AppState = {
   },
   board: {
     activeIndex: null,
+    focusedIndex: null,
     squares: null,
   },
   turn: {
@@ -35,16 +36,20 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       newState.board = getNewBoard();
       break;
     }
-    case ActionTypes.SQUARE_CLICKED: {
-     const squareClickedAction: Actions.SquareClicked = action
-     const {index} = squareClickedAction.payload;
-     newState = squareClick(newState, index);
+    case ActionTypes.SQUARE_MOUSEUP: {
+     newState = squareMouseUp(newState);
      break; 
     }
-    case ActionTypes.SQUARE_KEYPRESS: {
-     const squareKeyPressAction: Actions.SquareKeyPress = action
-     const {index, key} = squareKeyPressAction.payload;
-     newState = squareKeyPress(newState, index, key.toLocaleUpperCase());
+    case ActionTypes.SQUARE_MOUSEDOWN: {
+     const squareMouseDownAction: Actions.SquareMouseDown = action
+     const {index} = squareMouseDownAction.payload;
+     newState = squareMouseDown(newState, index);
+     break; 
+    }
+    case ActionTypes.SQUARE_KEYDOWN: {
+     const squareKeyDownAction: Actions.SquareKeyDown = action
+     const {index, key, shiftKey} = squareKeyDownAction.payload;
+     newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
     }
      
@@ -52,6 +57,11 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = shuffleLetters(newState);
      break; 
     }
+    case ActionTypes.RETURN_LETTERS: {
+     newState = returnLetters(newState);
+     break; 
+    }
+
     default:
   }
   return newState;

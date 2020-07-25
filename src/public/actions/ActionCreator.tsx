@@ -8,11 +8,9 @@ export const playRackLetter = (letter: string, index: number) : Actions.PlayRack
     letter,
   }
 });
-export const returnRackLetters = (letters: string[]) : Actions.ReturnRackLetters => ({
-  type: ActionTypes.RETURN_RACK_LETTERS,
-  payload: {
-    letters
-  }
+export const returnLetters = () : Actions.ReturnLetters => ({
+  type: ActionTypes.RETURN_LETTERS,
+  payload: {}
 });
 
 export const initializeBoardSquares = () : Actions.InitializeBoardSquares => ({
@@ -28,16 +26,20 @@ export const updateActiveSquare = (index: number) : Actions.UpdateActiveSquare =
 });
 
 
-export const squareClick = (index: number) : Actions.SquareClicked => ({
-  type: ActionTypes.SQUARE_CLICKED,
+export const squareMouseUp = () : Actions.SquareMouseUp => ({
+  type: ActionTypes.SQUARE_MOUSEUP,
+});
+export const squareMouseDown = (index: number) : Actions.SquareMouseDown => ({
+  type: ActionTypes.SQUARE_MOUSEDOWN,
   payload: {
     index
   }
 });
-export const squareKeyPress = (index: number, key: string) : Actions.SquareKeyPress => ({
-  type: ActionTypes.SQUARE_KEYPRESS,
+
+export const squareKeyDown = (index: number, key: string, shiftKey: boolean) : Actions.SquareKeyDown => ({
+  type: ActionTypes.SQUARE_KEYDOWN,
   payload: {
-    index, key
+    index, key, shiftKey
   }
 });
 

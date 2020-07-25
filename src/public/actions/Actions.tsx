@@ -3,8 +3,8 @@ import * as ActionTypes from './ActionTypes'
 export type AppAction = RackAction | BoardAction | SquareAction | PlayerActionsAction;
 export type RackAction =  PlayRackLetter | ReturnRackLetters;
 export type BoardAction = InitializeBoardSquares | UpdateActiveSquare; 
-export type SquareAction = SquareClicked  | SquareKeyPress;
-export type PlayerActionsAction = ShuffleTiles | PlayTiles | ReturnTiles | ExchangeTiles | PassTurn | ChallengeTurn | ForfeitGame
+export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown;
+export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn | ForfeitGame
 
 export interface PlayRackLetter {
   type: typeof ActionTypes.PLAY_RACK_LETTER
@@ -33,17 +33,21 @@ export interface UpdateActiveSquare {
     index: number
   }
 }
-export interface SquareClicked {
-  type: typeof ActionTypes.SQUARE_CLICKED,
+export interface SquareMouseUp {
+  type: typeof ActionTypes.SQUARE_MOUSEUP,
+}
+export interface SquareMouseDown {
+  type: typeof ActionTypes.SQUARE_MOUSEDOWN,
   payload: {
     index: number
   }
 }
-export interface SquareKeyPress {
-  type: typeof ActionTypes.SQUARE_KEYPRESS,
+export interface SquareKeyDown {
+  type: typeof ActionTypes.SQUARE_KEYDOWN,
   payload: {
     index: number,
-    key: string
+    key: string,
+    shiftKey: boolean,
   }
 }
 
@@ -60,12 +64,12 @@ export interface PlayTiles {
     }]
   } 
 }
-export interface ReturnTiles {
-  type: typeof ActionTypes.RETURN_TILES,
+export interface ReturnLetters {
+  type: typeof ActionTypes.RETURN_LETTERS,
   payload: {} 
 } 
 
-export interface ExchangeTiles {
+export interface ExchangeLetters {
   type: typeof ActionTypes.EXCHANGE_LETTERS,
   payload: {
     indices: number[]

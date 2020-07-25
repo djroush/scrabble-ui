@@ -2,6 +2,7 @@ import { Modifier, Direction, SquareState, BoardState } from '../store/State';
 
 export const getNewBoard = (): BoardState => {
   const activeIndex: number = null;
+  const focusedIndex: number = null;
   const direction: Direction = null;
   const squares: SquareState[] = new Array<SquareState>();
   for (let index = 0; index < 255; index ++) {
@@ -14,8 +15,7 @@ export const getNewBoard = (): BoardState => {
   }
   
   return {
-    activeIndex,
-    squares
+    activeIndex, focusedIndex, squares
   };
 };
 

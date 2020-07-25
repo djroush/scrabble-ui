@@ -2,35 +2,24 @@ import React from 'react';
 
 import '../css/PlayerActions.css';
 
-/*  
-  shuffle: () => void,
-  exchange: () => void,
-  return; () => void,
-  play: () => void,
-  pass: () => void,
-  challenge: () => void,
-  forfeit: () => void
-*/  
-
 import {PlayerActionsProps} from '../containers/PlayerActions'
 
 const PlayerActions = (props: PlayerActionsProps) => {
-  const {clickShuffle} = props;
+  const {clickShuffle, clickReturn} = props;
   return (
   <div className="playerActions">
       <button id="shuffleButton" type="button" onClick={clickShuffle}>
         Shuffle tiles
       </button>
-      <button id="playButton" type="button">
-        Play tiles
-      </button>
-      <button id="returnButton" type="button">
+      <button id="returnButton" type="button" onClick={clickReturn}>
         Return tiles
       </button>
       <button id="exchangeButton" type="button">
         Exchange tiles
       </button>
-
+      <button id="playButton" type="button">
+        Play tiles
+      </button>
       <button id="passButton" type="button">
         Pass turn
       </button>

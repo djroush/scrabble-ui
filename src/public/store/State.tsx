@@ -11,10 +11,11 @@ export type AppState = {
   /* Game stuff */
 };
 export type RackState = {
-  letters: string[];
+  letters: string[],
 };
 export type BoardState = {
-  activeIndex: number;
+  activeIndex: number,
+  focusedIndex: number,
   squares : SquareState[],
 };
 export type PlayerDisplayState = {
