@@ -5,6 +5,7 @@ import "../css/LetterDistribution.css";
 const LetterDistribution = () => {
  return (
   <div className="letterDist">
+   <div>
     <span><b>Letters:</b></span>
     <ul>
       <li key="A"><pre>A -  9</pre></li>
@@ -35,7 +36,8 @@ const LetterDistribution = () => {
       <li key="Z"><pre>Z -  1</pre></li>
       <li key=" "><pre>BLANK-2</pre></li>
      </ul>
-   </div>
+      </div>
+     </div>
  )
 };
 

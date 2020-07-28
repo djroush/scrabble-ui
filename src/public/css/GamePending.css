@@ -1,0 +1,29 @@
+.gamePending {
+  display: flex;  
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.gamePending h3 {
+  margin-top: 5vh;
+}
+
+.gameInputs {
+  flex-direction: row;
+  justify-content: space-between;
+  float: left;
+}
+
+.gameInputs span {
+  display: inline-flex;
+  margin: 0vh 1.5vw;
+}
+.gameInputs input {
+  display:inline-flex;
+  margin-left: 0.5vw;
+    
+}
+.gameInputs button {
+  vertical-align:middle; 
+  display:inline-flex;  
+}

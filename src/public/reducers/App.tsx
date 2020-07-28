@@ -7,6 +7,11 @@ import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 
 const initialState : AppState = {
+  game: {
+    gameId:null,
+    playerId:null,
+    status: 'ACTIVE'
+  },
   rack: {
     letters: ['T','E','S','T','I','N','G'], 
   },

@@ -9,26 +9,26 @@
 
 .left, .mid, .right {
   display: inline-flex;
-  width: max-content;
-  min-width:min-content;
-  min-height:max-content;
 }
 
 .left, .right {
   padding: 0% 1%;
 }
+
 .left {
-  margin: auto 0%;
+  flex-grow: 1;
 }
+
 .mid {
-  margin: 2% 0%;
-  flex-grow: 100;
-  flex-direction: column;
-}
-.right {
+  flex-grow: 0;
   background-color: tan;
   padding: 1%;
   margin: 1% 0%;
   float: right;
   height: fit-content;
+  flex-shrink:1;
+}
+.right {
+  height: 100%;
+  margin: auto 0%;
 }

@@ -2,8 +2,13 @@ import React from 'react';
 
 import '../css/PlayersDisplay.css';
 
-import {PlayersDisplayProps} from '../containers/PlayersDisplay'
-import {PlayerState} from '../store/State'; 
+import {PlayerState} from '../store/State';
+import '../components/PlayersDisplay';; 
+
+export type PlayersDisplayProps = {
+  players: PlayerState[], 
+  activePlayerIndex: number
+}
 
  const PlayersDisplay = (props: PlayersDisplayProps) =>  {
   const {players, activePlayerIndex} = props;

@@ -49,17 +49,16 @@ export const squareMouseUp = (appState: AppState) => {
 
 
 export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
-  const boardState: BoardState = appState.board;
-  const rackState: RackState = appState.rack;
-  const turnState: TurnState = appState.turn;
-  const newLetters: string[] = [...rackState.letters];
-  const newSquares: SquareState[] = [...boardState.squares]
+  const {board, rack, turn} = {...appState};
+  
+  const newSquares: SquareState[] = [...board.squares]
   const newSquare: SquareState = newSquares[newIndex];
-  const newTiles: Tile[] = [...turnState.tiles] 
+  const newLetters: string[] = [...rack.letters];
+  const {tiles} = {...turn} 
 
   //Do nothing if a tile already exists in this spot on the board
   
-  const areTilesPlayed: boolean = turnState.tiles.length > 0;
+  const areTilesPlayed: boolean = tiles.length > 0;
   if (key === 'BACKSPACE' && areTilesPlayed) {
     if (shiftKey) {
       return returnLetters(appState);
@@ -81,8 +80,9 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   
   let rackIndex: number = 0;
   let blankIndex: number = -1;
-  for (let index = 0; index < rackState.letters.length; index++) {
-    const rackLetter = rackState.letters[index]; 
+  const rackSize = newLetters.length;
+  for (let index = 0; index < rackSize; index++) {
+    const rackLetter = newLetters[index]; 
     if (rackLetter == key) {
       break;
     } else if (' ' == rackLetter) {
@@ -92,20 +92,19 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   };
   //Remove the letter from the rack and put it on the board
   //TODO: add tiles to turn as well
-  const rackSize = rackState.letters.length;
   if (rackIndex < rackSize || blankIndex >= 0) {
       const playedLetterIndex = rackIndex < rackSize ? rackIndex : blankIndex;
       newLetters.splice(playedLetterIndex, 1)[0];
       //TODO: DO I NEED TO DO SOME SHENANIGANS HERE FOR BLANKS?
       newSquare.letter = key;
-      rackState.letters = newLetters;
-      boardState.squares[newIndex] = newSquare
+      rack.letters = newLetters;
+      board.squares[newIndex] = newSquare;
       const newTile: Tile = {
         index: newIndex,
         letter: key
       }
-      newTiles.push(newTile);
-      turnState.tiles = newTiles;
+      tiles.push(newTile);
+      turn.tiles = tiles;
   } else {
     return appState;
   }
@@ -119,8 +118,8 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
       const nextActiveSquare = newSquares[nextActiveIndex];
       nextActiveSquare.direction = newSquare.direction;
       newSquare.direction = null;
-      boardState.activeIndex = nextActiveIndex;
-      boardState.focusedIndex = nextActiveIndex;
+      board.activeIndex = nextActiveIndex;
+      board.focusedIndex = nextActiveIndex;
     }
   } else {
     const row = newIndex / Board.HEIGHT;
@@ -129,8 +128,8 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
       const nextActiveSquare = newSquares[nextActiveIndex];
       nextActiveSquare.direction = newSquare.direction;
       newSquare.direction = null;
-      boardState.activeIndex = nextActiveIndex;
-      boardState.focusedIndex = nextActiveIndex;
+      board.activeIndex = nextActiveIndex;
+      board.focusedIndex = nextActiveIndex;
     }
   }
   

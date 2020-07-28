@@ -4,4 +4,5 @@
 .playerActions > button {
   padding: 2%;
   margin: 2%;
+  white-space: nowrap;
 }

@@ -5,13 +5,25 @@ import {AppAction} from '../actions/Actions'
 import PlayerActionsView from '../components/PlayerActions'
 
 import {shuffleLetters, returnLetters} from '../actions/ActionCreator'
+import { AppState } from '../store/State';
 
-export type PlayerActionsProps = PlayerActionsDispatchProps
+export type PlayerActionsProps =  PlayerActionsStateProps & PlayerActionsDispatchProps;
+
+type PlayerActionsStateProps = {
+  hasPlayedLetters: boolean;
+}
 
 type PlayerActionsDispatchProps = {
   clickShuffle: () => void;
   clickReturn: () => void;
 }; 
+
+const mapStateToProps = (appState : AppState) => {
+  return {
+    hasPlayedLetters: appState.turn.tiles.length > 0,  
+  }
+ 
+}
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
   return {
@@ -26,6 +38,6 @@ function PlayerActions(props: PlayerActionsProps){
 
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PlayerActions);

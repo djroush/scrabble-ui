@@ -13,6 +13,8 @@
   "author": "Doug Roush",
   "license": "MIT",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "cross-fetch": "^3.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",

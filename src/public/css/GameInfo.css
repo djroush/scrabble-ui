@@ -1,0 +1,22 @@
+.gameInfo {
+  display: flex;
+  flex-direction:row;
+  justify-content:flex-start;
+}
+
+.gameInfo > span {
+  color: #CCDDEE;
+  display: inline-flex;
+  flex: auto;
+  margin: auto;
+ }
+  
+.gameInfo div {
+  display: inline-flex;
+}
+.gameInfo button {
+  text-align: center;
+  height: 100%;
+  padding: 2vh;
+}
+  
