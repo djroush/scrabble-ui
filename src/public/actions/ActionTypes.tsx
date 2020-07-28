@@ -1,3 +1,8 @@
+//Game stuff
+export const UPDATE_NAME = "UPDATE_NAME"
+export const UPDATE_GAME_ID = "UPDATE_GAME_ID"
+export const JOIN_GAME = "JOIN_GAME"
+export const CREATE_GAME = "CREATE_GAME"
 
 //Rack stuff
 export const PLAY_RACK_LETTER = 'PLAY_RACK_LETTER'

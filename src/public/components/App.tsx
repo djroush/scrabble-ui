@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../css/App.css';
 
-import Board from '../components/Board';
+import Board from '../containers/Board';
 import LetterDistributionView from '../components/LetterDistribution';
 import Game from '../containers/Game' 
 

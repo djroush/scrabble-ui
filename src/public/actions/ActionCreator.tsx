@@ -1,11 +1,32 @@
 import * as Actions from './Actions'
 import * as ActionTypes from './ActionTypes'
 
+export const updateName = (name: string) : Actions.UpdateName => ({
+  type: ActionTypes.UPDATE_NAME,
+  payload: {
+    name
+  }
+});
+export const updateGameId = (gameId: string) : Actions.UpdateGameId => ({
+  type: ActionTypes.UPDATE_GAME_ID,
+  payload: {
+    gameId
+  }
+});
+
+export const createGame = () : Actions.CreateGame => ({
+  type: ActionTypes.CREATE_GAME,
+  payload: {}
+});
+export const joinGame = () : Actions.JoinGame => ({
+  type: ActionTypes.JOIN_GAME,
+  payload: {}
+});
+
 export const playRackLetter = (letter: string, index: number) : Actions.PlayRackLetter => ({
   type: ActionTypes.PLAY_RACK_LETTER,
   payload: {
-    index,
-    letter,
+    index, letter,
   }
 });
 export const returnLetters = () : Actions.ReturnLetters => ({

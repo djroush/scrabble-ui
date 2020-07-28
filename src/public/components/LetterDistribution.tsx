@@ -29,7 +29,7 @@ const LetterDistribution = () => {
       <li key="S"><pre>S -  4</pre></li>
       <li key="T"><pre>T -  6</pre></li>
       <li key="U"><pre>U -  4</pre></li>
-      <li key="V"><pre>V -  2</pre></li>
+      <li key="V"><pre>V -  2</ pre></li>
       <li key="W"><pre>W -  2</pre></li>
       <li key="X"><pre>X -  1</pre></li>
       <li key="Y"><pre>Y -  2</pre></li>

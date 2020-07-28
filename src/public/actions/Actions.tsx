@@ -1,10 +1,33 @@
 import * as ActionTypes from './ActionTypes'
 
-export type AppAction = RackAction | BoardAction | SquareAction | PlayerActionsAction;
+export type AppAction = GameAction | RackAction | BoardAction | SquareAction | PlayerActionsAction;
+export type GameAction = UpdateName | UpdateGameId | CreateGame | JoinGame;
 export type RackAction =  PlayRackLetter | ReturnRackLetters;
 export type BoardAction = InitializeBoardSquares | UpdateActiveSquare; 
 export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown;
 export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn | ForfeitGame
+
+
+export interface UpdateName {
+  type: typeof ActionTypes.UPDATE_NAME
+  payload: {
+    name: string
+  }
+}
+export interface UpdateGameId {
+  type: typeof ActionTypes.UPDATE_GAME_ID
+  payload: {
+    gameId: string
+  }
+}
+export interface CreateGame {
+  type: typeof ActionTypes.CREATE_GAME
+  payload: {}
+}
+export interface JoinGame {
+  type: typeof ActionTypes.JOIN_GAME
+  payload: {}
+}
 
 export interface PlayRackLetter {
   type: typeof ActionTypes.PLAY_RACK_LETTER

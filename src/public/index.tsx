@@ -4,9 +4,11 @@ import { Provider } from 'react-redux';
 
 import './index.css';
 import App from './components/App';
-import AppStore from './store/Store';
 
-const store = AppStore;
+
+import { createStore } from 'redux';
+import AppReducer from './reducers/App';
+const store = createStore(AppReducer); 
 
 const render = () => ReactDOM.render(
   <Provider store={store}>

@@ -5,6 +5,8 @@
   height: fit-content;
   width: fit-content;
   max-width: fit-content;
+  min-width: 50vw;
+  min-height: 90vh;
 }
 table {
   display: inline-block;

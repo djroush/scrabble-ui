@@ -4,7 +4,7 @@ import '../css/Game.css';
 
 import {GameProps} from '../containers/Game';
 import GameActiveView from '../components/GameActiveView'
-import GamePendingView from '../components/GamePendingView'
+import GamePendingView from '../containers/GamePendingView'
 
 
 const Game = (props: GameProps) => {

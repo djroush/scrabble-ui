@@ -3,14 +3,14 @@ import React from 'react';
 import '../css/PlayersDisplay.css';
 
 import {PlayersDisplayProps} from '../containers/PlayersDisplay'
-import {PlayerState} from '../store/State'; 
+import {PlayerInfo} from '../store/State'; 
 
  const PlayersDisplay = (props: PlayersDisplayProps) =>  {
-  const {players, activePlayerIndex} = props;
-  const playerHTML = !players ? "" :  players.map((player: PlayerState, index: number) => (
+  const {playersInfo, activePlayerIndex} = props;
+  const playerHTML = !playersInfo ? "" :  playersInfo.map((playerInfo: PlayerInfo, index: number) => (
     <ul key={index} className={index == activePlayerIndex ? 'player active' : 'player'}>
-      <li key="name">{player.name}</li>
-      <li key="score">Score:&nbsp;{player.score}</li>
+      <li key="name">{playerInfo.name}</li>
+      <li key="score">Score:&nbsp;{playerInfo.score}</li>
     </ul>
   ));
   
@@ -20,16 +20,4 @@ import {PlayerState} from '../store/State';
     </div>
   );
 }
-
-//This is duplicated by the AppReducer state, remove this eventually after dispatching state
-PlayersDisplay.defaultProps = {
-  players: [
-      {name: 'Rutherford',score:26},
-      {name: 'Friedrich',score:18},
-      {name: 'Sebastian',score:28},
-      {name: 'Theodore',score:11}
-    ], 
-  activePlayerIndex: 0, 
-};
-
 export default PlayersDisplay;

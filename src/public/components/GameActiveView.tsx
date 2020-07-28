@@ -3,8 +3,8 @@ import React from 'react';
 import '../css/GameActive.css';
 
 import PlayerActions from '../containers/PlayerActions';
-import PlayersDisplayView from '../components/PlayersDisplay'
-import GameInfo from '../components/GameInfo' 
+import PlayersDisplay from '../containers/PlayersDisplay';
+import GameInfo from '../containers/GameInfo' 
 import Rack from '../containers/Rack';
 
 const GameActiveView = () => {
@@ -15,7 +15,7 @@ const GameActiveView = () => {
           <PlayerActions />
         </div>
         <div>
-          <PlayersDisplayView />
+          <PlayersDisplay/>
           <p/>
            <GameInfo />
         </div>

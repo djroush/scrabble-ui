@@ -22,7 +22,6 @@ const mapStateToProps = (appState : AppState) => {
   return {
     hasPlayedLetters: appState.turn.tiles.length > 0,  
   }
- 
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {

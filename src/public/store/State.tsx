@@ -8,10 +8,14 @@ export type AppState = {
   rack: RackState,
   board: BoardState,
   turn: TurnState,
-  playerDisplay: PlayerDisplayState,
+  players: PlayersState,
   /* Game stuff */
 };
 export type GameState = {
+  pending: {
+    name : string
+    gameId: string,
+  }
   gameId: string,
   playerId: string,
   status: string, 
@@ -24,11 +28,11 @@ export type BoardState = {
   focusedIndex: number,
   squares : SquareState[],
 };
-export type PlayerDisplayState = {
-  players: PlayerState[];
+export type PlayersState = {
+  info: PlayerInfo[];
   activePlayerIndex: number
 };
-export type PlayerState = {
+export type PlayerInfo = {
   name: string,
   score: number,
 };

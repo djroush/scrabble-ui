@@ -1,6 +1,8 @@
-import { AppState, BoardState, RackState, TurnState, SquareState, Tile } from '../store/State';
+import { AppState, BoardState, SquareState, Tile } from '../store/State';
 import { returnLetters, returnLetter } from '../reducers/Rack';
-import Board from '../components/Board';
+
+const BOARD_WIDTH = 15;
+const BOARD_HEIGHT = 15;
 
 export const squareMouseDown = (appState: AppState, newIndex: number) => {
   let {activeIndex, focusedIndex, squares} = appState.board;
@@ -112,8 +114,8 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   //Move the cursor to the next space unless it's at the edge of the board'
   if (newSquare.direction === 'horizontal')  {
     //TODO: need to add a loop here to skip spaces which already have tiles
-    const col = newIndex % Board.WIDTH;
-    if (col < Board.WIDTH - 1) {
+    const col = newIndex % BOARD_WIDTH;
+    if (col < BOARD_WIDTH - 1) {
       const nextActiveIndex = newIndex + 1;
       const nextActiveSquare = newSquares[nextActiveIndex];
       nextActiveSquare.direction = newSquare.direction;
@@ -122,9 +124,9 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
       board.focusedIndex = nextActiveIndex;
     }
   } else {
-    const row = newIndex / Board.HEIGHT;
-    if (row < Board.HEIGHT -1) {
-      const nextActiveIndex = newIndex + Board.WIDTH;
+    const row = newIndex / BOARD_HEIGHT;
+    if (row < BOARD_HEIGHT -1) {
+      const nextActiveIndex = newIndex + BOARD_WIDTH;
       const nextActiveSquare = newSquares[nextActiveIndex];
       nextActiveSquare.direction = newSquare.direction;
       newSquare.direction = null;
