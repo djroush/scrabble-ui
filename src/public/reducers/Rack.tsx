@@ -1,3 +1,4 @@
+
 import { AppState, Tile, SquareState, Direction } from '../store/State';
 
 export const shuffleLetters = (appState: AppState) => {
@@ -14,7 +15,10 @@ export const shuffleLetters = (appState: AppState) => {
   return appState;
 }
 
-export const returnLetters = (appState: AppState) => {
+//TODO: need to upate logic to handle return from exchange or board!!!
+export const returnPlayedLetters = (appState: AppState) => {
+  //check if active index is set
+  
   const returnedLetters: string[] = [...appState.rack.letters];
   const turnTiles: Tile[] = appState.turn.tiles;
   const squares: SquareState[] = [...appState.board.squares];
@@ -39,7 +43,7 @@ export const returnLetters = (appState: AppState) => {
   return appState;
 }
 
-export const returnLetter = (appState: AppState) => {
+export const returnPlayedLetter = (appState: AppState) => {
   const returnedLetters: string[] = [...appState.rack.letters];
   const turnTiles: Tile[] = appState.turn.tiles;
   const squares: SquareState[] = [...appState.board.squares];

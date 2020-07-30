@@ -44,5 +44,3 @@ function getModifier(index: number) {
   }
   return '';
 };
-
-

@@ -12,7 +12,7 @@ const SquareView = (props: SquareProps) => {
     }
   });
   
-  const {index, letter, direction, modifier, onMouseUp, onMouseDown, onKeyDown} = props;
+  const {index, letter, direction, modifier, onMouseUp, onMouseDown, onKeyDown, onBlur} = props;
   
   const hasTile = !!letter;
   const isBlank = hasTile && letter === " ";
@@ -27,7 +27,8 @@ const SquareView = (props: SquareProps) => {
         data-index={index} 
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown} 
-        onKeyDown={onKeyDown} 
+        onKeyDown={onKeyDown}
+        onBlur={onBlur} 
         className={squareClass}>
       {innerSpan}
     </td>

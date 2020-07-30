@@ -4,7 +4,6 @@ import '../css/Board.css';
 
 import Square from '../containers/Square';
 
-
 import {BoardProps} from '../containers/Board'
 
 const Board = (props: BoardProps) => {

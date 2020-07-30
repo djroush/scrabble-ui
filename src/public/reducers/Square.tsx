@@ -1,5 +1,5 @@
 import { AppState, BoardState, SquareState, Tile } from '../store/State';
-import { returnLetters, returnLetter } from '../reducers/Rack';
+import { returnPlayedLetters, returnPlayedLetter } from '../reducers/Rack';
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 15;
@@ -41,13 +41,31 @@ export const squareMouseDown = (appState: AppState, newIndex: number) => {
   return appState;
 };
 
-export const squareMouseUp = (appState: AppState) => {
+export const squareMouseUp = (appState: AppState): AppState => {
   const newBoard : BoardState = {...appState.board};
   newBoard.focusedIndex = newBoard.activeIndex;
   
   appState.board = newBoard;
   return appState;
 };
+
+//TODO: remove this method and put it on the board?
+export const squareBlur = (appState: AppState, index: number): AppState => {
+/*
+  let {activeIndex,focusedIndex,squares,...others} = {...appState.board}
+  if (activeIndex === focusedIndex && activeIndex === index) {
+    let {direction, ...others2} = {...squares[index]};
+    direction = null;
+    squares[index] = {direction, ...others2};
+
+    activeIndex = null;
+    focusedIndex = null;
+    appState.board = { activeIndex, focusedIndex, squares,...others}
+ 
+  }
+*/
+  return appState;
+}
 
 
 export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
@@ -63,9 +81,9 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   const areTilesPlayed: boolean = tiles.length > 0;
   if (key === 'BACKSPACE' && areTilesPlayed) {
     if (shiftKey) {
-      return returnLetters(appState);
+      return returnPlayedLetters(appState);
     } else {
-      return returnLetter(appState); 
+      return returnPlayedLetter(appState); 
     }
   }
   if (key === ' ') {
@@ -137,3 +155,4 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   
   return appState;
 };
+

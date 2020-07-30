@@ -9,7 +9,7 @@ import {PlayerInfo} from '../store/State';
   const {playersInfo, activePlayerIndex} = props;
   const playerHTML = !playersInfo ? "" :  playersInfo.map((playerInfo: PlayerInfo, index: number) => (
     <ul key={index} className={index == activePlayerIndex ? 'player active' : 'player'}>
-      <li key="name">{playerInfo.name}</li>
+      <li key="name"><b>{playerInfo.name}</b></li>
       <li key="score">Score:&nbsp;{playerInfo.score}</li>
     </ul>
   ));

@@ -1,7 +1,7 @@
-.rack {
+.exchange {
   display: inline-block;
-  border: 2px solid tan;
-  background-color: tan;
+  border: 2px solid #990805;
+  background-color: #990805;
   width: auto;
   min-height: 10vh;
   height: auto;
@@ -11,16 +11,16 @@
   margin: 1% 1%;
 }
 
-.rackTile {
+.exchangeTile {
   display: inline-flex;
   float: left;
-  border: 2px solid black;
+  border: 2px solid #cc0000;
   min-width: max-content;
   width:11.3%;
   justify-content: center;
   font-size: 4em;
-  background-color: #f3dbc3;
-  color: #000000;
+  color: #cc0000;
+  background-color: #e98f73;
   margin: 1% 1% 0% 1%;
   height: max-content;
 }

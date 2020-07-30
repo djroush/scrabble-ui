@@ -32,9 +32,10 @@ export const joinGame = (appState: AppState) => {
 }
 
 export const createGame = (appState: AppState) => {
-  let {status, ...others} = {...appState.game}
+  let {status, gameId, ...others} = {...appState.game}
   status = "ACTIVE";
-  appState.game = {status, ...others}; 
+  gameId = "GAME1"; 
+  appState.game = {status, gameId, ...others}; 
   
   let {name, ...others2} =  {...appState.players.info[0]};
   name = appState.game.pending.name;

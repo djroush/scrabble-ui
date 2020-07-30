@@ -7,8 +7,6 @@ import { AppState,  } from '../store/State';
 import GamePendingView from '../components/GamePendingView'
 import {updateName, updateGameId, createGame, joinGame} from '../actions/ActionCreator'
 
-
-
 export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
 
 type GamePendingStateProps = {

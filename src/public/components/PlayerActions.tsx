@@ -5,19 +5,20 @@ import '../css/PlayerActions.css';
 import {PlayerActionsProps} from '../containers/PlayerActions'
 
 const PlayerActions = (props: PlayerActionsProps) => {
-  const {hasPlayedLetters, clickShuffle, clickReturn} = props;
+  const {hasPlayedLetters, hasExchangeLetters, clickShuffle, clickReturn, clickExchange} = props;
   return (
   <div className="playerActions">
       <button id="shuffleButton" type="button" onClick={clickShuffle}>
         Shuffle tiles
       </button>
-      {hasPlayedLetters 
+      {hasPlayedLetters  || hasExchangeLetters
         ? <button id="returnButton" type="button" title="Shift+Backspace" onClick={clickReturn}>Return tiles</button>
-        : <button id="returnButton" type="button" disabled >Return tiles</button>
+        : <button id="returnButton" type="button" title="Shift+Backspace" disabled >Return tiles</button>
       }
-      <button id="exchangeButton" type="button">
-        Exchange tiles
-      </button>
+      {hasExchangeLetters
+        ? <button id="exchangeButton" type="button" onClick={clickExchange}>Exchange tiles</button>
+        : <button id="exchangeButton" type="button" disabled >Exchange tiles</button>
+      }
       <button id="playButton" type="button" >
         Play tiles
       </button>

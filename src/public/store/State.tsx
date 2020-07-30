@@ -6,9 +6,10 @@ export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2
 export type AppState = {
   game: GameState,
   rack: RackState,
-  board: BoardState,
+  exchange: ExchangeState,
   turn: TurnState,
   players: PlayersState,
+  board: BoardState,
   /* Game stuff */
 };
 export type GameState = {
@@ -21,6 +22,9 @@ export type GameState = {
   status: string, 
 };
 export type RackState = {
+  letters: string[],
+};
+export type ExchangeState = {
   letters: string[],
 };
 export type BoardState = {
