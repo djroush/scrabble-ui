@@ -36,6 +36,50 @@ export const takeRackLetter = (appState: AppState, key: string) => {
   return appState;
 }
 
+//TODO: finish implement this here
+export const returnExchangeLetterLast = (appState: AppState): AppState => {
+  let rackLetters: string[] = [...appState.rack.letters];
+  let exchangeLetters: string[] = [...appState.exchange.letters];
+  
+  const exchangeIndex = exchangeLetters.length - 1;
+  const key = exchangeLetters.splice(exchangeIndex, 1);
+  rackLetters = rackLetters.concat(key);
+  appState.rack.letters = rackLetters;
+  appState.exchange.letters = exchangeLetters;
+  return appState;
+}
+
+
+//TODO: finish implement this here
+export const returnExchangeLetterIndex = (appState: AppState, exchangeIndex: number): AppState => {
+  let rackLetters: string[] = [...appState.rack.letters];
+  let exchangeLetters: string[] = [...appState.exchange.letters];
+  
+  const exchangeLength = exchangeLetters.length;
+  if (exchangeIndex >=0 && exchangeIndex < exchangeLength) {
+    const key = exchangeLetters.splice(exchangeIndex, 1);
+    rackLetters = rackLetters.concat(key);
+  }
+  appState.rack.letters = rackLetters;
+  appState.exchange.letters = exchangeLetters;
+  return appState;
+}
+
+//TODO: finish implement this here
+export const returnExchangeLetters = (appState: AppState): AppState => {
+  let rackLetters: string[] = [...appState.rack.letters];
+  let exchangeLetters: string[] = [...appState.exchange.letters];
+  
+  rackLetters = rackLetters.concat(exchangeLetters);
+  exchangeLetters = [];
+  
+  appState.rack.letters = rackLetters;
+  appState.exchange.letters = exchangeLetters;
+  
+  return appState;
+}
+
+//TODO: unimplemented 
 export const exchangeLetters = (appState: AppState) => {
   let rackLetters: string[] = [...appState.rack.letters];
   let exchangeLetters: string[] = [...appState.exchange.letters];

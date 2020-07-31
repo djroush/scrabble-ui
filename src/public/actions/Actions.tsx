@@ -1,15 +1,22 @@
 import * as ActionTypes from './ActionTypes'
 
 export type AppAction = GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
-export type GamePendingAction = UpdateName | UpdateGameId | CreateGame | JoinGame;
+export type GamePendingAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
 export type RackAction =  PlayRackLetter | ReturnPlayedLetter | ReturnPlayedLetters | ReturnExchangedLetter | ReturnExchangedLetters;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
 export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn; 
 export type GameInfoAction = ForfeitGame;
 export type BoardAction = InitializeBoardSquares; 
-export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown | SquareBlur
+export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown
 
 //Game
+export interface InputKeyDown {
+  type: typeof ActionTypes.INPUT_KEYDOWN
+  payload: {
+    key: string,
+    isCreate: boolean
+  }
+}
 export interface UpdateName {
   type: typeof ActionTypes.UPDATE_NAME
   payload: {
@@ -35,14 +42,15 @@ export interface JoinGame {
 export interface PlayRackLetter {
   type: typeof ActionTypes.PLAY_RACK_LETTER
   payload: {
-    index: number,
-    letter: string
+    squareIndex: number,
+    letter: string,
+    rackIndex?: number
   }
 }
 export interface ReturnPlayedLetter {
   type: typeof ActionTypes.RETURN_PLAYED_LETTER
   payload: {
-    index: number
+    squareIndex: number
     letter: string
   }
 }
@@ -67,7 +75,8 @@ export interface ReturnExchangedLetters {
 export interface ExchangeKeyDown {
   type: typeof ActionTypes.EXCHANGE_KEYDOWN
   payload: {
-    key: string
+    key: string,
+    isShift: boolean
   }
 }
 export interface ExchangeOnClick {
@@ -138,11 +147,5 @@ export interface SquareKeyDown {
     index: number,
     key: string,
     shiftKey: boolean,
-  }
-}
-export interface SquareBlur {
-  type: typeof ActionTypes.SQUARE_BLUR,
-  payload: {
-    index: number
   }
 }

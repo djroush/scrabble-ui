@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import GameInfoView from '../components/GameInfo';
+import GameInfoView from '../views/GameInfo';
 
 import { AppState } from '../store/State';
 

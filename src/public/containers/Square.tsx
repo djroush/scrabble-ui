@@ -2,10 +2,10 @@ import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
 import {AppAction} from '../actions/Actions'
-import SquareView from '../components/Square'
+import SquareView from '../views/Square'
 import {AppState, Modifier, Direction} from '../store/State'
 
-import {squareKeyDown, squareMouseDown, squareMouseUp, squareBlur} from '../actions/ActionCreator'
+import {squareKeyDown, squareMouseDown, squareMouseUp} from '../actions/ActionCreator'
 
 export type SquareProps = SquareOwnProps & SquareStateProps & SquareDispatchProps
 
@@ -22,7 +22,6 @@ type SquareDispatchProps = {
   onMouseUp: () => void;
   onMouseDown: () => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
-  onBlur: () => void;
 }; 
 
 const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
@@ -37,11 +36,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>, props: SquareOwnProps
   return {
     onMouseUp: () => dispatch(squareMouseUp()),
     onMouseDown: () => dispatch(squareMouseDown(props.index)),
-    onKeyDown: (event: React.KeyboardEvent) => dispatch(squareKeyDown(props.index, event.key, event.shiftKey)),
-    onBlur: (event: React.FocusEvent) =>  {
-     const index: number = parseInt(event.currentTarget.getAttribute('data-index'));
-     dispatch(squareBlur(index)) 
-    }
+    onKeyDown: (event: React.KeyboardEvent) => dispatch(squareKeyDown(props.index, event.key, event.shiftKey)),   
   }
 };
 

@@ -12,7 +12,7 @@ const SquareView = (props: SquareProps) => {
     }
   });
   
-  const {index, letter, direction, modifier, onMouseUp, onMouseDown, onKeyDown, onBlur} = props;
+  const {index, letter, direction, modifier, onMouseUp, onMouseDown, onKeyDown} = props;
   
   const hasTile = !!letter;
   const isBlank = hasTile && letter === " ";
@@ -23,12 +23,11 @@ const SquareView = (props: SquareProps) => {
   const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>  
    return (
     <td ref={tdElem}
-        tabIndex={index} 
+        tabIndex={index+100} 
         data-index={index} 
         onMouseUp={onMouseUp}
         onMouseDown={onMouseDown} 
         onKeyDown={onKeyDown}
-        onBlur={onBlur} 
         className={squareClass}>
       {innerSpan}
     </td>

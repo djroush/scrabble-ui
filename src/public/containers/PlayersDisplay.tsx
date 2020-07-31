@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 
 import { AppState, PlayerInfo } from '../store/State';
-import PlayersDisplayView from '../components/PlayersDisplay'
+import PlayersDisplayView from '../views/PlayersDisplay'
 
 
 export type PlayersDisplayProps = PlayersDisplayStateProps;

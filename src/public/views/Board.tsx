@@ -9,8 +9,6 @@ import {BoardProps} from '../containers/Board'
 const Board = (props: BoardProps) => {
   const WIDTH: number = 15;
   const HEIGHT: number = 15; 
-
-  //TODO: this part is wrong, redo it later
   const rowsElems: JSX.Element[] = [];
   if (!!props.squares) {
     for(let row = 0; row < HEIGHT; row++) {
@@ -23,7 +21,7 @@ const Board = (props: BoardProps) => {
       rowsElems.push(<tr key={row} data-row={row}>{rowElems}</tr>); 
     }
   }
-  
+    
   return (
   <div className="board"> 
     <table>

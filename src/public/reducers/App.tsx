@@ -2,12 +2,12 @@ import * as Actions from '../actions/Actions';
 import * as ActionTypes from '../actions/ActionTypes';
 
 import { AppState } from '../store/State';
-import {updateName, updateGameId, joinGame, createGame} from '../reducers/Game';
+import {inputKeyDown, updateName, updateGameId, joinGame, createGame} from '../reducers/Game';
 import {shuffleLetters, returnPlayedLetter, returnPlayedLetters} from '../reducers/Rack';
-import {takeRackLetter, exchangeLetters} from '../reducers/Exchange';
+import {returnExchangeLetterLast, returnExchangeLetters, takeRackLetter, exchangeLetters} from '../reducers/Exchange';
 
 import {getNewBoard} from '../reducers/Board';
-import {squareMouseDown, squareMouseUp, squareKeyDown, squareBlur} from '../reducers/Square';
+import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 
 const initialState : AppState = {
   game: {
@@ -48,6 +48,13 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
   let newState: AppState = {...state};
   switch (action.type) {
     //GameReducer
+    case ActionTypes.INPUT_KEYDOWN: {
+      const inputKeyDownAction: Actions.InputKeyDown = action;
+      const {key, isCreate} = inputKeyDownAction.payload;
+      inputKeyDown(newState, key, isCreate);
+      
+      break;
+    }
     case ActionTypes.UPDATE_NAME: {
       const updateNameAction: Actions.UpdateName = action;
       const {name} = updateNameAction.payload;
@@ -63,23 +70,29 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
 
     case ActionTypes.CREATE_GAME: {
       createGame(newState);
-      newState.board = getNewBoard();
       break;
     }
     case ActionTypes.JOIN_GAME: {
        joinGame(newState);
-       newState.board = getNewBoard();
       break;
     }
 
-    //RackReducer
+    //RackReducer    
     case ActionTypes.RETURN_PLAYED_LETTER: {
      newState = returnPlayedLetter(newState);
      break; 
     }
 
     case ActionTypes.RETURN_PLAYED_LETTERS: {
-     newState = returnPlayedLetters(newState);
+      const hasPlayedLetters: boolean  = newState.turn.tiles.length > 0;
+      const hasExchangeLetters: boolean =  newState.exchange.letters.length > 0;
+      if (hasPlayedLetters) {
+        newState = returnPlayedLetters(newState);
+      }
+      if (hasExchangeLetters) {
+        newState = returnExchangeLetters(newState);
+      }
+
      break; 
     }
     //PlayerActions    
@@ -100,8 +113,16 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     //ExchangeReducer
     case ActionTypes.EXCHANGE_KEYDOWN: {
       const exchangeKeyDownAction: Actions.ExchangeKeyDown = action
-      const {key} = exchangeKeyDownAction.payload;
-      newState = takeRackLetter(newState, key);
+      const {key, isShift} = exchangeKeyDownAction.payload;
+      if (key === 'Backspace') {
+        if (isShift) {
+          newState = returnExchangeLetters(newState);
+        } else {
+          newState = returnExchangeLetterLast(newState);
+        }
+      } else {
+        newState = takeRackLetter(newState, key);
+      }
       break;
     }
     //BoardReducer
@@ -126,12 +147,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
     }
-    case ActionTypes.SQUARE_BLUR: {
-      const squareBlurAction: Actions.SquareBlur = action;
-      const {index} = squareBlurAction.payload;
-      newState = squareBlur(newState, index);
-    }
-     
     default:
   }
   return newState;

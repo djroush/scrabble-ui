@@ -1,6 +1,21 @@
 import { AppState } from '../store/State';
 
-//FIXME: update this one integrated with the service
+import { getNewBoard } from '../reducers/Board'
+
+export const inputKeyDown = (appState: AppState, key: string, isCreate: boolean) => {
+  const {gameId, name} = {...appState.game.pending};
+  if (key === 'Enter') {
+    if (isCreate) {
+      return createGame(appState);
+    } else if (!!gameId && gameId.length > 0 && !!name && name.length > 0) {
+      return joinGame(appState);
+    }
+  }  
+  return appState;
+}
+
+
+
 export const updateName = (appState: AppState, newName: string) => {
   let {name, ...others} = {...appState.game.pending}
   name = newName.toUpperCase();
@@ -15,6 +30,7 @@ export const updateGameId = (appState: AppState, newGameId: string) => {
   return appState;
 }
 
+//FIXME: update this one integrated with the service
 export const joinGame = (appState: AppState) => {
   let {status, gameId, ...others} = {...appState.game}
   status = "ACTIVE";
@@ -28,6 +44,8 @@ export const joinGame = (appState: AppState) => {
   name = appState.game.pending.name;
   appState.players.info[0] = {name, ...others2}
   
+  appState.board = getNewBoard();
+  
   return appState;
 }
 
@@ -40,6 +58,8 @@ export const createGame = (appState: AppState) => {
   let {name, ...others2} =  {...appState.players.info[0]};
   name = appState.game.pending.name;
   appState.players.info[0] = {name, ...others2};
+  
+  appState.board = getNewBoard();
   
   return appState;
 }

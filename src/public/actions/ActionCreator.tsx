@@ -2,6 +2,13 @@ import * as Actions from './Actions'
 import * as ActionTypes from './ActionTypes'
 
 //Game
+export const inputKeyDown = (key: string, isCreate: boolean) : Actions.InputKeyDown => ({
+  type: ActionTypes.INPUT_KEYDOWN,
+  payload: {
+    key, isCreate
+  }  
+}); 
+
 export const updateName = (name: string) : Actions.UpdateName => ({
   type: ActionTypes.UPDATE_NAME,
   payload: {
@@ -25,23 +32,24 @@ export const joinGame = () : Actions.JoinGame => ({
 
 
 //Rack
-export const playRackLetter = (index: number, letter: string) : Actions.PlayRackLetter => ({
+export const playRackLetter = (squareIndex: number, letter: string, rackIndex?: number) : Actions.PlayRackLetter => ({
   type: ActionTypes.PLAY_RACK_LETTER,
   payload: {
-    index, letter
+    squareIndex, letter, rackIndex
   }
 });
-export const returnPlayedLetter = (index: number, letter: string) : Actions.ReturnPlayedLetter => ({
+export const returnPlayedLetter = (squareIndex: number, letter: string) : Actions.ReturnPlayedLetter => ({
   type: ActionTypes.RETURN_PLAYED_LETTER,
   payload: {
-    index,letter
+    squareIndex, letter
   }
 });
-export const returnExchangedLetter = (index: number, letter: string) : Actions.ReturnExchangedLetter => ({
+//Used for click and keypress, index is not required for the latter
+export const returnExchangedLetter = (letter: string, index?: number) : Actions.ReturnExchangedLetter => ({
   type: ActionTypes.RETURN_EXCHANGED_LETTER,
-  payload: { 
-    index, letter
-   }
+  payload: {
+    letter, index
+  }
 });
 export const returnPlayedLetters = () : Actions.ReturnPlayedLetters => ({
   type: ActionTypes.RETURN_PLAYED_LETTERS,
@@ -54,10 +62,10 @@ export const returnExchangedLetters = () : Actions.ReturnExchangedLetters => ({
 });
 
 //Exchange
-export const exchangeKeyDown = (key: string) : Actions.ExchangeKeyDown => ({
+export const exchangeKeyDown = (key: string, isShift: boolean) : Actions.ExchangeKeyDown => ({
   type: ActionTypes.EXCHANGE_KEYDOWN,
   payload: {
-    key
+    key, isShift
   }
 });
 
@@ -97,11 +105,5 @@ export const squareKeyDown = (index: number, key: string, shiftKey: boolean) : A
   type: ActionTypes.SQUARE_KEYDOWN,
   payload: {
     index, key, shiftKey
-  }
-});
-export const squareBlur = (index: number) : Actions.SquareBlur => ({
-  type: ActionTypes.SQUARE_BLUR,
-  payload: {
-    index
   }
 });

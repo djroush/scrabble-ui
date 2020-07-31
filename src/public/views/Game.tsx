@@ -3,8 +3,8 @@ import React from 'react';
 import '../css/Game.css';
 
 import {GameProps} from '../containers/Game';
-import GameActiveView from '../components/GameActiveView'
-import GamePendingView from '../containers/GamePendingView'
+import GameActiveView from '../views/GameActiveView'
+import GamePending from '../containers/GamePending'
 
 
 const Game = (props: GameProps) => {
@@ -21,7 +21,7 @@ const Game = (props: GameProps) => {
         return <GameActiveView/>;
       }
       case 'PENDING': {
-        return <GamePendingView/>;
+        return <GamePending/>;
       }
     }
   }

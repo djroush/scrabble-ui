@@ -19,9 +19,10 @@ const PlayerActions = (props: PlayerActionsProps) => {
         ? <button id="exchangeButton" type="button" onClick={clickExchange}>Exchange tiles</button>
         : <button id="exchangeButton" type="button" disabled >Exchange tiles</button>
       }
-      <button id="playButton" type="button" >
-        Play tiles
-      </button>
+      {hasPlayedLetters
+        ? <button id="playButton" type="button">Play tiles</button>
+        : <button id="playButton" type="button" disabled>Play tiles</button>
+      }
       <button id="passButton" type="button">
         Pass turn
       </button>

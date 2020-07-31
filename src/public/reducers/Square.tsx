@@ -49,25 +49,6 @@ export const squareMouseUp = (appState: AppState): AppState => {
   return appState;
 };
 
-//TODO: remove this method and put it on the board?
-export const squareBlur = (appState: AppState, index: number): AppState => {
-/*
-  let {activeIndex,focusedIndex,squares,...others} = {...appState.board}
-  if (activeIndex === focusedIndex && activeIndex === index) {
-    let {direction, ...others2} = {...squares[index]};
-    direction = null;
-    squares[index] = {direction, ...others2};
-
-    activeIndex = null;
-    focusedIndex = null;
-    appState.board = { activeIndex, focusedIndex, squares,...others}
- 
-  }
-*/
-  return appState;
-}
-
-
 export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
   const {board, rack, turn} = {...appState};
   

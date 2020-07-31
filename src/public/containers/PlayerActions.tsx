@@ -2,7 +2,7 @@ import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
 import {AppAction} from '../actions/Actions'
-import PlayerActionsView from '../components/PlayerActions'
+import PlayerActionsView from '../views/PlayerActions'
 
 import {shuffleLetters, returnPlayedLetters, returnExchangedLetters, exchangeLetters} from '../actions/ActionCreator'
 import { AppState } from '../store/State';

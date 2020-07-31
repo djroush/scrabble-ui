@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 
 import '../css/GamePending.css';
 
-import type {GamePendingProps} from '../containers/GamePendingView'
+import type {GamePendingProps} from '../containers/GamePending'
 
 const GamePendingView = (props: GamePendingProps) => {
   const gameIdInput = useRef(null);
@@ -14,23 +14,26 @@ const GamePendingView = (props: GamePendingProps) => {
       joinNameInput.current.value = props.name;
       createNameInput.current.value = props.name;
     }
+    if (props.gameId) {
+      gameIdInput.current.value = props.gameId;
+    }
   });
   
-  const {updateName, updateGameId, clickCreate, clickJoin} = props;
+  const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp} = props;
   return (
     <div className="gamePending">
        <div> 
          <h3>Create a Game</h3>
          <div className="gameInputs"> 
-           <span>Name: <input ref={createNameInput} type="text" onChange={updateName}></input></span>
+           <span>Name: <input ref={createNameInput} id="createName" type="text" onChange={updateName} onKeyUp={inputKeyUp}></input></span>
            <button type="submit" onClick={clickCreate}>Create Game</button>
          </div>
       </div>
       <div>
         <h3>Join a Game</h3>
         <div className="gameInputs">
-          <span>Name: <input ref={joinNameInput} type="text" onChange={updateName}></input></span>
-          <span>Game: <input ref={gameIdInput} type="text" onChange={updateGameId}></input></span>
+          <span>Name: <input ref={joinNameInput} id="joinName" type="text" onChange={updateName} onKeyUp={inputKeyUp}></input></span>
+          <span>Game: <input ref={gameIdInput} id="joinGame" type="text" onChange={updateGameId} onKeyUp={inputKeyUp}></input></span>
           <button type="submit" onClick={clickJoin}>Join Game</button>
         </div>
       </div>
