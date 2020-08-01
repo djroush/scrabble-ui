@@ -16,8 +16,8 @@ const SquareView = (props: SquareProps) => {
   
   const hasTile = !!letter;
   const isBlank = hasTile && letter === " ";
-  const dirClass: string = direction === null  ? "" : " " + direction;
-  const squareClass="square " + modifier + dirClass;
+  const dirClass: string = direction === null  || hasTile ? "" : " " + direction;
+  const squareClass= "square " + modifier + dirClass;
   const blank = isBlank ? " blank" : "";
   const tileClass= (hasTile ? "tile" : "") + blank;
   const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>  
