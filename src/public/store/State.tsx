@@ -4,6 +4,7 @@ export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2
 
 
 export type AppState = {
+  service: ServiceState
   game: GameState,
   rack: RackState,
   exchange: ExchangeState,
@@ -12,6 +13,21 @@ export type AppState = {
   board: BoardState,
   /* Game stuff */
 };
+export type ServiceState = {
+  createGame: RequestState
+  joinGame: RequestState,
+}
+
+export type RequestState = {
+  status: RequestStatus,
+  data: any,
+  error: any
+}
+
+export enum RequestStatus {UNKNOWN, REQUESTING, SUCCESSFUL, ERRORED}
+export enum GameStatus {UNKNOWN, PENDING, ABANDONED, ACTIVE, ENDGAME, ABORTED, FINISHED}
+
+//FIXME: Replace status with an enum
 export type GameState = {
   pending: {
     name : string
@@ -19,7 +35,7 @@ export type GameState = {
   }
   gameId: string,
   playerId: string,
-  status: string, 
+  status: GameStatus, 
 };
 export type RackState = {
   letters: string[],

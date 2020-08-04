@@ -2,6 +2,7 @@ import React from 'react';
 
 import '../css/Game.css';
 
+import {GameStatus} from '../store/State';
 import {GameProps} from '../containers/Game';
 import GameActiveView from '../views/GameActiveView'
 import GamePending from '../containers/GamePending'
@@ -15,12 +16,12 @@ const Game = (props: GameProps) => {
     </div>
   );
 
-  function getViewForState(state: string): JSX.Element {
-    switch(state) {
-      case 'ACTIVE': {
+  function getViewForState(status: GameStatus): JSX.Element {
+    switch(status) {
+      case GameStatus.ACTIVE: {
         return <GameActiveView/>;
       }
-      case 'PENDING': {
+      case GameStatus.UNKNOWN: {
         return <GamePending/>;
       }
     }

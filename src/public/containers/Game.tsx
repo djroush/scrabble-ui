@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 import GameView from '../views/Game';
 
-import { AppState } from '../store/State';
+import { AppState, GameStatus } from '../store/State';
 
 export type GameProps = GameStateProps;
 
 type GameStateProps = {
-  state: string;
+  state: GameStatus;
 }
 
 //todo: get rid of GameView and just 

@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 
 import '../css/GamePending.css';
 
+import Spinner from '../views/Spinner'
 import type {GamePendingProps} from '../containers/GamePending'
 
 const GamePendingView = (props: GamePendingProps) => {
@@ -19,7 +20,7 @@ const GamePendingView = (props: GamePendingProps) => {
     }
   });
   
-  const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp} = props;
+  const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp, isLoading} = props;
   return (
     <div className="gamePending">
        <div> 
@@ -37,6 +38,7 @@ const GamePendingView = (props: GamePendingProps) => {
           <button type="submit" onClick={clickJoin}>Join Game</button>
         </div>
       </div>
+      {isLoading ? <Spinner/> : ''}
     </div>
   );
 }

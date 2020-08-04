@@ -38,16 +38,8 @@ export const joinGame = (appState: AppState) => {
   appState.game = { 
     status, gameId, ...others
   }
-  
-  
-  let {name, ...others2} =  {...appState.players.info[0]};
-  name = appState.game.pending.name;
-  appState.players.info[0] = {name, ...others2}
-  
-  appState.board = getNewBoard();
-  
-  return appState;
 }
+  
 
 export const createGame = (appState: AppState) => {
   let {status, gameId, ...others} = {...appState.game}
@@ -62,4 +54,4 @@ export const createGame = (appState: AppState) => {
   appState.board = getNewBoard();
   
   return appState;
-}
+};

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {AppAction} from '../actions/Actions';
 
-import { AppState,  } from '../store/State';
+import { AppState, RequestStatus} from '../store/State';
 import GamePendingView from '../views/GamePendingView'
 import {inputKeyDown, updateName, updateGameId, createGame, joinGame} from '../actions/ActionCreator'
 
@@ -12,6 +12,8 @@ export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
 type GamePendingStateProps = {
   name: string,
   gameId : string,
+  isLoading: boolean,
+  isSuccessful: boolean
 }
 type GamePendingDispatchProps = {
   inputKeyUp: (event: React.KeyboardEvent) => void;
@@ -29,7 +31,10 @@ const GamePending = (props: GamePendingProps): JSX.Element => {
 const mapStateToProps = (appState : AppState): GamePendingStateProps => {
   return {
     gameId: appState.game.pending.gameId, 
-    name: appState.game.pending.name, 
+    name: appState.game.pending.name,
+    isLoading: appState.service.createGame.status === RequestStatus.REQUESTING, 
+    isSuccessful: appState.service.createGame.status === RequestStatus.SUCCESSFUL,
+      
   }
 }
 

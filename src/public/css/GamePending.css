@@ -1,7 +1,8 @@
 .gamePending {
   display: flex;  
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: start;
+  height: 100%
 }
 
 .gamePending h3 {
