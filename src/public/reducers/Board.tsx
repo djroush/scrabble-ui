@@ -1,18 +1,4 @@
-import { Modifier, Direction, SquareState, BoardState, AppState } from '../store/State';
-
-//TODO: remove this method and put it on the board?
-//export const boardBlur = (appState: AppState): AppState => {
-//  let {activeIndex,focusedIndex,squares,...others} = {...appState.board}
-//  let {direction, ...others2} = {...squares[activeIndex]};
-//  direction = null;
-//  squares[activeIndex] = {direction, ...others2};
-//
-//  activeIndex = null;
-//  focusedIndex = null;
-//  appState.board = { activeIndex, focusedIndex, squares,...others}
-//
-//  return appState;
-//}
+import { Modifier, Direction, SquareState, BoardState } from '../store/State';
 
 export const getNewBoard = (): BoardState => {
   const activeIndex: number = null;

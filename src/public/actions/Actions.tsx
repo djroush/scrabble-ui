@@ -6,8 +6,8 @@ import {AsyncAction} from '../actions/AsyncActions'
 export type AppAction = SyncAction | AsyncAction
 
 //UI interactions triggered by Keyboard, Mouse actions
-export type SyncAction = GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
-export type GamePendingAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
+export type SyncAction = GameUnknownAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
+export type GameUnknownAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
 export type RackAction =  PlayRackLetter | ReturnPlayedLetter | ReturnPlayedLetters | ReturnExchangedLetter | ReturnExchangedLetters;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
 export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn; 

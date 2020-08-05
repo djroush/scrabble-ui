@@ -42,16 +42,13 @@ const initialState : AppState = {
     activePlayerIndex: 0
   },
   service: {
-    createGame: {
+    gamePending: {
       status: RequestStatus.UNKNOWN,
       data: null,
-      error: null,
+      error: {
+        message: null
+      },
     },
-    joinGame: {
-      status: RequestStatus.UNKNOWN,
-      data: null,
-      error: null,
-    }
   },
 
 };

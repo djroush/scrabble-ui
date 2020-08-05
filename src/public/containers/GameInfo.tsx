@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import GameInfoView from '../views/GameInfo';
 
-import { AppState } from '../store/State';
+import { AppState, GameStatus } from '../store/State';
 
 export type GameInfoProps = GameInfoStateProps;
 
@@ -17,10 +17,27 @@ function Game(props: GameInfoProps) {
 };
 
 const mapStateToProps = (appState : AppState): GameInfoStateProps => {
+  const status = getStatusName(appState.game.status)
   return {
     id: appState.game.gameId,
-    status: appState.game.status  
+    status: status  
+  };
+  
+  function getStatusName(status: GameStatus): string {
+    switch(status) {
+      case GameStatus.UNKNOWN: {
+        return 'UNKNOWN';
+      }
+      case GameStatus.PENDING: {
+        return 'PENDING';
+      }
+      case GameStatus.ACTIVE: {
+        return 'ACTIVE';
+      }
+    }
+    return  "????";
   }
+
 }
 
 export default connect(

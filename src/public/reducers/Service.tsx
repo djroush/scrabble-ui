@@ -1,23 +1,26 @@
-import { AppState, RequestStatus, GameStatus } from '../store/State';
+import { AppState, RequestStatus, GameStatus, ErrorState } from '../store/State';
 import {GameResponseSuccess} from '../store/Service'
+import {getNewBoard} from '../reducers/Board'
 
 export const createGameRequest = (appState: AppState) => {
-  let {status, data, error, ...others} = {...appState.service.createGame};
+  let {status, data, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.REQUESTING;
   data = null;
   error = null;
-  appState.service.createGame = {status, data, error, ...others};  
+  appState.service.gamePending = {status, data, error, ...others};  
   return appState;
 }
 
 export const createGameSuccess = (appState: AppState, data1: GameResponseSuccess) => {
-  let {status, data, error, ...others} = {...appState.service.createGame};
+  let {status, data, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.SUCCESSFUL;
   data = data1;
   error = null;
-  appState.service.createGame = {status, data, error, ...others};
+  
+  appState.board = getNewBoard();
+  appState.service.gamePending = {status, data, error, ...others};
 
-
+  
   appState.players.info = data1.players.map(player => {
     const {name, score} = player
     return {name, score};
@@ -31,10 +34,11 @@ export const createGameSuccess = (appState: AppState, data1: GameResponseSuccess
   return appState;
 }
 
-export const createGameFailure = (appState: AppState, error1: unknown) => {
-  let {status, data, error, ...others} = {...appState.service.createGame};
+export const createGameFailure = (appState: AppState, error1: ErrorState) => {
+  let {status, data, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.ERRORED;
+  data = null;
   error = error1;
-  appState.service.createGame = {status, data, error, ...others};  
+  appState.service.gamePending = {status, data, error, ...others};  
   return appState;
 }

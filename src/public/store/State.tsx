@@ -14,14 +14,17 @@ export type AppState = {
   /* Game stuff */
 };
 export type ServiceState = {
-  createGame: RequestState
-  joinGame: RequestState,
+  gamePending: RequestState
 }
 
 export type RequestState = {
   status: RequestStatus,
   data: any,
-  error: any
+  error: ErrorState,
+}
+
+export type ErrorState = {
+  message: string
 }
 
 export enum RequestStatus {UNKNOWN, REQUESTING, SUCCESSFUL, ERRORED}

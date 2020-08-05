@@ -2,10 +2,12 @@ import React, {useEffect, useRef} from 'react';
 
 import '../css/GamePending.css';
 
+import ErrorMessageView from '../views/ErrorMessage'
 import Spinner from '../views/Spinner'
-import type {GamePendingProps} from '../containers/GamePending'
 
-const GamePendingView = (props: GamePendingProps) => {
+import type {GameUnknownProps} from '../containers/GameUnknown'
+
+const GamePendingView = (props: GameUnknownProps) => {
   const gameIdInput = useRef(null);
   const joinNameInput = useRef(null);
   const createNameInput = useRef(null);
@@ -20,7 +22,7 @@ const GamePendingView = (props: GamePendingProps) => {
     }
   });
   
-  const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp, isLoading} = props;
+  const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp, isLoading, isError, errorMessage} = props;
   return (
     <div className="gamePending">
        <div> 
@@ -39,8 +41,10 @@ const GamePendingView = (props: GamePendingProps) => {
         </div>
       </div>
       {isLoading ? <Spinner/> : ''}
+      {isError ? <ErrorMessageView errorMessage={errorMessage}/> : ''}
     </div>
   );
 }
+//TODO: make errorMessage it's own view?
   
 export default GamePendingView;

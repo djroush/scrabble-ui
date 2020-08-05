@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import GameView from '../views/Game';
+import GameView from '../views/GameView';
 
 import { AppState, GameStatus } from '../store/State';
 
 export type GameProps = GameStateProps;
 
 type GameStateProps = {
-  state: GameStatus;
+  status: GameStatus;
 }
 
 //todo: get rid of GameView and just 
@@ -18,7 +18,7 @@ function Game(props: GameProps) {
 
 const mapStateToProps = (appState : AppState): GameStateProps => {
   return {
-    state: appState.game.status,  
+    status: appState.game.status,  
   }
 }
 

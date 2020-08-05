@@ -1,4 +1,4 @@
-import { AppState } from '../store/State';
+import { AppState, GameStatus } from '../store/State';
 
 import { getNewBoard } from '../reducers/Board'
 
@@ -13,8 +13,6 @@ export const inputKeyDown = (appState: AppState, key: string, isCreate: boolean)
   }  
   return appState;
 }
-
-
 
 export const updateName = (appState: AppState, newName: string) => {
   let {name, ...others} = {...appState.game.pending}
@@ -33,7 +31,7 @@ export const updateGameId = (appState: AppState, newGameId: string) => {
 //FIXME: update this one integrated with the service
 export const joinGame = (appState: AppState) => {
   let {status, gameId, ...others} = {...appState.game}
-  status = "ACTIVE";
+  status = GameStatus.ACTIVE;
   gameId = appState.game.pending.gameId;
   appState.game = { 
     status, gameId, ...others
@@ -43,7 +41,7 @@ export const joinGame = (appState: AppState) => {
 
 export const createGame = (appState: AppState) => {
   let {status, gameId, ...others} = {...appState.game}
-  status = "ACTIVE";
+  status = GameStatus.ACTIVE;
   gameId = "GAME1"; 
   appState.game = {status, gameId, ...others}; 
   

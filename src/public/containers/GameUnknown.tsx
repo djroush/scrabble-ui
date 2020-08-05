@@ -4,18 +4,20 @@ import { connect } from 'react-redux';
 import {AppAction} from '../actions/Actions';
 
 import { AppState, RequestStatus} from '../store/State';
-import GamePendingView from '../views/GamePendingView'
+import GameUnknownView from '../views/GameUnknownView'
 import {inputKeyDown, updateName, updateGameId, createGame, joinGame} from '../actions/ActionCreator'
 
-export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
+export type GameUnknownProps = GameUnknownStateProps & GameUnknownDispatchProps;
 
-type GamePendingStateProps = {
+type GameUnknownStateProps = {
   name: string,
   gameId : string,
+  errorMessage: string,
   isLoading: boolean,
-  isSuccessful: boolean
+  isSuccessful: boolean,
+  isError: boolean,
 }
-type GamePendingDispatchProps = {
+type GameUnknownDispatchProps = {
   inputKeyUp: (event: React.KeyboardEvent) => void;
   updateName: (event: React.ChangeEvent) => void,
   updateGameId: (event: React.ChangeEvent) => void,
@@ -23,22 +25,23 @@ type GamePendingDispatchProps = {
   clickJoin: () => void;
 }; 
 
-const GamePending = (props: GamePendingProps): JSX.Element => {
-  return <GamePendingView {...props}/>
+const GameUnknown = (props: GameUnknownProps): JSX.Element => {
+  return <GameUnknownView {...props}/>
 }
 
 
-const mapStateToProps = (appState : AppState): GamePendingStateProps => {
+const mapStateToProps = (appState : AppState): GameUnknownStateProps => {
   return {
     gameId: appState.game.pending.gameId, 
     name: appState.game.pending.name,
-    isLoading: appState.service.createGame.status === RequestStatus.REQUESTING, 
-    isSuccessful: appState.service.createGame.status === RequestStatus.SUCCESSFUL,
-      
+    errorMessage: appState.service.gamePending.error &&  appState.service.gamePending.error.message || null,
+    isLoading: appState.service.gamePending.status === RequestStatus.REQUESTING, 
+    isSuccessful: appState.service.gamePending.status === RequestStatus.SUCCESSFUL,
+    isError: appState.service.gamePending.status === RequestStatus.ERRORED,
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>): GamePendingDispatchProps => {
+const mapDispatchToProps = (dispatch: Dispatch<AppAction>): GameUnknownDispatchProps => {
   //The Keydown might need to be keyup if last letter goes missing
   return {
     inputKeyUp: (event: React.KeyboardEvent<Element>) => {
@@ -55,4 +58,4 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>): GamePendingDispatchP
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(GamePending)
+)(GameUnknown)
