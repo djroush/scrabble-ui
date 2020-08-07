@@ -6,8 +6,9 @@ import {AsyncAction} from '../actions/AsyncActions'
 export type AppAction = SyncAction | AsyncAction
 
 //UI interactions triggered by Keyboard, Mouse actions
-export type SyncAction = GameUnknownAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
+export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
 export type GameUnknownAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
+export type GamePendingAction = StartGame;
 export type RackAction =  PlayRackLetter | ReturnPlayedLetter | ReturnPlayedLetters | ReturnExchangedLetter | ReturnExchangedLetters;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
 export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn; 
@@ -51,6 +52,12 @@ export interface JoinGame {
   action: typeof ActionNames.JOIN_GAME
   payload: {}
 }
+export interface StartGame {
+  type: Type,
+  action: typeof ActionNames.START_GAME
+  payload: {}
+}
+
 
 //Rack
 export interface PlayRackLetter {

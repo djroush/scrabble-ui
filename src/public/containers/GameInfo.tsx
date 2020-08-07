@@ -19,7 +19,7 @@ function Game(props: GameInfoProps) {
 const mapStateToProps = (appState : AppState): GameInfoStateProps => {
   const status = getStatusName(appState.game.status)
   return {
-    id: appState.game.gameId,
+    id: appState.game.id,
     status: status  
   };
   

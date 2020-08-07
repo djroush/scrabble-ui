@@ -6,6 +6,7 @@ import {GameStatus} from '../store/State';
 import {GameProps} from '../containers/Game';
 import GameActiveView from '../views/GameActiveView'
 import GameUnknown from '../containers/GameUnknown'
+import GamePending from '../containers/GamePending'
 
 
 const GameView = (props: GameProps) => {
@@ -21,7 +22,9 @@ const GameView = (props: GameProps) => {
       case GameStatus.UNKNOWN: {
         return <GameUnknown/>;
       }
-      //TODO: add a pending view
+      case GameStatus.PENDING: {
+        return <GamePending/>;
+      }
       case GameStatus.ACTIVE: {
         return <GameActiveView/>;
       }

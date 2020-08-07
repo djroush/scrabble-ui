@@ -3,6 +3,7 @@ export const UPDATE_NAME = "UPDATE_NAME"
 export const UPDATE_GAME_ID = "UPDATE_GAME_ID"
 export const JOIN_GAME = "JOIN_GAME"
 export const CREATE_GAME = "CREATE_GAME"
+export const START_GAME = "START_GAME"
 export const INPUT_KEYDOWN = "INPUT_KEYDOWN"
 
 //Rack stuff

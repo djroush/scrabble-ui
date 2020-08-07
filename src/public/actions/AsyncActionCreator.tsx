@@ -2,42 +2,43 @@ import * as AsyncActionTypes from '../actions/AsyncActionNames';
 import * as AsyncActions from '../actions/AsyncActions';
 import {Type} from '../actions/Actions';
 import { GameResponseSuccess } from 'store/Service';
+import { ErrorState } from 'store/State';
 
-export const createGameRequest = () : AsyncActions.CreateGameRequest => ({
+export const gameUnknownRequest = () : AsyncActions.GameUnknownRequest => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_CREATE_GAME_REQUEST,
+  action: AsyncActionTypes.ASYNC_GAME_UNKNOWN_REQUEST,
   payload: {}
 });
-export const createGameSuccess = (data: GameResponseSuccess) : AsyncActions.CreateGameSuccess => ({
+export const gameUnknownSuccess = (data: GameResponseSuccess) : AsyncActions.GameUnknownSuccess => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_CREATE_GAME_SUCCESS,
+  action: AsyncActionTypes.ASYNC_GAME_UNKNOWN_SUCCESS,
   payload: {
     data
   }
 });
-export const createGameFailure = (error: unknown) : AsyncActions.CreateGameFailure => ({
+export const gameUnknownFailure = (error: ErrorState) : AsyncActions.GameUnknownFailure => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_CREATE_GAME_FAILURE,
+  action: AsyncActionTypes.ASYNC_GAME_UNKNOWN_FAILURE,
   payload: {
     error
   }
 });
 
-export const joinGameRequest = () : AsyncActions.JoinGameRequest => ({
+export const gamePendingRequest = () : AsyncActions.GamePendingRequest => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_JOIN_GAME_REQUEST,
+  action: AsyncActionTypes.ASYNC_GAME_PENDING_REQUEST,
   payload: {}
 });
-export const joinGameSuccess = (data: unknown) : AsyncActions.JoinGameSuccess => ({
+export const gamePendingSuccess = (data: GameResponseSuccess) : AsyncActions.GamePendingSuccess => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_JOIN_GAME_SUCCESS,
+  action: AsyncActionTypes.ASYNC_GAME_PENDING_SUCCESS,
   payload: {
     data
   }
 });
-export const joinGameFailure = (error: unknown) : AsyncActions.JoinGameFailure => ({
+export const gamePendingFailure = (error: ErrorState) : AsyncActions.GamePendingFailure => ({
   type: Type.SYNC,
-  action: AsyncActionTypes.ASYNC_JOIN_GAME_FAILURE,
+  action: AsyncActionTypes.ASYNC_GAME_PENDING_FAILURE,
   payload: {
     error
   }

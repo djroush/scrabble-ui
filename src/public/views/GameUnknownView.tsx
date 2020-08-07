@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 
-import '../css/GamePending.css';
+import '../css/GameUnknown.css';
 
 import ErrorMessageView from '../views/ErrorMessage'
 import Spinner from '../views/Spinner'
@@ -24,7 +24,7 @@ const GamePendingView = (props: GameUnknownProps) => {
   
   const {updateName, updateGameId, clickCreate, clickJoin, inputKeyUp, isLoading, isError, errorMessage} = props;
   return (
-    <div className="gamePending">
+    <div className="gameUnknown">
        <div> 
          <h3>Create a Game</h3>
          <div className="gameInputs"> 
@@ -45,6 +45,5 @@ const GamePendingView = (props: GameUnknownProps) => {
     </div>
   );
 }
-//TODO: make errorMessage it's own view?
   
 export default GamePendingView;

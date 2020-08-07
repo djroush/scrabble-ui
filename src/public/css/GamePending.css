@@ -1,30 +1,11 @@
-.gamePending {
-  display: flex;  
-  flex-direction: column;
-  justify-content: start;
-  height: 100%
+.gamePending ul {
+  list-style: none;
+  list-style-type: none;
+  
+  margin: 1% auto;
+  padding: 1% 2%;
 }
 
-.gamePending h3 {
-  margin-top: 5vh;
-}
-
-.gameInputs {
-  flex-direction: row;
-  justify-content: space-between;
-  float: left;
-}
-
-.gameInputs span {
-  display: inline-flex;
-  margin: 0vh 1.5vw;
-}
-.gameInputs input {
-  display:inline-flex;
-  margin-left: 0.5vw;
-    
-}
-.gameInputs button {
-  vertical-align:middle; 
-  display:inline-flex;  
+.gamePending div {
+  margin: 1% 
 }

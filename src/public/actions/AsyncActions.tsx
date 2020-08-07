@@ -4,50 +4,50 @@ import { GameResponseSuccess } from 'store/Service';
 import {ErrorState} from '../store/State' 
 
 //AjaxActions
-export type AsyncAction = CreateGameAction | JoinGameAction;
-export type CreateGameAction = CreateGameRequest | CreateGameSuccess | CreateGameFailure;
-export type JoinGameAction = JoinGameRequest | JoinGameSuccess | JoinGameFailure;
+export type AsyncAction = GameUnknownAction | GamePendingAction;
+export type GameUnknownAction = GameUnknownRequest | GameUnknownSuccess | GameUnknownFailure;
+export type GamePendingAction = GamePendingRequest | GamePendingSuccess | GamePendingFailure;
 
-export interface CreateGameRequest {
+export interface GameUnknownRequest {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_CREATE_GAME_REQUEST,
+  action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_REQUEST,
   payload: {}
 }
 
-export interface CreateGameSuccess {
+export interface GameUnknownSuccess {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_CREATE_GAME_SUCCESS
+  action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_SUCCESS
   payload: {
     data: GameResponseSuccess
   }
 }
 
-export interface CreateGameFailure {
+export interface GameUnknownFailure {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_CREATE_GAME_FAILURE
+  action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_FAILURE
   payload: {
     error: ErrorState
   }
 }
 
-export interface JoinGameRequest {
+export interface GamePendingRequest {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_JOIN_GAME_REQUEST
+  action: typeof AsyncActionNames.ASYNC_GAME_PENDING_REQUEST
   payload: {}
 }
 
-export interface JoinGameSuccess {
+export interface GamePendingSuccess {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_JOIN_GAME_SUCCESS
+  action: typeof AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS
   payload: {
-    data: unknown
+    data: GameResponseSuccess
   }
 }
 
-export interface JoinGameFailure {
+export interface GamePendingFailure {
   type: Type,
-  action: typeof AsyncActionNames.ASYNC_JOIN_GAME_FAILURE
+  action: typeof AsyncActionNames.ASYNC_GAME_PENDING_FAILURE
   payload: {
-    error: unknown
+    error: ErrorState
   }
 }

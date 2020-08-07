@@ -14,7 +14,8 @@ export type AppState = {
   /* Game stuff */
 };
 export type ServiceState = {
-  gamePending: RequestState
+  gameUnknown: RequestState,
+  gamePending: RequestState,
 }
 
 export type RequestState = {
@@ -33,10 +34,10 @@ export enum GameStatus {UNKNOWN, PENDING, ABANDONED, ACTIVE, ENDGAME, ABORTED, F
 //FIXME: Replace status with an enum
 export type GameState = {
   pending: {
-    name : string
+    name : string,
     gameId: string,
   }
-  gameId: string,
+  id: string,
   playerId: string,
   status: GameStatus, 
 };
@@ -56,6 +57,7 @@ export type PlayersState = {
   activePlayerIndex: number
 };
 export type PlayerInfo = {
+  id: string,
   name: string,
   score: number,
 };

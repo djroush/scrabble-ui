@@ -1,18 +1,4 @@
-import { AppState, GameStatus } from '../store/State';
-
-import { getNewBoard } from '../reducers/Board'
-
-export const inputKeyDown = (appState: AppState, key: string, isCreate: boolean) => {
-  const {gameId, name} = {...appState.game.pending};
-  if (key === 'Enter') {
-    if (isCreate) {
-      return createGame(appState);
-    } else if (!!gameId && gameId.length > 0 && !!name && name.length > 0) {
-      return joinGame(appState);
-    }
-  }  
-  return appState;
-}
+import { AppState } from '../store/State';
 
 export const updateName = (appState: AppState, newName: string) => {
   let {name, ...others} = {...appState.game.pending}
@@ -27,29 +13,3 @@ export const updateGameId = (appState: AppState, newGameId: string) => {
   appState.game.pending = {gameId, ...others};
   return appState;
 }
-
-//FIXME: update this one integrated with the service
-export const joinGame = (appState: AppState) => {
-  let {status, gameId, ...others} = {...appState.game}
-  status = GameStatus.ACTIVE;
-  gameId = appState.game.pending.gameId;
-  appState.game = { 
-    status, gameId, ...others
-  }
-}
-  
-
-export const createGame = (appState: AppState) => {
-  let {status, gameId, ...others} = {...appState.game}
-  status = GameStatus.ACTIVE;
-  gameId = "GAME1"; 
-  appState.game = {status, gameId, ...others}; 
-  
-  let {name, ...others2} =  {...appState.players.info[0]};
-  name = appState.game.pending.name;
-  appState.players.info[0] = {name, ...others2};
-  
-  appState.board = getNewBoard();
-  
-  return appState;
-};

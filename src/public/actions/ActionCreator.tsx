@@ -3,7 +3,7 @@ import * as ActionNames from './ActionNames'
 
 //Game
 export const inputKeyDown = (key: string, isCreate: boolean) : Actions.InputKeyDown => ({
-  type: Actions.Type.SYNC,
+  type: Actions.Type.ASYNC,
   action: ActionNames.INPUT_KEYDOWN,
   payload: {
     key, isCreate
@@ -32,6 +32,11 @@ export const createGame = () : Actions.CreateGame => ({
 export const joinGame = () : Actions.JoinGame => ({
   type: Actions.Type.ASYNC,
   action: ActionNames.JOIN_GAME,
+  payload: {}
+});
+export const startGame = () : Actions.StartGame => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.START_GAME,
   payload: {}
 });
 

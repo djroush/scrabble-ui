@@ -4,17 +4,17 @@ import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionNames from '../actions/AsyncActionNames';
 
 import { AppState, RequestStatus, GameStatus } from '../store/State';
-import {inputKeyDown, updateName, updateGameId, joinGame, createGame} from '../reducers/Game';
+import {updateName, updateGameId} from '../reducers/Game';
 import {shuffleLetters, returnPlayedLetter, returnPlayedLetters} from '../reducers/Rack';
 import {returnExchangeLetterLast, returnExchangeLetters, takeRackLetter, exchangeLetters} from '../reducers/Exchange';
 
 import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
-import {createGameRequest, createGameSuccess, createGameFailure} from '../reducers/Service'
+import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure} from '../reducers/Service'
 
 const initialState : AppState = {
   game: {
-    gameId:null,
+    id:null,
     playerId:null,
     status: GameStatus.UNKNOWN,
     pending: {
@@ -23,7 +23,7 @@ const initialState : AppState = {
     }
   },
   rack: {
-    letters: ['T','E','S','T','I','N','G'], 
+    letters: [], 
   },
   exchange: {
     letters: [], 
@@ -42,13 +42,17 @@ const initialState : AppState = {
     activePlayerIndex: 0
   },
   service: {
+    gameUnknown: {
+      status: RequestStatus.UNKNOWN,
+      data: null,
+      error: null,
+    },
     gamePending: {
       status: RequestStatus.UNKNOWN,
       data: null,
-      error: {
-        message: null
-      },
+      error: null,
     },
+
   },
 
 };
@@ -56,13 +60,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
   let newState: AppState = {...state};
   switch (action.action) {
     //GameReducer
-    case ActionNames.INPUT_KEYDOWN: {
-      const inputKeyDownAction: Actions.InputKeyDown = action;
-      const {key, isCreate} = inputKeyDownAction.payload;
-      inputKeyDown(newState, key, isCreate);
-      
-      break;
-    }
     case ActionNames.UPDATE_NAME: {
       const updateNameAction: Actions.UpdateName = action;
       const {name} = updateNameAction.payload;
@@ -73,15 +70,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       const updateGameIdAction: Actions.UpdateGameId = action;
       const {gameId} = updateGameIdAction.payload;
       updateGameId(newState, gameId);
-      break;
-    }
-
-    case ActionNames.CREATE_GAME: {
-      createGame(newState);
-      break;
-    }
-    case ActionNames.JOIN_GAME: {
-       joinGame(newState);
       break;
     }
 
@@ -155,20 +143,36 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
     }
-    case AsyncActionNames.ASYNC_CREATE_GAME_REQUEST: {
-     newState = createGameRequest(newState);
+    case AsyncActionNames.ASYNC_GAME_UNKNOWN_REQUEST: {
+     newState = gameUnknownRequest(newState);
      break; 
     }
-    case AsyncActionNames.ASYNC_CREATE_GAME_SUCCESS: {
-     const asyncCreateGameSuccessAction: AsyncActions.CreateGameSuccess = action;
+    case AsyncActionNames.ASYNC_GAME_UNKNOWN_SUCCESS: {
+     const asyncCreateGameSuccessAction: AsyncActions.GameUnknownSuccess = action;
      const {data} = asyncCreateGameSuccessAction.payload
-     newState = createGameSuccess(newState, data);
+     newState = gameUnknownSuccess(newState, data);
      break; 
     }
-    case AsyncActionNames.ASYNC_CREATE_GAME_FAILURE: {
-     const asyncCreateGameFailureAction: AsyncActions.CreateGameFailure = action;
+    case AsyncActionNames.ASYNC_GAME_UNKNOWN_FAILURE: {
+     const asyncCreateGameFailureAction: AsyncActions.GameUnknownFailure = action;
      const {error} = asyncCreateGameFailureAction.payload;
-     newState = createGameFailure(newState, error);
+     newState = gameUnknownFailure(newState, error);
+     break; 
+    }
+    case AsyncActionNames.ASYNC_GAME_PENDING_REQUEST: {
+     newState = gamePendingRequest(newState);
+     break; 
+    }
+    case AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS: {
+     const asyncGamePendingSuccessAction: AsyncActions.GamePendingSuccess = action;
+     const {data} = asyncGamePendingSuccessAction.payload
+     newState = gamePendingSuccess(newState, data);
+     break; 
+    }
+    case AsyncActionNames.ASYNC_GAME_PENDING_FAILURE: {
+     const asyncGamePendingFailureAction: AsyncActions.GamePendingFailure = action;
+     const {error} = asyncGamePendingFailureAction.payload;
+     newState = gamePendingFailure(newState, error);
      break; 
     }
 
