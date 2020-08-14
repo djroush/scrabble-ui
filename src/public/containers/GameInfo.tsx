@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import GameInfoView from '../views/GameInfo';
 
-import { AppState, GameStatus } from '../store/State';
+import { AppState } from '../store/State';
+import * as GameStatusHelper from '../helper/GameStatusHelper'
 
 export type GameInfoProps = GameInfoStateProps;
 
@@ -17,13 +18,13 @@ function Game(props: GameInfoProps) {
 };
 
 const mapStateToProps = (appState : AppState): GameInfoStateProps => {
-  const status = getStatusName(appState.game.status)
+  const status = GameStatusHelper.getStatusName(appState.game.status)
   return {
     id: appState.game.id,
     status: status  
   };
   
-  function getStatusName(status: GameStatus): string {
+/*  function getStatusName(status: GameStatus): string {
     switch(status) {
       case GameStatus.UNKNOWN: {
         return 'UNKNOWN';
@@ -37,7 +38,7 @@ const mapStateToProps = (appState : AppState): GameInfoStateProps => {
     }
     return  "????";
   }
-
+*/
 }
 
 export default connect(

@@ -39,6 +39,11 @@ export const startGame = () : Actions.StartGame => ({
   action: ActionNames.START_GAME,
   payload: {}
 });
+export const awaitUpdate = () : Actions.AwaitPlayers => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.AWAIT_PLAYERS,
+  payload: {}
+});
 
 
 //Rack

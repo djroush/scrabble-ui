@@ -29,11 +29,11 @@ export const gamePendingRequest = () : AsyncActions.GamePendingRequest => ({
   action: AsyncActionTypes.ASYNC_GAME_PENDING_REQUEST,
   payload: {}
 });
-export const gamePendingSuccess = (data: GameResponseSuccess) : AsyncActions.GamePendingSuccess => ({
+export const gamePendingSuccess = (data: GameResponseSuccess, eTag?: string) : AsyncActions.GamePendingSuccess => ({
   type: Type.SYNC,
   action: AsyncActionTypes.ASYNC_GAME_PENDING_SUCCESS,
   payload: {
-    data
+    data, eTag
   }
 });
 export const gamePendingFailure = (error: ErrorState) : AsyncActions.GamePendingFailure => ({

@@ -33,6 +33,7 @@ export enum GameStatus {UNKNOWN, PENDING, ABANDONED, ACTIVE, ENDGAME, ABORTED, F
 
 //FIXME: Replace status with an enum
 export type GameState = {
+  version: string,
   pending: {
     name : string,
     gameId: string,

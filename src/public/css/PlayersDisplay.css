@@ -18,6 +18,7 @@
   padding: 1% 2%;
 }
 
+
 .player.active {
   border: 2px dotted black;
 }

@@ -14,6 +14,7 @@ import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingR
 
 const initialState : AppState = {
   game: {
+    version: null,
     id:null,
     playerId:null,
     status: GameStatus.UNKNOWN,
@@ -143,6 +144,8 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
     }
+    
+    
     case AsyncActionNames.ASYNC_GAME_UNKNOWN_REQUEST: {
      newState = gameUnknownRequest(newState);
      break; 
@@ -165,8 +168,8 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     }
     case AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS: {
      const asyncGamePendingSuccessAction: AsyncActions.GamePendingSuccess = action;
-     const {data} = asyncGamePendingSuccessAction.payload
-     newState = gamePendingSuccess(newState, data);
+     const {data, eTag} = asyncGamePendingSuccessAction.payload
+     newState = gamePendingSuccess(newState, data, eTag);
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_PENDING_FAILURE: {

@@ -1,5 +1,7 @@
 export type GameResponseSuccess = {
   id: string,
+  playerId: string,
+  version: string,
   state: string,
   players: Player[],
 };

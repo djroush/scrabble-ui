@@ -4,21 +4,22 @@ import { connect } from 'react-redux';
 import GamePendingView from '../views/GamePendingView';
 
 import { AppState, RequestStatus, PlayerInfo } from '../store/State';
-import {startGame} from '../actions/ActionCreator'
+import {startGame, awaitUpdate} from '../actions/ActionCreator'
 import { AppAction } from 'actions/Actions';
 
 export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
 
 type GamePendingStateProps = {
-  hasMultiplePlayers: boolean
-  playersInfo: PlayerInfo[]
+  hasMultiplePlayers: boolean,
+  playersInfo: PlayerInfo[],
   errorMessage: string,
   isLoading: boolean,
   isSuccessful: boolean,
   isError: boolean,
 }
 type GamePendingDispatchProps = {
-  clickStart: () => void
+  clickStart: () => void,
+  awaitPlayers: () => void
 }
 
 function GamePending(props: GamePendingProps) {
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>): GamePendingDispatchP
   //The Keydown might need to be keyup if last letter goes missing
   return {
     clickStart: () => dispatch(startGame()),
+    awaitPlayers: () => dispatch(awaitUpdate()),
   }
 };
 

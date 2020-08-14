@@ -8,7 +8,7 @@ export type AppAction = SyncAction | AsyncAction
 //UI interactions triggered by Keyboard, Mouse actions
 export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
 export type GameUnknownAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
-export type GamePendingAction = StartGame;
+export type GamePendingAction = StartGame | AwaitPlayers;
 export type RackAction =  PlayRackLetter | ReturnPlayedLetter | ReturnPlayedLetters | ReturnExchangedLetter | ReturnExchangedLetters;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
 export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn; 
@@ -55,6 +55,11 @@ export interface JoinGame {
 export interface StartGame {
   type: Type,
   action: typeof ActionNames.START_GAME
+  payload: {}
+}
+export interface AwaitPlayers {
+  type: Type,
+  action: typeof ActionNames.AWAIT_PLAYERS
   payload: {}
 }
 

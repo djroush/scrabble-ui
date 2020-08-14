@@ -40,7 +40,8 @@ export interface GamePendingSuccess {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS
   payload: {
-    data: GameResponseSuccess
+    data: GameResponseSuccess,
+    eTag?: string
   }
 }
 

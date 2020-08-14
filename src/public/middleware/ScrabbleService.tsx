@@ -3,6 +3,7 @@ import {Store} from 'redux'
 import { AppAction, Type } from '../actions/Actions'; 
 import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
+import * as ActionCreator from '../actions/ActionCreator';
 import {AppState, RequestStatus} from '../store/State';
 
 
@@ -20,8 +21,18 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       }).then((response) => {
         return response.json();
       }).then((data) => {
+        //TODO: data.status == null
         if (data.status >= 400) {
           throw new Error(data.message)
+        }
+        if (data.status == 304) {
+          
+        }
+        if (data.state === 'PENDING' || data.state === 'ACTIVE') {
+          setTimeout(() => {
+           console.log("Triggered time out")
+           awaitPlayers()
+          }, 5000);
         }
         return data
       }).then((data) => {
@@ -46,6 +57,10 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         if (data.status >= 400) {
           throw new Error(data.message)
         }
+        if (data.state === 'PENDING' || data.state === 'ACTIVE') {
+          setTimeout(() => awaitPlayers(), 5000);
+        }
+
         return data
       }).then((data) => {
         next(AsyncActionCreator.gameUnknownSuccess(data));
@@ -61,7 +76,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + "/start", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
       }).then((response) => {
         return response.json();
@@ -77,7 +92,43 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       });
     }
   }
- 
+
+  const awaitPlayers = (): void => {
+     const {playerId,id} = appState.game
+     let eTag = '';
+
+    //TODO: move this into appState.service.updateGame
+    if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
+      next(AsyncActionCreator.gamePendingRequest())
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
+        method: 'GET',
+        headers: {
+          'ETag': appState.game.version,
+        },
+      }).then((response) => {
+        //TODO: figure out how to break the chain here
+        if (response.status < 300 || response.status >= 400) {
+          eTag = response.headers.get('ETag');
+          return response.json()
+        }
+      }).then((data) => {
+          
+          if (!!data && data.status >= 400) {
+            throw new Error(data.message)
+          }
+          if (!data || data.state == 'UNKNOWN') {
+             next(AsyncActionCreator.gamePendingSuccess(data, eTag));
+          } else if (!data || data.state == 'PENDING') {
+            next(AsyncActionCreator.gamePendingSuccess(data, eTag));
+          }
+          if (!data || data.state === 'PENDING' || data.state === 'ACTIVE') {
+            setTimeout(() => awaitPlayers(), 5000);
+          }
+      }).catch((error) => {
+        next(AsyncActionCreator.gamePendingFailure(error));
+      });
+    }
+  } 
     
   if (action.type === Type.SYNC) {
     return next(action);
@@ -93,14 +144,14 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       const inputKeyDownAction = action.payload;
       const {isCreate,key} = inputKeyDownAction;
       if (key === 'Enter') {
-        if (isCreate) {
+        if (isCreate && !!name && name.length > 0) {
           createGame();
         } else if (!!gameId && gameId.length > 0 && !!name && name.length > 0) {
           joinGame();
         } else {
           //Put a user error mentioning validation error here
         }
-      }   
+      }
       
       break;
     }
@@ -116,6 +167,11 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       startGame();
       break;
     }
+    case ActionNames.AWAIT_PLAYERS: {
+      awaitPlayers();
+      break;
+    }
+
   }
 };
 
