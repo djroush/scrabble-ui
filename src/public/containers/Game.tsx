@@ -11,7 +11,6 @@ type GameStateProps = {
   status: GameStatus;
 }
 
-//todo: get rid of GameView and just 
 function Game(props: GameProps) {
   return <GameView {...props}/>;
 };

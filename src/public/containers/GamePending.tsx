@@ -32,8 +32,8 @@ const mapStateToProps = (appState : AppState): GamePendingStateProps => {
     isLoading: appState.service.gamePending.status === RequestStatus.REQUESTING, 
     isSuccessful: appState.service.gamePending.status === RequestStatus.SUCCESSFUL,
     isError: appState.service.gamePending.status === RequestStatus.ERRORED,
-    hasMultiplePlayers: appState.players.info.length >= 2,
-    playersInfo: appState.players.info
+    hasMultiplePlayers: appState.players.length >= 2,
+    playersInfo: appState.players
   };
 }
 

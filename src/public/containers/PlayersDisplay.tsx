@@ -19,8 +19,8 @@ const PlayersDisplay = (props: PlayersDisplayProps): JSX.Element => {
 
 const mapStateToProps = (appState : AppState): PlayersDisplayStateProps => {
   return {
-    playersInfo: appState.players.info, 
-    activePlayerIndex: appState.players.activePlayerIndex,
+    playersInfo: appState.players, 
+    activePlayerIndex: appState.game.activePlayerIndex,
   }
 }
 export default connect(mapStateToProps)(PlayersDisplay)

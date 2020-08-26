@@ -1,97 +1,123 @@
-import { AppState, RequestStatus, GameStatus, ErrorState } from '../store/State';
-import { Player } from '../store/Service';
+import { AppState, RequestStatus, ErrorState,SquareState } from '../store/State';
 import {GameResponseSuccess} from '../store/Service'
 import {getNewBoard} from '../reducers/Board'
 import * as GameStatusHelper from '../helper/GameStatusHelper'
 
 export const gameUnknownRequest = (appState: AppState) => {
-  let {status, data, error, ...others} = {...appState.service.gameUnknown};
+  let {status, error, ...others} = {...appState.service.gameUnknown};
   status = RequestStatus.REQUESTING;
-  data = null;
   error = null;
-  appState.service.gameUnknown = {status, data, error, ...others};  
+  appState.service.gameUnknown = {status, error, ...others};  
   return appState;
 }
 
-export const gameUnknownSuccess = (appState: AppState, data1: GameResponseSuccess) => {
-  let {status, data, error, ...others} = {...appState.service.gameUnknown};
+export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess) => {
+  let {status, error, ...others} = {...appState.service.gameUnknown};
   status = RequestStatus.SUCCESSFUL;
-  data = data1;
   error = null;
-  
-  appState.service.gameUnknown = {status, data, error, ...others};
-  appState.game.version = data.version
+  appState.service.gameUnknown = {status, error, ...others};
+  //make a common method to handle all updates
+     
+  if (data) {
+    appState.board = getNewBoard();  
+  }
 
-  
-  appState.players.info = data1.players.map(player => {
-    const {id, name, score} = player
-    return {id, name, score};
-  });
-
-  //TODO: updatestate
-  appState.game.id = data1.id;
-  appState.game.playerId = data1.playerId
-  //appState.players = data1.players; //todo transform here as needed
-  appState.game.status = GameStatus.PENDING;  //This hsould be pending;
-    
-  return appState;
+     
+  return parseGameResponse(appState, data);
 }
 
 export const gameUnknownFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, data, error, ...others} = {...appState.service.gameUnknown};
+  let {status, error, ...others} = {...appState.service.gameUnknown};
   status = RequestStatus.ERRORED;
-  data = null;
   error = error1;
-  appState.service.gameUnknown = {status, data, error, ...others};  
+  appState.service.gameUnknown = {status, error, ...others};  
   return appState;
 }
 
 
 export const gamePendingRequest = (appState: AppState) => {
-  let {status, data, error, ...others} = {...appState.service.gamePending};
+  let {status, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.REQUESTING;
-  data = null;
   error = null;
-  appState.service.gamePending = {status, data, error, ...others};  
+  appState.service.gamePending = {status, error, ...others};  
   return appState;
 }
 
-export const gamePendingSuccess = (appState: AppState, data1: GameResponseSuccess, eTag?: string) => {
-  let {status, data, error, ...others} = {...appState.service.gamePending};
+export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+  let {status, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.SUCCESSFUL;
-  data = !!data1 ? data1 : data;
   error = null;
-  appState.service.gamePending = {status, data, error, ...others};
+  appState.service.gamePending = {status, error, ...others};
 
   if (data) {
-    //TODO: check status here
-    appState.board = getNewBoard();
-  
-    //Take the rack from the only player with letters  
-    appState.rack.letters =  data1.players
-      .filter(player => player.rack && player.rack.tiles)
-      .map(player => player.rack.tiles)
-      .find(_ => true);
-     
-      //players":[{"id":"1","name":"BILLY","rack":{"tiles":[]},"score":0,"skipTurnCount":0,"isForfeited":false} 
-    appState.players.info = data.players.map((player: Player) => {
-          const {id, name, score} = player;
-          return {id, name, score};
-    })
-    appState.game.status = GameStatusHelper.getStatus(data.state);
-    let {version, ...others} = appState.game
-    version = !isNaN(parseInt(eTag)) ? eTag : version
-    appState.game = {version, ...others}
+    appState.board = getNewBoard();  
   }
+  if (eTag && eTag === appState.game.version) {
+    return appState;
+  } else {
+    return parseGameResponse(appState, data);  
+  } 
     
-  return appState;
+  
 }
 
 export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, data, error, ...others} = {...appState.service.gamePending};
+  let {status, error, ...others} = {...appState.service.gamePending};
   status = RequestStatus.ERRORED;
-  data = null;
   error = error1;
-  appState.service.gamePending = {status, data, error, ...others};  
+  appState.service.gamePending = {status, error, ...others};  
   return appState;
+}
+
+/*
+export type AppState = {
+  game: GameState,
+  rack: RackState,
+  players: PlayersState,
+  board: BoardState,
+};
+*/
+
+const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
+  let {version,id,playerId,status, ...others} = appState.game;
+  
+  id = data.game.id;
+  playerId = data.game.playerId;
+  version = data.game.version;
+  status = GameStatusHelper.getStatus(data.game.state);
+  appState.game = {version,id,playerId,status,...others};
+
+  let {letters, ...others1} = appState.rack;
+      //Take the rack from the only player with letters  
+//    appState.rack.letters =  data.players
+//      .filter(player => player.rack && player.rack.tiles)
+//      .map(player => player.rack.tiles)
+//      .find(_ => true);
+  letters = data.rack.tiles;
+  appState.rack = {letters, ...others1}
+ 
+  //players":[{"id":"1","name":"BILLY","rack":{"tiles":[]},"score":0,"skipTurnCount":0,"isForfeited":false} 
+  appState.players = data.players
+    
+    
+  let {squares, ...others2} = appState.board
+  
+  const updatedSquares: SquareState[] = []
+  data.board.squares.forEach(square => {
+    const index = square.row*15+square.col
+    const existingSquare = squares && squares[index]
+    const tile = square.tile || {letter: null, isBlank: null}
+    const updatedSquare: SquareState = {
+      letter: tile.letter,
+      isBlank: tile.isBlank,
+      modifier: existingSquare.modifier,
+      direction: existingSquare.direction,
+    }
+    updatedSquares.push(updatedSquare);
+  });
+  squares = updatedSquares;
+  appState.board = { squares, ...others2}
+
+  return appState;
+  
 }

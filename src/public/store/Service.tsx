@@ -1,17 +1,36 @@
 export type GameResponseSuccess = {
+  game: Game,
+  rack: Rack
+  players: Player[],
+  board: Board
+};
+
+export type Rack = {
+  tiles: string[]
+}
+export type Board = {
+  squares: Square[],
+}
+
+export type Square = {
+   row: number,
+   col: number,
+   tile: {
+    letter: string,
+    isBlank: boolean
+  },
+}
+
+export type Game = {
   id: string,
   playerId: string,
   version: string,
-  state: string,
-  players: Player[],
-};
+  state: string,  
+}
 
 export type Player = {
   id: string,
   name: string,
-  rack: {
-    tiles: string[]
-  }
   score: number,
   skipTurnCount: number,
   isForfeited: boolean 

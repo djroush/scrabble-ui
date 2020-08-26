@@ -1,15 +1,15 @@
 import { AppState } from '../store/State';
 
 export const updateName = (appState: AppState, newName: string) => {
-  let {name, ...others} = {...appState.game.pending}
+  let {name, ...others} = {...appState.input}
   name = newName.toUpperCase();
-  appState.game.pending = {name, ...others};
+  appState.input = {name, ...others};
   return appState;
 }
 
 export const updateGameId = (appState: AppState, newGameId: string) => {
-  let {gameId, ...others} = {...appState.game.pending}
+  let {gameId, ...others} = {...appState.input}
   gameId = newGameId.toUpperCase();
-  appState.game.pending = {gameId, ...others};
+  appState.input = {gameId, ...others};
   return appState;
 }

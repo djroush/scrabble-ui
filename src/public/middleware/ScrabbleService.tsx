@@ -3,7 +3,6 @@ import {Store} from 'redux'
 import { AppAction, Type } from '../actions/Actions'; 
 import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
-import * as ActionCreator from '../actions/ActionCreator';
 import {AppState, RequestStatus} from '../store/State';
 
 
@@ -21,12 +20,9 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        //TODO: data.status == null
+        //FIXME: data.status == null
         if (data.status >= 400) {
           throw new Error(data.message)
-        }
-        if (data.status == 304) {
-          
         }
         if (data.state === 'PENDING' || data.state === 'ACTIVE') {
           setTimeout(() => {
@@ -94,11 +90,13 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const awaitPlayers = (): void => {
-     const {playerId,id} = appState.game
+     const {playerId,id} = store.getState().game
      let eTag = '';
 
     //TODO: move this into appState.service.updateGame
-    if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
+        appState.service.gamePending.status !== RequestStatus.REQUESTING && 
+        appState.service.gameRefresh.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gamePendingRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
         method: 'GET',
@@ -112,7 +110,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
           return response.json()
         }
       }).then((data) => {
-          
           if (!!data && data.status >= 400) {
             throw new Error(data.message)
           }
@@ -135,8 +132,8 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
   
   const appState: AppState = store.getState();
-  const {playerId,id, pending} = appState.game;
-  const {name, gameId} = pending;
+  const {playerId,id} = appState.game;
+  const {name, gameId} = appState.input;
   const queryString = "?player=" + name     //TODO: encode input for playerName?
   
   switch (action.action) {

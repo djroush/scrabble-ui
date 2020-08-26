@@ -13,15 +13,16 @@ import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square'
 import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure} from '../reducers/Service'
 
 const initialState : AppState = {
+  input: {
+    name: '',
+    gameId: '',    
+  },
   game: {
     version: null,
     id:null,
     playerId:null,
+    activePlayerIndex: 0,
     status: GameStatus.UNKNOWN,
-    pending: {
-      name: '',
-      gameId: '',
-    }
   },
   rack: {
     letters: [], 
@@ -38,22 +39,20 @@ const initialState : AppState = {
   turn: {
     tiles:[]
   },
-  players: {
-    info: [],
-    activePlayerIndex: 0
-  },
+  players: [],
   service: {
     gameUnknown: {
       status: RequestStatus.UNKNOWN,
-      data: null,
       error: null,
     },
     gamePending: {
       status: RequestStatus.UNKNOWN,
-      data: null,
       error: null,
     },
-
+    gameRefresh: {
+      status: RequestStatus.UNKNOWN,
+      error: null,
+    }, 
   },
 
 };

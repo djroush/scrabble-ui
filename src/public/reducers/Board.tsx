@@ -4,12 +4,13 @@ export const getNewBoard = (): BoardState => {
   const activeIndex: number = null;
   const focusedIndex: number = null;
   const direction: Direction = null;
+  const isBlank: boolean = null;
   const squares: SquareState[] = new Array<SquareState>();
   for (let index = 0; index < 255; index ++) {
     const letter: string = null;
     const modifier: Modifier = getModifier(index);
     const square: SquareState = {
-      letter, modifier, direction
+      letter,  isBlank, modifier, direction
     }
     squares.push(square);
   }
