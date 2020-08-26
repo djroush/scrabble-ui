@@ -24,16 +24,12 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         if (data.status >= 400) {
           throw new Error(data.message)
         }
-        if (data.state === 'PENDING' || data.state === 'ACTIVE') {
-          setTimeout(() => {
-           console.log("Triggered time out")
-           awaitPlayers()
-          }, 5000);
-        }
         return data
       }).then((data) => {
+        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownSuccess(data));
       }).catch((error) => {
+        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -53,14 +49,13 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         if (data.status >= 400) {
           throw new Error(data.message)
         }
-        if (data.state === 'PENDING' || data.state === 'ACTIVE') {
-          setTimeout(() => awaitPlayers(), 5000);
-        }
 
         return data
       }).then((data) => {
+        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownSuccess(data));
       }).catch((error) => {
+        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -90,39 +85,42 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const awaitPlayers = (): void => {
-     const {playerId,id} = store.getState().game
+     const {playerId,id, version} = store.getState().game
      let eTag = '';
 
     //TODO: move this into appState.service.updateGame
     if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
         appState.service.gamePending.status !== RequestStatus.REQUESTING && 
         appState.service.gameRefresh.status !== RequestStatus.REQUESTING) {
-      next(AsyncActionCreator.gamePendingRequest())
+      next(AsyncActionCreator.gameRefreshRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
         method: 'GET',
         headers: {
-          'ETag': appState.game.version,
+          'ETag': version
         },
       }).then((response) => {
         //TODO: figure out how to break the chain here
         if (response.status < 300 || response.status >= 400) {
           eTag = response.headers.get('ETag');
           return response.json()
+        } else {
+          setTimeout(() => awaitPlayers(), 5000);
+          next(AsyncActionCreator.gameRefreshSuccess(null, eTag));
         }
       }).then((data) => {
           if (!!data && data.status >= 400) {
             throw new Error(data.message)
           }
-          if (!data || data.state == 'UNKNOWN') {
-             next(AsyncActionCreator.gamePendingSuccess(data, eTag));
-          } else if (!data || data.state == 'PENDING') {
-            next(AsyncActionCreator.gamePendingSuccess(data, eTag));
-          }
-          if (!data || data.state === 'PENDING' || data.state === 'ACTIVE') {
-            setTimeout(() => awaitPlayers(), 5000);
+          if (data) {
+             next(AsyncActionCreator.gameRefreshSuccess(data, eTag));
+             if (data.game.state !== 'ABANDONED' && data.game.state !== 'ABORTED' && data.game.state !== 'FINISHED') {
+               setTimeout(() => awaitPlayers(), 5000);
+             }
           }
       }).catch((error) => {
-        next(AsyncActionCreator.gamePendingFailure(error));
+        setTimeout(() => awaitPlayers(), 5000);
+
+        next(AsyncActionCreator.gameRefreshFailure(error));
       });
     }
   } 

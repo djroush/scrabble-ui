@@ -10,7 +10,8 @@ import {returnExchangeLetterLast, returnExchangeLetters, takeRackLetter, exchang
 
 import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
-import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure} from '../reducers/Service'
+import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure,
+        gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure } from '../reducers/Service'
 
 const initialState : AppState = {
   input: {
@@ -175,6 +176,22 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      const asyncGamePendingFailureAction: AsyncActions.GamePendingFailure = action;
      const {error} = asyncGamePendingFailureAction.payload;
      newState = gamePendingFailure(newState, error);
+     break; 
+    }
+     case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
+     newState = gameRefreshRequest(newState);
+     break; 
+    }
+    case AsyncActionNames.ASYNC_GAME_REFRESH_SUCCESS: {
+     const asyncGameRefreshSuccessAction: AsyncActions.GameRefreshSuccess = action;
+     const {data, eTag} = asyncGameRefreshSuccessAction.payload
+     newState = gameRefreshSuccess(newState, data, eTag);
+     break; 
+    }
+    case AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE: {
+     const asyncGameRefreshFailureAction: AsyncActions.GameRefreshFailure = action;
+     const {error} = asyncGameRefreshFailureAction.payload;
+     newState = gameRefreshFailure(newState, error);
      break; 
     }
 

@@ -21,8 +21,7 @@ export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess
   if (data) {
     appState.board = getNewBoard();  
   }
-
-     
+  
   return parseGameResponse(appState, data);
 }
 
@@ -33,7 +32,6 @@ export const gameUnknownFailure = (appState: AppState, error1: ErrorState) => {
   appState.service.gameUnknown = {status, error, ...others};  
   return appState;
 }
-
 
 export const gamePendingRequest = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gamePending};
@@ -56,9 +54,7 @@ export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess
     return appState;
   } else {
     return parseGameResponse(appState, data);  
-  } 
-    
-  
+  }   
 }
 
 export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
@@ -69,14 +65,36 @@ export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
   return appState;
 }
 
-/*
-export type AppState = {
-  game: GameState,
-  rack: RackState,
-  players: PlayersState,
-  board: BoardState,
-};
-*/
+
+export const gameRefreshRequest = (appState: AppState) => {
+  let {status, error, ...others} = {...appState.service.gameRefresh};
+  status = RequestStatus.REQUESTING;
+  error = null;
+  appState.service.gameRefresh = {status, error, ...others};  
+  return appState;
+}
+
+export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+  let {status, error, ...others} = {...appState.service.gameRefresh};
+  status = RequestStatus.SUCCESSFUL;
+  error = null;
+  appState.service.gameRefresh = {status, error, ...others};
+
+  //TODO: add call to make next call here
+  if (eTag && eTag === appState.game.version || !data) {
+    return appState;
+  } else {
+    return parseGameResponse(appState, data);  
+  }   
+}
+
+export const gameRefreshFailure = (appState: AppState, error1: ErrorState) => {
+  let {status, error, ...others} = {...appState.service.gameRefresh};
+  status = RequestStatus.ERRORED;
+  error = error1;
+  appState.service.gameRefresh = {status, error, ...others};  
+  return appState;
+}
 
 const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   let {version,id,playerId,status, ...others} = appState.game;
