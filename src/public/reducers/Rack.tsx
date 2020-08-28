@@ -1,41 +1,42 @@
 
-import { AppState, Tile, SquareState, Direction } from '../store/State';
+import { AppState, Tile, PlayedTile, SquareState, Direction } from '../store/State';
 
-export const shuffleLetters = (appState: AppState) => {
-  const letters: string[] = appState.rack.letters;
-  let shuffledLetters = [];
+export const shuffleTiles = (appState: AppState) => {
+  const tiles: Tile[] = appState.rack.tiles;
+  let shuffledTiles: Tile[] = [];
   
-  while (letters.length > 0) {
-    const index: number = Math.floor(Math.random() * letters.length);
-    const letter: string = letters.splice(index, 1)[0];
-    shuffledLetters.push(letter);
+  while (tiles.length > 0) {
+    const index: number = Math.floor(Math.random() * tiles.length);
+    const tile: Tile = tiles.splice(index, 1)[0];
+    shuffledTiles.push(tile);
   } 
-  appState.rack.letters = shuffledLetters;
+  appState.rack.tiles = shuffledTiles;
   
   return appState;
 }
 
 //TODO: need to upate logic to handle return from exchange or board!!!
-export const returnPlayedLetters = (appState: AppState) => {
+export const returnPlayedTiles = (appState: AppState) => {
   //check if active index is set
   
-  const returnedLetters: string[] = [...appState.rack.letters];
-  const turnTiles: Tile[] = appState.turn.tiles;
+  const returnedTiles: Tile[] = [...appState.rack.tiles];
+  const playedTiles: PlayedTile[] = appState.turn.playedTiles;
   const squares: SquareState[] = [...appState.board.squares];
   let activeIndex = appState.board.activeIndex;
   const oldDirection: Direction = squares[activeIndex].direction;
   
   squares[activeIndex].direction = null;
-  turnTiles.forEach((tile: Tile) => {
-      const {index, letter} = tile;
-      squares[index].letter = null;
-      returnedLetters.push(letter);
+  playedTiles.forEach((playedTile: PlayedTile) => {
+      const {index, tile} = playedTile;
+      squares[index].tile = {letter: null, isBlank: null};
+      tile.letter = tile.isBlank ? ' ' : tile.letter;
+      returnedTiles.push(tile);
       activeIndex = Math.min(activeIndex, index);
   });
   const focusedIndex = activeIndex;
   squares[activeIndex].direction = oldDirection;
-  appState.turn.tiles = [];
-  appState.rack.letters = returnedLetters;
+  appState.turn.playedTiles = [];
+  appState.rack.tiles = returnedTiles;
   appState.board = {
    activeIndex, focusedIndex, squares
   }
@@ -43,29 +44,26 @@ export const returnPlayedLetters = (appState: AppState) => {
   return appState;
 }
 
-export const returnPlayedLetter = (appState: AppState) => {
-  const returnedLetters: string[] = [...appState.rack.letters];
-  const turnTiles: Tile[] = appState.turn.tiles;
+export const returnPlayedTile = (appState: AppState) => {
+  const tiles: Tile[] = [...appState.rack.tiles];
+  const playedTiles: PlayedTile[] = appState.turn.playedTiles;
   const squares: SquareState[] = [...appState.board.squares];
   let activeIndex = appState.board.activeIndex;
   const direction: Direction = squares[activeIndex].direction;
   
-  
-  const tilesPlayed = turnTiles.length;
-  const areTilesPlayed = tilesPlayed > 0;
-  if (areTilesPlayed) {
-    
-  }
+  const tilesPlayed = playedTiles.length;
   squares[activeIndex].direction = null;
-  const {index, letter} = turnTiles[tilesPlayed-1];
-  squares[index].letter = null;
-  returnedLetters.push(letter);
-  activeIndex = index
+  const returnedPlayedTile: PlayedTile = playedTiles.splice(tilesPlayed-1, 1)[0]
+  const {index, tile} = returnedPlayedTile;
+  squares[index].tile = {letter: null, isBlank: null};
+  tile.letter = tile.isBlank ? ' ' : tile.letter;
+  tiles.push(tile);
+  activeIndex = index;
 
   const focusedIndex = activeIndex;
   squares[activeIndex].direction = direction;
-  appState.turn.tiles.splice(tilesPlayed-1, 1);
-  appState.rack.letters = returnedLetters;
+  appState.turn.playedTiles = playedTiles;
+  appState.rack.tiles = tiles;
   appState.board = {
     activeIndex, focusedIndex, squares
   }

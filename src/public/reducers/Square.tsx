@@ -1,5 +1,5 @@
-import { AppState, BoardState, SquareState, Tile } from '../store/State';
-import { returnPlayedLetters, returnPlayedLetter } from '../reducers/Rack';
+import { AppState, BoardState, SquareState, Tile, PlayedTile } from '../store/State';
+import { returnPlayedTiles, returnPlayedTile } from '../reducers/Rack';
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 15;
@@ -10,14 +10,14 @@ export const squareMouseDown = (appState: AppState, newIndex: number) => {
   focusedIndex = newIndex;  
   
   //ignore clicks if tiles are already played on the board
-  const areTilesPlayed = appState.turn.tiles.length > 0   
+  const areTilesPlayed = appState.turn.playedTiles.length > 0   
   if (!areTilesPlayed) {
     const oldIndex = activeIndex;
     const oldSquare = squares[oldIndex];
     const newSquare = squares[newIndex];
   
     if (oldIndex !== null && oldIndex === newIndex) {
-      if (!oldSquare.letter) {
+      if (!!oldSquare.tile && !oldSquare.tile.letter) {
         if (oldSquare.direction === "horizontal") {
           oldSquare.direction = "vertical";
         } else {
@@ -52,19 +52,20 @@ export const squareMouseUp = (appState: AppState): AppState => {
 export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
   const {board, rack, turn} = {...appState};
   
-  const newSquares: SquareState[] = [...board.squares]
-  const newSquare: SquareState = newSquares[newIndex];
-  const newLetters: string[] = [...rack.letters];
-  const {tiles} = {...turn} 
+  const squares: SquareState[] = [...board.squares]
+  const square: SquareState = squares[newIndex];
+  const tiles: Tile[] = [...rack.tiles];
+  
+  const {playedTiles} = {...turn} 
 
   //Do nothing if a tile already exists in this spot on the board
   
-  const areTilesPlayed: boolean = tiles.length > 0;
+  const areTilesPlayed: boolean = playedTiles.length > 0;
   if (key === 'BACKSPACE' && areTilesPlayed) {
     if (shiftKey) {
-      return returnPlayedLetters(appState);
+      return returnPlayedTiles(appState);
     } else {
-      return returnPlayedLetter(appState); 
+      return returnPlayedTile(appState); 
     }
   }
   if (key === ' ') {
@@ -72,68 +73,81 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   }
   
   const isAlphabetic: boolean = key >= 'A' && key <= 'Z';
-  if (newSquare.letter || !isAlphabetic || newIndex != appState.board.activeIndex) {
+  if (!square.tile  || square.tile.letter || !isAlphabetic || newIndex != appState.board.activeIndex) {
     return appState;
   }
   
   //Check if this letter (or a blank) exists on the rack
-  
-  
   let rackIndex: number = 0;
   let blankIndex: number = -1;
-  const rackSize = newLetters.length;
+  let rackTile = null;
+  const rackSize = tiles.length;
   for (let index = 0; index < rackSize; index++) {
-    const rackLetter = newLetters[index]; 
-    if (rackLetter == key) {
+    rackTile = tiles[index]; 
+    if (rackTile.letter == key) {
       break;
-    } else if (' ' == rackLetter) {
+    } else if (rackTile.isBlank) {
       blankIndex = rackIndex;
     }
     rackIndex++;
   };
-  //Remove the letter from the rack and put it on the board
-  //TODO: add tiles to turn as well
+  //Take the tile from the rack, put it on the board and add it to the turn
   if (rackIndex < rackSize || blankIndex >= 0) {
       const playedLetterIndex = rackIndex < rackSize ? rackIndex : blankIndex;
-      newLetters.splice(playedLetterIndex, 1)[0];
-      //TODO: DO I NEED TO DO SOME SHENANIGANS HERE FOR BLANKS?
-      newSquare.letter = key;
-      rack.letters = newLetters;
-      board.squares[newIndex] = newSquare;
-      const newTile: Tile = {
-        index: newIndex,
-        letter: key
+      tiles.splice(playedLetterIndex, 1)[0];
+      square.tile = {
+        letter: key,
+        isBlank: blankIndex >= 0
       }
-      tiles.push(newTile);
-      turn.tiles = tiles;
+      rack.tiles = tiles;
+      board.squares[newIndex] = square;
+      const newPlayedTile: PlayedTile = {
+        index: newIndex,
+        tile: rackTile
+      }
+      playedTiles.push(newPlayedTile);
+      turn.playedTiles = playedTiles;
   } else {
     return appState;
   }
   
-  //Move the cursor to the next space unless it's at the edge of the board'
-  if (newSquare.direction === 'horizontal')  {
-    //TODO: need to add a loop here to skip spaces which already have tiles
-    const col = newIndex % BOARD_WIDTH;
-    if (col < BOARD_WIDTH - 1) {
-      const nextActiveIndex = newIndex + 1;
-      const nextActiveSquare = newSquares[nextActiveIndex];
-      nextActiveSquare.direction = newSquare.direction;
-      newSquare.direction = null;
-      board.activeIndex = nextActiveIndex;
-      board.focusedIndex = nextActiveIndex;
+  //Move the cursor to the next open space or to the edge of the board
+  if (square.direction === 'horizontal')  {
+    let nextColIndex: number = newIndex;
+    let col = nextColIndex % BOARD_WIDTH;
+    let prevColSquare: SquareState = square;
+    while (col < BOARD_WIDTH - 1) {
+      nextColIndex += 1;
+      col = nextColIndex % BOARD_WIDTH;
+      const nextColSquare = squares[nextColIndex];
+      nextColSquare.direction = prevColSquare.direction;
+      prevColSquare.direction = null;
+      board.activeIndex = nextColIndex;
+      board.focusedIndex = nextColIndex;
+      if (!nextColSquare.tile.letter) {
+        break;
+      }
+      prevColSquare = nextColSquare;
+      
     }
   } else {
-    const row = newIndex / BOARD_HEIGHT;
-    if (row < BOARD_HEIGHT -1) {
-      const nextActiveIndex = newIndex + BOARD_WIDTH;
-      const nextActiveSquare = newSquares[nextActiveIndex];
-      nextActiveSquare.direction = newSquare.direction;
-      newSquare.direction = null;
-      board.activeIndex = nextActiveIndex;
-      board.focusedIndex = nextActiveIndex;
+    let nextRowIndex: number = newIndex;
+    let row = Math.floor(nextRowIndex / BOARD_HEIGHT);
+    let prevRowSquare: SquareState = square;
+    while (row < BOARD_HEIGHT -1) {
+      nextRowIndex += BOARD_WIDTH;
+      row = Math.floor(nextRowIndex / BOARD_HEIGHT);
+      const nextRowSquare = squares[nextRowIndex];
+      nextRowSquare.direction = prevRowSquare.direction;
+      prevRowSquare.direction = null;
+      board.activeIndex = nextRowIndex;
+      board.focusedIndex = nextRowIndex;
+      if (!nextRowSquare.tile.letter) {
+        break;
+      }
+      prevRowSquare = nextRowSquare;
     }
   }
   
   return appState;
 };
-

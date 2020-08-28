@@ -5,13 +5,13 @@ import * as AsyncActionNames from '../actions/AsyncActionNames';
 
 import { AppState, RequestStatus, GameStatus } from '../store/State';
 import {updateName, updateGameId} from '../reducers/Game';
-import {shuffleLetters, returnPlayedLetter, returnPlayedLetters} from '../reducers/Rack';
-import {returnExchangeLetterLast, returnExchangeLetters, takeRackLetter, exchangeLetters} from '../reducers/Exchange';
+import {shuffleTiles, returnPlayedTile, returnPlayedTiles} from '../reducers/Rack';
+import {returnExchangeTileLast, returnExchangeTiles, takeRackTile, exchangeTiles} from '../reducers/Exchange';
 
 import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure,
-        gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure } from '../reducers/Service'
+        gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure, gameActiveRequest,  gameActiveSuccess,  gameActiveFailure } from '../reducers/Service'
 
 const initialState : AppState = {
   input: {
@@ -19,17 +19,18 @@ const initialState : AppState = {
     gameId: '',    
   },
   game: {
-    version: null,
-    id:null,
-    playerId:null,
+    version: "",
+    id:"",
+    playerId:"",
+    playerIndex:-1,
     activePlayerIndex: 0,
     status: GameStatus.UNKNOWN,
   },
   rack: {
-    letters: [], 
+    tiles: [], 
   },
   exchange: {
-    letters: [], 
+    tiles: [], 
   },
 
   board: {
@@ -38,7 +39,7 @@ const initialState : AppState = {
     squares: null,
   },
   turn: {
-    tiles:[]
+    playedTiles:[]
   },
   players: [],
   service: {
@@ -54,7 +55,10 @@ const initialState : AppState = {
       status: RequestStatus.UNKNOWN,
       error: null,
     }, 
-  },
+    gameActive: {
+      status: RequestStatus.UNKNOWN,
+      error: null,
+    },  },
 
 };
 const AppReducer = (state: AppState = initialState, action: Actions.AppAction) => {
@@ -75,36 +79,32 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     }
 
     //RackReducer    
-    case ActionNames.RETURN_PLAYED_LETTER: {
-     newState = returnPlayedLetter(newState);
+    case ActionNames.RETURN_PLAYED_TILE: {
+     newState = returnPlayedTile(newState);
      break; 
     }
 
-    case ActionNames.RETURN_PLAYED_LETTERS: {
-      const hasPlayedLetters: boolean  = newState.turn.tiles.length > 0;
-      const hasExchangeLetters: boolean =  newState.exchange.letters.length > 0;
+    case ActionNames.RETURN_PLAYED_TILES: {
+      const hasPlayedLetters: boolean  = newState.turn.playedTiles.length > 0;
+      const hasExchangeLetters: boolean =  newState.exchange.tiles.length > 0;
       if (hasPlayedLetters) {
-        newState = returnPlayedLetters(newState);
+        newState = returnPlayedTiles(newState);
       }
       if (hasExchangeLetters) {
-        newState = returnExchangeLetters(newState);
+        newState = returnExchangeTiles(newState);
       }
 
      break; 
     }
     //PlayerActions    
-    case ActionNames.SHUFFLE_LETTERS: {
-     newState = shuffleLetters(newState);
+    case ActionNames.SHUFFLE_TILES: {
+     newState = shuffleTiles(newState);
      break; 
     }
     
-    case ActionNames.EXCHANGE_LETTERS: {
-     newState = exchangeLetters(newState);
-     break; 
-    }
-
-    case ActionNames.EXCHANGE_LETTERS: {
-     newState = exchangeLetters(newState);
+    //TODO: this will be replaced by middleware eventually
+    case ActionNames.EXCHANGE_TILES: {
+     newState = exchangeTiles(newState);
      break; 
     }
     //ExchangeReducer
@@ -113,12 +113,12 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       const {key, isShift} = exchangeKeyDownAction.payload;
       if (key === 'Backspace') {
         if (isShift) {
-          newState = returnExchangeLetters(newState);
+          newState = returnExchangeTiles(newState);
         } else {
-          newState = returnExchangeLetterLast(newState);
+          newState = returnExchangeTileLast(newState);
         }
       } else {
-        newState = takeRackLetter(newState, key);
+        newState = takeRackTile(newState, key);
       }
       break;
     }
@@ -178,14 +178,16 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = gamePendingFailure(newState, error);
      break; 
     }
-     case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
+    case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
      newState = gameRefreshRequest(newState);
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_REFRESH_SUCCESS: {
      const asyncGameRefreshSuccessAction: AsyncActions.GameRefreshSuccess = action;
      const {data, eTag} = asyncGameRefreshSuccessAction.payload
+     
      newState = gameRefreshSuccess(newState, data, eTag);
+     
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE: {
@@ -194,6 +196,22 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = gameRefreshFailure(newState, error);
      break; 
     }
+    case AsyncActionNames.ASYNC_GAME_ACTIVE_REQUEST: {
+     newState = gameActiveRequest(newState);
+     break; 
+    }
+  case AsyncActionNames.ASYNC_GAME_ACTIVE_SUCCESS: {
+   const asyncGameActiveSuccessAction: AsyncActions.GameActiveSuccess = action;
+   const {data, eTag} = asyncGameActiveSuccessAction.payload
+   newState = gameActiveSuccess(newState, data, eTag);
+   break; 
+  }
+  case AsyncActionNames.ASYNC_GAME_ACTIVE_FAILURE: {
+   const asyncGameActiveFailureAction: AsyncActions.GameActiveFailure = action;
+   const {error} = asyncGameActiveFailureAction.payload;
+   newState = gameActiveFailure(newState, error);
+   break; 
+  }
 
     default:
   }

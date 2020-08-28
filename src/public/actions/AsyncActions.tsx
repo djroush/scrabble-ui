@@ -4,10 +4,11 @@ import { GameResponseSuccess } from 'store/Service';
 import {ErrorState} from '../store/State' 
 
 //AjaxActions
-export type AsyncAction = GameUnknownAction | GamePendingAction | GameRefreshAction;
+export type AsyncAction = GameUnknownAction | GamePendingAction | GameRefreshAction | GameActiveAction;
 export type GameUnknownAction = GameUnknownRequest | GameUnknownSuccess | GameUnknownFailure;
 export type GamePendingAction = GamePendingRequest | GamePendingSuccess | GamePendingFailure;
 export type GameRefreshAction = GameRefreshRequest | GameRefreshSuccess | GameRefreshFailure;
+export type GameActiveAction  = GameActiveRequest  | GameActiveSuccess  | GameActiveFailure;
 
 export interface GameUnknownRequest {
   type: Type,
@@ -72,6 +73,29 @@ export interface GameRefreshSuccess {
 export interface GameRefreshFailure {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE
+  payload: {
+    error: ErrorState
+  }
+}
+
+export interface GameActiveRequest {
+  type: Type,
+  action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_REQUEST
+  payload: {}
+}
+
+export interface GameActiveSuccess {
+  type: Type,
+  action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_SUCCESS
+  payload: {
+    data: GameResponseSuccess,
+    eTag?: string
+  }
+}
+
+export interface GameActiveFailure {
+  type: Type,
+  action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_FAILURE
   payload: {
     error: ErrorState
   }

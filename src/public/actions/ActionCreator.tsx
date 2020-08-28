@@ -1,6 +1,8 @@
 import * as Actions from './Actions'
 import * as ActionNames from './ActionNames'
 
+import {Tile} from '../store/State'
+
 //Game
 export const inputKeyDown = (key: string, isCreate: boolean) : Actions.InputKeyDown => ({
   type: Actions.Type.ASYNC,
@@ -47,37 +49,37 @@ export const awaitUpdate = () : Actions.AwaitPlayers => ({
 
 
 //Rack
-export const playRackLetter = (squareIndex: number, letter: string, rackIndex?: number) : Actions.PlayRackLetter => ({
+export const playRackTile = (squareIndex: number, tile: Tile, rackIndex?: number) : Actions.PlayRackTile => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.PLAY_RACK_LETTER,
+  action: ActionNames.PLAY_RACK_TILE,
   payload: {
-    squareIndex, letter, rackIndex
+    squareIndex, tile, rackIndex
   }
 });
-export const returnPlayedLetter = (squareIndex: number, letter: string) : Actions.ReturnPlayedLetter => ({
+export const returnPlayedTile = (squareIndex: number, tile: Tile) : Actions.ReturnPlayedTile => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_PLAYED_LETTER,
+  action: ActionNames.RETURN_PLAYED_TILE,
   payload: {
-    squareIndex, letter
+    squareIndex, tile
   }
 });
 //Used for click and keypress, index is not required for the latter
-export const returnExchangedLetter = (letter: string, index?: number) : Actions.ReturnExchangedLetter => ({
+export const returnExchangedTile = (tile: Tile, index?: number) : Actions.ReturnExchangedTile => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_EXCHANGED_LETTER,
+  action: ActionNames.RETURN_EXCHANGED_TILE,
   payload: {
-    letter, index
+    tile, index
   }
 });
-export const returnPlayedLetters = () : Actions.ReturnPlayedLetters => ({
+export const returnPlayedTiles = () : Actions.ReturnPlayedTiles => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_PLAYED_LETTERS,
+  action: ActionNames.RETURN_PLAYED_TILES,
   payload: {}
 });
 
-export const returnExchangedLetters = () : Actions.ReturnExchangedLetters => ({
+export const returnExchangedTiles = () : Actions.ReturnExchangedTiles => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_EXCHANGED_LETTERS,
+  action: ActionNames.RETURN_EXCHANGED_TILES,
   payload: {  }
 });
 
@@ -91,21 +93,27 @@ export const exchangeKeyDown = (key: string, isShift: boolean) : Actions.Exchang
 });
 
 //PlayerActions
-export const shuffleLetters = () : Actions.ShuffleTiles => ({
+export const shuffleTiles = () : Actions.ShuffleTiles => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.SHUFFLE_LETTERS,
+  action: ActionNames.SHUFFLE_TILES,
   payload: {}
 });
-export const returnLetters = () : Actions.ReturnLetters => ({
+export const returnTiles = () : Actions.ReturnTiles => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_LETTERS,
+  action: ActionNames.RETURN_TILES,
   payload: {}
 });
-export const exchangeLetters = () : Actions.ExchangeLetters => ({
+export const exchangeTiles = () : Actions.ExchangeTiles => ({
   type: Actions.Type.SYNC,
-  action: ActionNames.EXCHANGE_LETTERS,
+  action: ActionNames.EXCHANGE_TILES,
   payload: {}
 });
+export const playTiles = () : Actions.PlayTiles => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.PLAY_TILES,
+  payload: {}
+});
+
 
 
 //Board

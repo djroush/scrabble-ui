@@ -62,3 +62,22 @@ export const gameRefreshFailure = (error: ErrorState) : AsyncActions.GameRefresh
     error
   }
 });
+export const gameActiveRequest = () : AsyncActions.GameActiveRequest => ({
+  type: Type.SYNC,
+  action: AsyncActionTypes.ASYNC_GAME_ACTIVE_REQUEST,
+  payload: {}
+});
+export const gameActiveSuccess = (data: GameResponseSuccess, eTag?: string) : AsyncActions.GameActiveSuccess => ({
+  type: Type.SYNC,
+  action: AsyncActionTypes.ASYNC_GAME_ACTIVE_SUCCESS,
+  payload: {
+    data, eTag
+  }
+});
+export const gameActiveFailure = (error: ErrorState) : AsyncActions.GameActiveFailure => ({
+  type: Type.SYNC,
+  action: AsyncActionTypes.ASYNC_GAME_ACTIVE_FAILURE,
+  payload: {
+    error
+  }
+});

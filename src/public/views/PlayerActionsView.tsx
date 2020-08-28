@@ -4,13 +4,14 @@ import '../css/PlayerActions.css';
 
 import {PlayerActionsProps} from '../containers/PlayerActions'
 
-const PlayerActions = (props: PlayerActionsProps) => {
-  const {hasPlayedLetters, hasExchangeLetters, clickShuffle, clickReturn, clickExchange} = props;
+const PlayerActionsView = (props: PlayerActionsProps) => {
+  const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, clickShuffle, clickReturn, clickExchange, clickPlayTiles} = props;
   return (
   <div className="playerActions">
-      <button id="shuffleButton" type="button" onClick={clickShuffle}>
-        Shuffle tiles
-      </button>
+      {hasMultipleRackLetters
+        ? <button id="shuffleButton" type="button" onClick={clickShuffle}>Shuffle tiles</button>
+        : <button id="shuffleButton" type="button" disabled>Shuffle tiles</button>
+      }
       {hasPlayedLetters  || hasExchangeLetters
         ? <button id="returnButton" type="button" title="Shift+Backspace" onClick={clickReturn}>Return tiles</button>
         : <button id="returnButton" type="button" title="Shift+Backspace" disabled >Return tiles</button>
@@ -19,18 +20,14 @@ const PlayerActions = (props: PlayerActionsProps) => {
         ? <button id="exchangeButton" type="button" onClick={clickExchange}>Exchange tiles</button>
         : <button id="exchangeButton" type="button" disabled >Exchange tiles</button>
       }
-      {hasPlayedLetters
-        ? <button id="playButton" type="button">Play tiles</button>
+      {hasPlayedLetters /* and is player's turn, need to setActiveIndex */
+        ? <button id="playButton" type="button" onClick={clickPlayTiles}>Play tiles</button>
         : <button id="playButton" type="button" disabled>Play tiles</button>
       }
-      <button id="passButton" type="button">
-        Pass turn
-      </button>
-      <button id="challengeButton" type="button">
-        Challenge 
-      </button>
+      <button id="passButton" type="button">Pass turn</button>
+      <button id="challengeButton" type="button">Challenge</button>
   </div>
   );
 }
 
-export default PlayerActions;
+export default PlayerActionsView;

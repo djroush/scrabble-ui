@@ -21,6 +21,7 @@ export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess
   if (data) {
     appState.board = getNewBoard();  
   }
+  //TODO: set game.playerIndex
   
   return parseGameResponse(appState, data);
 }
@@ -80,8 +81,12 @@ export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess
   error = null;
   appState.service.gameRefresh = {status, error, ...others};
 
-  //TODO: add call to make next call here
-  if (eTag && eTag === appState.game.version || !data) {
+   const noActiveRequests: boolean = 
+     appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
+     appState.service.gamePending.status !== RequestStatus.REQUESTING && 
+     appState.service.gameActive.status !== RequestStatus.REQUESTING;
+
+  if ((eTag && eTag === appState.game.version) || !data || !noActiveRequests) {
     return appState;
   } else {
     return parseGameResponse(appState, data);  
@@ -96,38 +101,68 @@ export const gameRefreshFailure = (appState: AppState, error1: ErrorState) => {
   return appState;
 }
 
-const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
-  let {version,id,playerId,status, ...others} = appState.game;
-  
-  id = data.game.id;
-  playerId = data.game.playerId;
-  version = data.game.version;
-  status = GameStatusHelper.getStatus(data.game.state);
-  appState.game = {version,id,playerId,status,...others};
+export const gameActiveRequest = (appState: AppState) => {
+  let {status, error, ...others} = {...appState.service.gameActive};
+  status = RequestStatus.REQUESTING;
+  error = null;
+  appState.service.gameActive = {status, error, ...others};  
+  return appState;
+}
 
-  let {letters, ...others1} = appState.rack;
-      //Take the rack from the only player with letters  
-//    appState.rack.letters =  data.players
-//      .filter(player => player.rack && player.rack.tiles)
-//      .map(player => player.rack.tiles)
-//      .find(_ => true);
-  letters = data.rack.tiles;
-  appState.rack = {letters, ...others1}
+export const gameActiveSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+  let {status, error, ...others} = {...appState.service.gameActive};
+  status = RequestStatus.SUCCESSFUL;
+  error = null;
+  appState.service.gameActive = {status, error, ...others};
+
+  if (eTag && eTag === appState.game.version || !data) {
+    return appState;
+  } else {
+    return parseGameResponse(appState, data);  
+  }   
+}
+
+export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
+  let {status, error, ...others} = {...appState.service.gameActive};
+  status = RequestStatus.ERRORED;
+  error = error1;
+  appState.service.gameActive = {status, error, ...others};  
+  return appState;
+}
+
+const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
+  
+  const id: string = data.game.id.toString()
+  const playerId: string = data.game.playerId.toString();
+  const playerIndex: number = data.players.findIndex(player => player.id === playerId);
+  const version: string = data.game.version.toString();
+  const activePlayerIndex: number  = data.game.activePlayerIndex;
+  const status = GameStatusHelper.getStatus(data.game.state);
+  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,status};
+
+  let {tiles, ...othersRack} = appState.rack;
+  tiles = data.rack.tiles.map(letter => {
+    return {
+      letter: letter,
+      isBlank: ' ' === letter
+    }
+  });
+  appState.rack = {tiles, ...othersRack}
  
-  //players":[{"id":"1","name":"BILLY","rack":{"tiles":[]},"score":0,"skipTurnCount":0,"isForfeited":false} 
+  appState.turn = {playedTiles: []}
+  appState.exchange = { tiles: []}
+ 
   appState.players = data.players
     
-    
-  let {squares, ...others2} = appState.board
+  let {squares, ...others2} = appState.board  
   
-  const updatedSquares: SquareState[] = []
+  const updatedSquares: SquareState[] = [];
   data.board.squares.forEach(square => {
     const index = square.row*15+square.col
     const existingSquare = squares && squares[index]
     const tile = square.tile || {letter: null, isBlank: null}
     const updatedSquare: SquareState = {
-      letter: tile.letter,
-      isBlank: tile.isBlank,
+      tile: tile,
       modifier: existingSquare.modifier,
       direction: existingSquare.direction,
     }
@@ -137,5 +172,4 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   appState.board = { squares, ...others2}
 
   return appState;
-  
 }

@@ -1,11 +1,11 @@
-import { AppState, Tile } from '../store/State';
+import { AppState, Tile, PlayedTile } from '../store/State';
 
-export const takeRackLetter = (appState: AppState, key: string) => {
-  const rackLetters: string[] = [...appState.rack.letters];
-  const exchangeLetters: string[] = [...appState.exchange.letters];
-  const turnTiles: Tile[] = appState.turn.tiles;
+export const takeRackTile = (appState: AppState, key: string) => {
+  const rackTiles: Tile[] = [...appState.rack.tiles];
+  const exchangeTiles: Tile[] = [...appState.exchange.tiles];
+  const playedTiles: PlayedTile[] = appState.turn.playedTiles;
   
-  const tilesPlayed = turnTiles.length;
+  const tilesPlayed = playedTiles.length;
   const areTilesPlayed = tilesPlayed > 0;
   const isAlphabetic: boolean = key >= 'A' && key <= 'Z' || key == ' ';
   //TODO: check what Space.toUppercase() looks like
@@ -13,83 +13,79 @@ export const takeRackLetter = (appState: AppState, key: string) => {
   if (isAlphabetic && !areTilesPlayed) {
     let rackIndex: number = 0;
     let blankIndex: number = -1;
-    const rackSize = rackLetters.length;
+    const rackSize = rackTiles.length;
     for (let index = 0; index < rackSize; index++) {
-      const rackLetter = rackLetters[index]; 
-      if (rackLetter == key) {
+      const rackTile = rackTiles[index]; 
+      if (rackTile.letter == key) {
         break;
-      } else if (' ' == rackLetter) {
+      } else if (rackTile.isBlank) {
         blankIndex = rackIndex;
       }
       rackIndex++;
     };
     
     if (rackIndex < rackSize || blankIndex >= 0) {
-      const playedLetterIndex = rackIndex < rackSize ? rackIndex : blankIndex;
-      rackLetters.splice(playedLetterIndex, 1)[0];
-      exchangeLetters.push(key);
-      appState.rack.letters = rackLetters;
-      appState.exchange.letters = exchangeLetters;
+      const playedTileIndex = rackIndex < rackSize ? rackIndex : blankIndex;
+      const playedTile: Tile = rackTiles.splice(playedTileIndex, 1)[0];
+      exchangeTiles.push(playedTile);
+      appState.rack.tiles = rackTiles;
+      appState.exchange.tiles = exchangeTiles;
     }
   }
-  
   return appState;
 }
 
-//TODO: finish implement this here
-export const returnExchangeLetterLast = (appState: AppState): AppState => {
-  let rackLetters: string[] = [...appState.rack.letters];
-  let exchangeLetters: string[] = [...appState.exchange.letters];
+export const returnExchangeTileLast = (appState: AppState): AppState => {
+  let rackTiles: Tile[] = [...appState.rack.tiles];
+  let exchangeTiles: Tile[] = [...appState.exchange.tiles];
   
-  const exchangeIndex = exchangeLetters.length - 1;
-  const key = exchangeLetters.splice(exchangeIndex, 1);
-  rackLetters = rackLetters.concat(key);
-  appState.rack.letters = rackLetters;
-  appState.exchange.letters = exchangeLetters;
+  const exchangeIndex = exchangeTiles.length - 1;
+  const exchangedTile = exchangeTiles.splice(exchangeIndex, 1);
+  rackTiles = rackTiles.concat(exchangedTile);
+  appState.rack.tiles = rackTiles;
+  appState.exchange.tiles = exchangeTiles;
   return appState;
 }
 
 
 //TODO: finish implement this here
 export const returnExchangeLetterIndex = (appState: AppState, exchangeIndex: number): AppState => {
-  let rackLetters: string[] = [...appState.rack.letters];
-  let exchangeLetters: string[] = [...appState.exchange.letters];
+  let rackTiles: Tile[] = [...appState.rack.tiles];
+  let exchangeTiles: Tile[] = [...appState.exchange.tiles];
   
-  const exchangeLength = exchangeLetters.length;
+  const exchangeLength = exchangeTiles.length;
   if (exchangeIndex >=0 && exchangeIndex < exchangeLength) {
-    const key = exchangeLetters.splice(exchangeIndex, 1);
-    rackLetters = rackLetters.concat(key);
+    const rackTile: Tile[] = exchangeTiles.splice(exchangeIndex, 1);
+    rackTiles = rackTiles.concat(rackTile);
   }
-  appState.rack.letters = rackLetters;
-  appState.exchange.letters = exchangeLetters;
+  appState.rack.tiles = rackTiles;
+  appState.exchange.tiles = exchangeTiles;
   return appState;
 }
 
-//TODO: finish implement this here
-export const returnExchangeLetters = (appState: AppState): AppState => {
-  let rackLetters: string[] = [...appState.rack.letters];
-  let exchangeLetters: string[] = [...appState.exchange.letters];
+export const returnExchangeTiles = (appState: AppState): AppState => {
+  let rackTiles: Tile[] = [...appState.rack.tiles];
+  let exchangeTiles: Tile[] = [...appState.exchange.tiles];
   
-  rackLetters = rackLetters.concat(exchangeLetters);
-  exchangeLetters = [];
+  rackTiles = rackTiles.concat(exchangeTiles);
+  exchangeTiles = [];
   
-  appState.rack.letters = rackLetters;
-  appState.exchange.letters = exchangeLetters;
+  appState.rack.tiles = rackTiles;
+  appState.exchange.tiles = exchangeTiles;
   
   return appState;
 }
 
-//TODO: unimplemented 
-export const exchangeLetters = (appState: AppState) => {
-  let rackLetters: string[] = [...appState.rack.letters];
-  let exchangeLetters: string[] = [...appState.exchange.letters];
+export const exchangeTiles = (appState: AppState) => {
+  let rackTiles: Tile[] = [...appState.rack.tiles];
+  let exchangeTiles: Tile[] = [...appState.exchange.tiles];
   
   //TODO: invoke middleware here
-   rackLetters = rackLetters.concat(exchangeLetters);    
-   exchangeLetters = []
+   rackTiles = rackTiles.concat(exchangeTiles);    
+   exchangeTiles = []
    
-   appState.rack.letters = rackLetters;
-   appState.exchange.letters = exchangeLetters;
+   appState.rack.tiles = rackTiles;
+   appState.exchange.tiles = exchangeTiles;
   
   return appState;
 }

@@ -1,21 +1,17 @@
-import React, {Dispatch} from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/Actions'
-import { AppState } from '../store/State';
+import { AppState, Tile } from '../store/State';
 import RackView from '../views/Rack';
 
 
 type RackStateProps = {
-  letters: string[];
+  tiles: Tile[];
 }; 
-type RackDispatchProps = {
-  onClick: () => void;
-}; 
-export type RackProps = RackStateProps & RackDispatchProps
+export type RackProps = RackStateProps
 
 const mapStateToProps = (state: AppState) => ({
-    letters: state.rack.letters
+    tiles: state.rack.tiles
 })
 
 const Rack = (props: RackProps) => {
@@ -23,14 +19,8 @@ const Rack = (props: RackProps) => {
     <RackView {...props} />
   );
 }
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
-  return {
-    onClick: () => {} //dispatch(rackClick()),
-  }
-};
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Rack)
 

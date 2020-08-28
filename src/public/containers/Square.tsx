@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import {AppAction} from '../actions/Actions'
 import SquareView from '../views/Square'
-import {AppState, Modifier, Direction} from '../store/State'
+import {AppState, Modifier, Direction, Tile} from '../store/State'
 
 import {squareKeyDown, squareMouseDown, squareMouseUp} from '../actions/ActionCreator'
 
@@ -14,7 +14,7 @@ type SquareOwnProps =  {
 }
 type SquareStateProps = {
   isActive: boolean;
-  letter?: string;
+  tile?: Tile;
   modifier: Modifier;
   direction: Direction;
 }; 
@@ -25,11 +25,10 @@ type SquareDispatchProps = {
 }; 
 
 const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
+  const isActive = state.board.activeIndex === props.index && state.board.focusedIndex == props.index
+  const {tile, modifier, direction} =  state.board.squares[props.index];
   return {
-    isActive: state.board.activeIndex === props.index && state.board.focusedIndex == props.index,
-    letter: state.board.squares[props.index].letter,
-    modifier: state.board.squares[props.index].modifier,
-    direction: state.board.squares[props.index].direction,
+    isActive, tile, modifier, direction
   }
 };
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>, props: SquareOwnProps) => {

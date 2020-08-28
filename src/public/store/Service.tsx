@@ -26,6 +26,7 @@ export type Game = {
   playerId: string,
   version: string,
   state: string,  
+  activePlayerIndex: number
 }
 
 export type Player = {

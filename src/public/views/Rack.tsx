@@ -1,12 +1,13 @@
 import React from 'react';
 
 import '../css/Rack.css';
-import { RackProps } from '../containers/Rack' 
+import { RackProps } from '../containers/Rack'
+import { Tile } from '../store/State' 
 
 const Rack = (props: RackProps)  => {
-  const {letters} = props;
-  const rackTiles = !letters ? "" : letters.map((letter: String, index: number) => (
-    <div key={index} className="rackTile"><span>{letter}</span></div>
+  const {tiles} = props;
+  const rackTiles = !tiles ? "" : tiles.map((tile: Tile, index: number) => (
+    <div key={index} className="rackTile"><span><div>{tile.letter}</div></span></div>
   ));
   
   return (

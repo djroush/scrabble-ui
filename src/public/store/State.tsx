@@ -19,7 +19,8 @@ export type AppState = {
 export type ServiceState = {
   gameUnknown: RequestState,
   gamePending: RequestState,
-  gameRefresh: RequestState
+  gameRefresh: RequestState,
+  gameActive: RequestState,
 }
 
 export type RequestState = {
@@ -39,39 +40,44 @@ export type GameState = {
   version: string,
   id: string,
   playerId: string,
+  playerIndex: number
   activePlayerIndex: number
   status: GameStatus, 
 
 };
 export type RackState = {
-  letters: string[],
+  tiles: Tile[],
 };
 export type ExchangeState = {
-  letters: string[],
+  tiles: Tile[],
 };
+export type Tile = {
+  letter: string
+  isBlank: boolean
+}
+
 export type BoardState = {
   activeIndex: number,
   focusedIndex: number,
   squares : SquareState[],
 };
 export type PlayerInfo = {
-  id: string,
+  id?: string,
   name: string,
   score: number,
   skipTurnCount: number,
   isForfeited: boolean
 };
 export type TurnState = {
-  tiles: Tile[]
+  playedTiles: PlayedTile[]
 }
-export type Tile = {
+export type PlayedTile = {
     index: number,
-    letter: string
+    tile: Tile
 }
 
 export type SquareState = {
-  isBlank: boolean,
-  letter: string,
+  tile: Tile,
   modifier: string,
   direction: Direction,
  }

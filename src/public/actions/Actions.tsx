@@ -1,6 +1,7 @@
 import * as ActionNames from './ActionNames'
 import {AsyncAction} from '../actions/AsyncActions'
 
+import {Tile} from '../store/State';
 
 //AppActions
 export type AppAction = SyncAction | AsyncAction
@@ -9,9 +10,9 @@ export type AppAction = SyncAction | AsyncAction
 export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
 export type GameUnknownAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
 export type GamePendingAction = StartGame | AwaitPlayers;
-export type RackAction =  PlayRackLetter | ReturnPlayedLetter | ReturnPlayedLetters | ReturnExchangedLetter | ReturnExchangedLetters;
+export type RackAction =  PlayRackTile | ReturnPlayedTile | ReturnPlayedTiles | ReturnExchangedTile | ReturnExchangedTiles;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
-export type PlayerActionsAction = ShuffleTiles | ReturnLetters | ExchangeLetters | PlayTiles  | PassTurn | ChallengeTurn; 
+export type PlayerActionsAction = ShuffleTiles | ReturnTiles | ExchangeTiles | PlayTiles  | PassTurn | ChallengeTurn; 
 export type GameInfoAction = ForfeitGame;
 export type BoardAction = InitializeBoardSquares; 
 export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown
@@ -65,39 +66,39 @@ export interface AwaitPlayers {
 
 
 //Rack
-export interface PlayRackLetter {
+export interface PlayRackTile {
   type: Type,
-  action: typeof ActionNames.PLAY_RACK_LETTER
+  action: typeof ActionNames.PLAY_RACK_TILE
   payload: {
     squareIndex: number,
-    letter: string,
+    tile: Tile,
     rackIndex?: number
   }
 }
-export interface ReturnPlayedLetter {
+export interface ReturnPlayedTile {
   type: Type,
-  action: typeof ActionNames.RETURN_PLAYED_LETTER
+  action: typeof ActionNames.RETURN_PLAYED_TILE
   payload: {
     squareIndex: number
-    letter: string
+    tile: Tile
   }
 }
-export interface ReturnPlayedLetters {
+export interface ReturnPlayedTiles {
   type: Type,
-  action: typeof ActionNames.RETURN_PLAYED_LETTERS
+  action: typeof ActionNames.RETURN_PLAYED_TILES
   payload: {}
 }
-export interface ReturnExchangedLetter {
+export interface ReturnExchangedTile {
   type: Type,
-  action: typeof ActionNames.RETURN_EXCHANGED_LETTER
+  action: typeof ActionNames.RETURN_EXCHANGED_TILE
   payload: {
     index: number,
-    letter: string,
+    tile: Tile,
   }
 }
-export interface ReturnExchangedLetters {
+export interface ReturnExchangedTiles {
   type: Type,
-  action: typeof ActionNames.RETURN_EXCHANGED_LETTERS
+  action: typeof ActionNames.RETURN_EXCHANGED_TILES
   payload: {}
 }
 
@@ -123,28 +124,23 @@ export interface ExchangeOnClick {
 //PlayerActions
 export interface ShuffleTiles {
   type: Type,
-  action: typeof ActionNames.SHUFFLE_LETTERS,
+  action: typeof ActionNames.SHUFFLE_TILES,
   payload: {} 
 }
-export interface ReturnLetters {
+export interface ReturnTiles {
   type: Type,
-  action: typeof ActionNames.RETURN_LETTERS,
+  action: typeof ActionNames.RETURN_TILES,
   payload: {} 
 }
-export interface ExchangeLetters {
+export interface ExchangeTiles {
   type: Type,
-  action: typeof ActionNames.EXCHANGE_LETTERS,
+  action: typeof ActionNames.EXCHANGE_TILES,
   payload: {} 
 }
 export interface PlayTiles {
   type: Type,
   action: typeof ActionNames.PLAY_TILES,
-  payload: {
-    tiles: [{
-      index: number,
-      letter: string
-    }]
-  } 
+  payload: {} 
 }
 export interface PassTurn {
   type: Type,

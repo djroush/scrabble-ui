@@ -5,7 +5,7 @@ import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 import {AppState, RequestStatus} from '../store/State';
 
-
+//TODO: need to make it so middle responses show in redux logger for separate actions? 
 const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
 
   const createGame = (): void => {
@@ -26,6 +26,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
+        //TODO: cancel this when it's my turn
         setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownSuccess(data));
       }).catch((error) => {
@@ -91,7 +92,8 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     //TODO: move this into appState.service.updateGame
     if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
         appState.service.gamePending.status !== RequestStatus.REQUESTING && 
-        appState.service.gameRefresh.status !== RequestStatus.REQUESTING) {
+        appState.service.gameRefresh.status !== RequestStatus.REQUESTING && 
+        appState.service.gameActive.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameRefreshRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
         method: 'GET',
@@ -100,8 +102,8 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         },
       }).then((response) => {
         //TODO: figure out how to break the chain here
+        eTag = response.headers.get('ETag');
         if (response.status < 300 || response.status >= 400) {
-          eTag = response.headers.get('ETag');
           return response.json()
         } else {
           setTimeout(() => awaitPlayers(), 5000);
@@ -124,6 +126,45 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       });
     }
   } 
+  
+  //FIXME: pass square not tiles!
+  const playTiles = (): void => {
+  if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+    next(AsyncActionCreator.gameActiveRequest())
+    const turn = appState.turn
+    const squares = turn.playedTiles.map(playedTile => {
+      return {
+        row: Math.floor(playedTile.index / 15),
+        col: playedTile.index % 15,
+        tile: playedTile.tile
+      }
+    });
+    
+    
+    const body = {
+      squares
+    }
+    
+    fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/play', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      if (data.status >= 400) {
+        throw new Error(data.message)
+      }
+      return data
+    }).then((data) => {
+      next(AsyncActionCreator.gameActiveSuccess(data));
+    }).catch((error) => {
+      next(AsyncActionCreator.gameActiveFailure(error));
+    });
+  }
+}
     
   if (action.type === Type.SYNC) {
     return next(action);
@@ -165,6 +206,9 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     case ActionNames.AWAIT_PLAYERS: {
       awaitPlayers();
       break;
+    }
+    case ActionNames.PLAY_TILES: {
+      playTiles();
     }
 
   }

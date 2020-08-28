@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 
 import { AppState, PlayerInfo } from '../store/State';
-import PlayersDisplayView from '../views/PlayersDisplay'
+import PlayersDisplayView from '../views/PlayersDisplayView';
 
 
 export type PlayersDisplayProps = PlayersDisplayStateProps;
@@ -15,7 +15,6 @@ type PlayersDisplayStateProps = {
 const PlayersDisplay = (props: PlayersDisplayProps): JSX.Element => {
   return <PlayersDisplayView {...props}/>
 }
-
 
 const mapStateToProps = (appState : AppState): PlayersDisplayStateProps => {
   return {
