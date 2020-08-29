@@ -7,7 +7,7 @@ export const takeRackTile = (appState: AppState, key: string) => {
   
   const tilesPlayed = playedTiles.length;
   const areTilesPlayed = tilesPlayed > 0;
-  const isAlphabetic: boolean = key >= 'A' && key <= 'Z' || key == ' ';
+  const isAlphabetic: boolean = key >= 'A' && key <= 'Z' || key === ' ';
   //TODO: check what Space.toUppercase() looks like
 
   if (isAlphabetic && !areTilesPlayed) {

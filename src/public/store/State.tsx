@@ -42,6 +42,7 @@ export type GameState = {
   playerId: string,
   playerIndex: number
   activePlayerIndex: number
+  isPlayerUp: boolean
   status: GameStatus, 
 
 };

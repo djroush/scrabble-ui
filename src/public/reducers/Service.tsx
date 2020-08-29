@@ -138,7 +138,8 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const version: string = data.game.version.toString();
   const activePlayerIndex: number  = data.game.activePlayerIndex;
   const status = GameStatusHelper.getStatus(data.game.state);
-  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,status};
+  const isPlayerUp = playerIndex === activePlayerIndex
+  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp,status};
 
   let {tiles, ...othersRack} = appState.rack;
   tiles = data.rack.tiles.map(letter => {

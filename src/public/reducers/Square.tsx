@@ -72,7 +72,7 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
     squareMouseDown(appState, newIndex);
   }
   
-  const isAlphabetic: boolean = key >= 'A' && key <= 'Z';
+  const isAlphabetic: boolean = key >= 'A' && key <= 'Z' && key.length === 1;
   if (!square.tile  || square.tile.letter || !isAlphabetic || newIndex != appState.board.activeIndex) {
     return appState;
   }
@@ -84,7 +84,7 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   const rackSize = tiles.length;
   for (let index = 0; index < rackSize; index++) {
     rackTile = tiles[index]; 
-    if (rackTile.letter == key) {
+    if (rackTile.letter === key) {
       break;
     } else if (rackTile.isBlank) {
       blankIndex = rackIndex;
@@ -92,12 +92,16 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
     rackIndex++;
   };
   //Take the tile from the rack, put it on the board and add it to the turn
-  if (rackIndex < rackSize || blankIndex >= 0) {
-      const playedLetterIndex = rackIndex < rackSize ? rackIndex : blankIndex;
-      tiles.splice(playedLetterIndex, 1)[0];
+  const hasTile = rackIndex < rackSize;
+  const hasBlankTile = blankIndex >= 0;
+  if (hasTile || hasBlankTile) {
+      const tileIndex =  hasTile ? rackIndex : blankIndex;
+      rackTile = hasTile ?  tiles[rackIndex] : tiles[blankIndex];
+      rackTile.letter = key
+      tiles.splice(tileIndex, 1)[0];
       square.tile = {
         letter: key,
-        isBlank: blankIndex >= 0
+        isBlank: !hasTile && blankIndex >= 0
       }
       rack.tiles = tiles;
       board.squares[newIndex] = square;

@@ -86,14 +86,16 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const awaitPlayers = (): void => {
-     const {playerId,id, version} = store.getState().game
+     const {playerId,id, version, isPlayerUp} = store.getState().game
      let eTag = '';
 
     //TODO: move this into appState.service.updateGame
     if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
         appState.service.gamePending.status !== RequestStatus.REQUESTING && 
         appState.service.gameRefresh.status !== RequestStatus.REQUESTING && 
-        appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+        appState.service.gameActive.status !== RequestStatus.REQUESTING  &&
+        !isPlayerUp) {
+          //TODO: need another variable to indicate user has taken their turn
       next(AsyncActionCreator.gameRefreshRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
         method: 'GET',
@@ -140,17 +142,12 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       }
     });
     
-    
-    const body = {
-      squares
-    }
-    
     fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/play', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify({squares})
     }).then((response) => {
       return response.json();
     }).then((data) => {
@@ -159,9 +156,11 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       }
       return data
     }).then((data) => {
+      setTimeout(() => awaitPlayers(), 5000);
       next(AsyncActionCreator.gameActiveSuccess(data));
     }).catch((error) => {
       next(AsyncActionCreator.gameActiveFailure(error));
+      awaitPlayers();
     });
   }
 }

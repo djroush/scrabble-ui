@@ -19,6 +19,7 @@ const GameView = (props: GameProps) => {
 
   function getViewForStatus(status: GameStatus): JSX.Element {
     switch(status) {
+     
       case GameStatus.UNKNOWN: {
         return <GameUnknown/>;
       }
@@ -28,7 +29,19 @@ const GameView = (props: GameProps) => {
       case GameStatus.ACTIVE: {
         return <GameActiveView/>;
       }
-    }
+/*      case GameStatus.ENDGAME:
+        return <GameEndgameView/>;
+      }
+      case GameStatus.FINISHED: {
+        return <GameFinishedView/>;
+      }
+      case GameStatus.ABORTED: {
+        return <GameAbortedView/>;
+      }
+      case GameStatus.ABANDONED: {
+        return <GameAbandonedView/>;
+      }
+*/    }
   }
 };
 

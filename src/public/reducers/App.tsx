@@ -22,8 +22,9 @@ const initialState : AppState = {
     version: "",
     id:"",
     playerId:"",
-    playerIndex:-1,
-    activePlayerIndex: 0,
+    playerIndex: -1,
+    activePlayerIndex: -1,
+    isPlayerUp: false,
     status: GameStatus.UNKNOWN,
   },
   rack: {
