@@ -21,15 +21,17 @@ const Board = (props: BoardProps) => {
       rowsElems.push(<tr key={row} data-row={row}>{rowElems}</tr>); 
     }
   }
-    
+  
   return (
-  <div className="board"> 
+    <div className="board">  
     <table>
       <tbody>
         {rowsElems}
       </tbody>
     </table>
-  </div>
+    </div>
   );
+  
+
 }
 export default Board;

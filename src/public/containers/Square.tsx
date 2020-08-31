@@ -17,6 +17,7 @@ type SquareStateProps = {
   tile?: Tile;
   modifier: Modifier;
   direction: Direction;
+
 }; 
 type SquareDispatchProps = {
   onMouseUp: () => void;
@@ -27,6 +28,7 @@ type SquareDispatchProps = {
 const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
   const isActive = state.board.activeIndex === props.index && state.board.focusedIndex == props.index
   const {tile, modifier, direction} =  state.board.squares[props.index];
+
   return {
     isActive, tile, modifier, direction
   }

@@ -5,7 +5,7 @@
   background-color: white;
   margin: 2% 1%;
   padding: 0%;
-  width: auto;
+  width: 100%;
   justify-content: space-evenly;
 }
 
@@ -20,13 +20,13 @@
 
 
 .player.active {
-  border: 2px dotted black;
+  background-color: #2886cf;
+  color: rgb(238, 235, 222);
 }
 
 .player.self {
-  background-color: rgba(35, 98, 220, 0.3);
-  color: #2f4f4f;
+  border: 2px dotted black;
+  text-decoration: underline;
   font-style: italic;
   font-weight: bold;
-  
 }

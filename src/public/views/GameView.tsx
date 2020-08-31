@@ -5,6 +5,7 @@ import '../css/Game.css';
 import {GameStatus} from '../store/State';
 import {GameProps} from '../containers/Game';
 import GameActiveView from '../views/GameActiveView'
+import GameFinishedView from '../views/GameFinishedView'
 import GameUnknown from '../containers/GameUnknown'
 import GamePending from '../containers/GamePending'
 
@@ -29,13 +30,13 @@ const GameView = (props: GameProps) => {
       case GameStatus.ACTIVE: {
         return <GameActiveView/>;
       }
-/*      case GameStatus.ENDGAME:
-        return <GameEndgameView/>;
-      }
-      case GameStatus.FINISHED: {
+      case GameStatus.ENDGAME:{ 
+        return <GameFinishedView/>;
+      } 
+      case GameStatus.FINISHED: { 
         return <GameFinishedView/>;
       }
-      case GameStatus.ABORTED: {
+/*      case GameStatus.ABORTED: {
         return <GameAbortedView/>;
       }
       case GameStatus.ABANDONED: {

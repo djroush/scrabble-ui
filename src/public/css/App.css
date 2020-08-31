@@ -25,7 +25,7 @@
   padding: 1%;
   margin: auto 0%;
   float: right;
-  height: fit-content;
+  height: 90vh;
   flex-shrink:1;
 }
 .right {

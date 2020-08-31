@@ -1,10 +1,18 @@
-import { AppState, BoardState, SquareState, Tile, PlayedTile } from '../store/State';
+import { AppState, BoardState, SquareState, Tile, PlayedTile, GameStatus } from '../store/State';
 import { returnPlayedTiles, returnPlayedTile } from '../reducers/Rack';
 
 const BOARD_WIDTH = 15;
 const BOARD_HEIGHT = 15;
 
+const isBoardActive = (appState: AppState): boolean => {
+  return appState.game.status >= GameStatus.ACTIVE && appState.game.status < GameStatus.ABORTED;
+}
+
 export const squareMouseDown = (appState: AppState, newIndex: number) => {
+  if (!isBoardActive(appState)) {
+    return appState;
+  }
+
   let {activeIndex, focusedIndex, squares} = appState.board;
 
   focusedIndex = newIndex;  
@@ -41,7 +49,11 @@ export const squareMouseDown = (appState: AppState, newIndex: number) => {
   return appState;
 };
 
+
 export const squareMouseUp = (appState: AppState): AppState => {
+  if (!isBoardActive(appState)) {
+    return appState;
+  }
   const newBoard : BoardState = {...appState.board};
   newBoard.focusedIndex = newBoard.activeIndex;
   
@@ -50,6 +62,10 @@ export const squareMouseUp = (appState: AppState): AppState => {
 };
 
 export const squareKeyDown = (appState: AppState, newIndex: number, key: string, shiftKey: boolean) => {
+  if (!isBoardActive(appState)) {
+    return appState;
+  }
+  
   const {board, rack, turn} = {...appState};
   
   const squares: SquareState[] = [...board.squares]

@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {SquareState, AppState} from '../store/State';
+import {SquareState, AppState, GameStatus} from '../store/State';
 
 import BoardView from '../views/Board';
 
 export type BoardStateProps = {
     activeIndex: number,
     squares: SquareState[],
+    showBoard: boolean
 }
 export type BoardProps = BoardStateProps;
 
@@ -16,9 +17,11 @@ function Board(props: BoardProps) {
 }
   
 function mapStateToProps(state: AppState): BoardStateProps {
+  const gameStatus: GameStatus = state.game.status
   return {
     activeIndex: state.board.activeIndex,
-    squares: state.board.squares
+    squares: state.board.squares,
+    showBoard: gameStatus >= GameStatus.ACTIVE,
   }
 };
 
