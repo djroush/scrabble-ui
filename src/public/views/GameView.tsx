@@ -4,7 +4,7 @@ import '../css/Game.css';
 
 import {GameStatus} from '../store/State';
 import {GameProps} from '../containers/Game';
-import GameActiveView from '../views/GameActiveView'
+import GameActive from '../containers/GameActive'
 import GameFinishedView from '../views/GameFinishedView'
 import GameUnknown from '../containers/GameUnknown'
 import GamePending from '../containers/GamePending'
@@ -28,8 +28,10 @@ const GameView = (props: GameProps) => {
         return <GamePending/>;
       }
       case GameStatus.ACTIVE: {
-        return <GameActiveView/>;
+        return <GameActive/>;
       }
+      //FIXME: This should really be the active view, need to implement logic for 
+      // ENDGAME->FINISHED before changing this
       case GameStatus.ENDGAME:{ 
         return <GameFinishedView/>;
       } 

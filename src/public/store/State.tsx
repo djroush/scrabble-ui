@@ -15,6 +15,7 @@ export type AppState = {
   turn: TurnState,
   players: PlayerInfo[],
   board: BoardState,
+  lastTurn: LastTurnState,
 };
 export type ServiceState = {
   gameUnknown: RequestState,
@@ -31,6 +32,13 @@ export type RequestState = {
 
 export type ErrorState = {
   message: string
+}
+
+export type LastTurnState = {
+  action: 'UNKNOWN' | 'PLAY_TILES' | 'EXCHANGE_TILES' | 'PASS_TURN' | 'CHALLENGE_TURN' | 'FORFEIT_GAME'
+  playerIndex: number, 
+  loseTurnPlayerIndex?: number,
+  points: number,
 }
 
 export enum RequestStatus {UNKNOWN, REQUESTING, SUCCESSFUL, ERRORED}

@@ -160,7 +160,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       next(AsyncActionCreator.gameActiveSuccess(data));
     }).catch((error) => {
       next(AsyncActionCreator.gameActiveFailure(error));
-      awaitPlayers();
+      //TODO: on error, reset played tils back to rack?
     });
   }
 }

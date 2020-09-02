@@ -154,6 +154,8 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   appState.exchange = { tiles: []}
  
   appState.players = data.players
+  
+  appState.lastTurn = data.lastTurn;
     
   let {squares, ...others2} = appState.board  
   

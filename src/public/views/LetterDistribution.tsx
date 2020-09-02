@@ -6,7 +6,7 @@ const LetterDistribution = () => {
  return (
   <div className="letterDist">
    <div>
-    <span><b>Letters:</b></span>
+    <span><b>Tiles:</b></span>
     <ul>
       <li key="A"><pre>A -  9</pre></li>
       <li key="B"><pre>B -  2</pre></li>
