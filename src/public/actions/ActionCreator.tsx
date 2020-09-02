@@ -104,7 +104,7 @@ export const returnTiles = () : Actions.ReturnTiles => ({
   payload: {}
 });
 export const exchangeTiles = () : Actions.ExchangeTiles => ({
-  type: Actions.Type.SYNC,
+  type: Actions.Type.ASYNC,
   action: ActionNames.EXCHANGE_TILES,
   payload: {}
 });

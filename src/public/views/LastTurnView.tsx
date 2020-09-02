@@ -34,8 +34,6 @@ const LastTurnView = (props: TurnProps)  => {
         }
         default: return playerName + " did something...";
       }
-        
-
   }
        
   

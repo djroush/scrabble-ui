@@ -129,41 +129,68 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     }
   } 
   
-  //FIXME: pass square not tiles!
   const playTiles = (): void => {
-  if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
-    next(AsyncActionCreator.gameActiveRequest())
-    const turn = appState.turn
-    const squares = turn.playedTiles.map(playedTile => {
-      return {
-        row: Math.floor(playedTile.index / 15),
-        col: playedTile.index % 15,
-        tile: playedTile.tile
-      }
-    });
-    
-    fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/play', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({squares})
-    }).then((response) => {
-      return response.json();
-    }).then((data) => {
-      if (data.status >= 400) {
-        throw new Error(data.message)
-      }
-      return data
-    }).then((data) => {
-      setTimeout(() => awaitPlayers(), 5000);
-      next(AsyncActionCreator.gameActiveSuccess(data));
-    }).catch((error) => {
-      next(AsyncActionCreator.gameActiveFailure(error));
-      //TODO: on error, reset played tils back to rack?
-    });
+    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+      next(AsyncActionCreator.gameActiveRequest())
+      const turn = appState.turn
+      const squares = turn.playedTiles.map(playedTile => {
+        return {
+          row: Math.floor(playedTile.index / 15),
+          col: playedTile.index % 15,
+          tile: playedTile.tile
+        }
+      });
+      
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/play', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({squares})
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then((data) => {
+        setTimeout(() => awaitPlayers(), 5000);
+        next(AsyncActionCreator.gameActiveSuccess(data));
+      }).catch((error) => {
+        next(AsyncActionCreator.gameActiveFailure(error));
+        //TODO: on error, reset played tils back to rack?
+      });
+    }
   }
-}
+  
+    const exchangeTiles = (): void => {
+    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+      next(AsyncActionCreator.gameActiveRequest())
+      const tiles = appState.exchange.tiles
+      
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/exchange', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({tiles})
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then((data) => {
+        setTimeout(() => awaitPlayers(), 5000);
+        next(AsyncActionCreator.gameActiveSuccess(data));
+      }).catch((error) => {
+        next(AsyncActionCreator.gameActiveFailure(error));
+        //TODO: on error, reset played tils back to rack?
+      });
+    }
+  }
     
   if (action.type === Type.SYNC) {
     return next(action);
@@ -209,7 +236,9 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     case ActionNames.PLAY_TILES: {
       playTiles();
     }
-
+    case ActionNames.EXCHANGE_TILES: {
+      exchangeTiles();
+    }
   }
 };
 

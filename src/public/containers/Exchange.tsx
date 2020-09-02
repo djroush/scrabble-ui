@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>): ExchangeDispatchProp
       //FIXME: need to get a tile here instead of a letter!!!
       const letter: string = event.currentTarget.getAttribute('data-letter');
       const index: number = parseInt(event.currentTarget.getAttribute('data-index'));
-      const isBlank: boolean = "true" == event.currentTarget.getAttribute('data-isBlank') ;
+      const isBlank: boolean = "true" == event.currentTarget.getAttribute('data-isblank') ;
       const tile = {letter, isBlank}
       dispatch(returnExchangedTile(tile, index))
     }

@@ -24,8 +24,8 @@ const PlayerActionsView = (props: PlayerActionsProps) => {
         ? <button id="playButton" type="button" onClick={clickPlayTiles}>Play tiles</button>
         : <button id="playButton" type="button" disabled>Play tiles</button>
       }
-      <button id="passButton" type="button">Pass turn</button>
-      <button id="challengeButton" type="button">Challenge</button>
+      <button id="passButton" type="button" disabled>Pass turn</button>
+      <button id="challengeButton" type="button" disabled>Challenge</button>
   </div>
   );
 }
