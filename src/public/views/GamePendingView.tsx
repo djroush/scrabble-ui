@@ -7,6 +7,7 @@ import Spinner from '../views/Spinner'
 
 import {GamePendingProps} from '../containers/GamePending'
 import { PlayerInfo } from 'store/State';
+import GameInfo from '../containers/GameInfo';
 
 const GamePendingView = (props: GamePendingProps) => {
   const {hasMultiplePlayers, playersInfo, clickStart, isLoading, isError, errorMessage} = props;
@@ -18,6 +19,7 @@ const GamePendingView = (props: GamePendingProps) => {
   
   return (
     <div className="gamePending">
+       <div>
           {hasMultiplePlayers
               ? <h3>Begin a game by clicking the start button</h3>
               : <h3>Multiple players are needed before a game can start</h3>
@@ -32,6 +34,11 @@ const GamePendingView = (props: GamePendingProps) => {
         </div>
         {isLoading ? <Spinner/> : ''}
         {isError ? <ErrorMessageView errorMessage={errorMessage}/> : ''}
+       </div>
+       <div>
+          <p/>
+           <GameInfo />
+        </div>
 
     </div>
   );

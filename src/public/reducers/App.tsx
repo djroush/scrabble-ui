@@ -42,6 +42,11 @@ const initialState : AppState = {
   turn: {
     playedTiles:[]
   },
+  lastTurn: {
+    action: 'UNKNOWN',
+    playerIndex: -1,
+    points: 0,
+  },
   players: [],
   service: {
     gameUnknown: {

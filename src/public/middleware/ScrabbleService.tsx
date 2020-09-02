@@ -164,7 +164,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     }
   }
   
-    const exchangeTiles = (): void => {
+  const exchangeTiles = (): void => {
     if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
       const tiles = appState.exchange.tiles
@@ -191,6 +191,31 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       });
     }
   }
+
+  const passTurn = (): void => {
+    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+      
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/pass', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then((data) => {
+        setTimeout(() => awaitPlayers(), 5000);
+        next(AsyncActionCreator.gameActiveSuccess(data));
+      }).catch((error) => {
+        next(AsyncActionCreator.gameActiveFailure(error));
+      });
+    }
+  }
+
     
   if (action.type === Type.SYNC) {
     return next(action);
@@ -239,6 +264,10 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     case ActionNames.EXCHANGE_TILES: {
       exchangeTiles();
     }
+    case ActionNames.PASS_TURN: {
+      passTurn();
+    }
+
   }
 };
 

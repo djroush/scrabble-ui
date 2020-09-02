@@ -113,7 +113,11 @@ export const playTiles = () : Actions.PlayTiles => ({
   action: ActionNames.PLAY_TILES,
   payload: {}
 });
-
+export const passTurn = () : Actions.PassTurn => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.PASS_TURN,
+  payload: {}
+});
 
 
 //Board
