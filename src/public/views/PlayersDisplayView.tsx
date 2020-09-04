@@ -10,11 +10,13 @@ const PlayersDisplayView = (props: PlayersDisplayProps) =>  {
   const {playersInfo, activePlayerIndex, playerIndex, isGameActive} = props;
   const playerHTML = !playersInfo ? "" :  playersInfo.map((playerInfo: PlayerInfo, index: number) => {
     let playerClass = 'player';
-    if (index === activePlayerIndex && isGameActive) {
-      playerClass += ' active'
+    if (playerInfo.isForfeited) {
+      playerClass += ' forfeit';
+    } else if (index === activePlayerIndex && isGameActive) {
+      playerClass += ' active';
     }
     if (index === playerIndex) {
-      playerClass += ' self'
+      playerClass += ' self';
     }
     return ( 
        <ul key={index} className={playerClass}>

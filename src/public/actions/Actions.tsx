@@ -7,13 +7,13 @@ import {Tile} from '../store/State';
 export type AppAction = SyncAction | AsyncAction
 
 //UI interactions triggered by Keyboard, Mouse actions
-export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | BoardAction | SquareAction;
+export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | GameInfoAction| BoardAction | SquareAction;
 export type GameUnknownAction = InputKeyDown | UpdateName | UpdateGameId | CreateGame | JoinGame;
 export type GamePendingAction = StartGame | AwaitPlayers;
 export type RackAction =  PlayRackTile | ReturnPlayedTile | ReturnPlayedTiles | ReturnExchangedTile | ReturnExchangedTiles;
 export type ExchangeAction = ExchangeKeyDown | ExchangeOnClick;
 export type PlayerActionsAction = ShuffleTiles | ReturnTiles | ExchangeTiles | PlayTiles  | PassTurn | ChallengeTurn; 
-export type GameInfoAction = ForfeitGame;
+export type GameInfoAction = LeaveGame | ForfeitGame | NewGame;
 export type BoardAction = InitializeBoardSquares; 
 export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown
 
@@ -155,9 +155,19 @@ export interface ChallengeTurn {
 
 
 //GameInfo
+export interface LeaveGame {
+  type: Type,
+  action: typeof ActionNames.LEAVE_GAME,
+  payload: {} 
+}
 export interface ForfeitGame {
   type: Type,
   action: typeof ActionNames.FORFEIT_GAME,
+  payload: {} 
+}
+export interface NewGame {
+  type: Type,
+  action: typeof ActionNames.NEW_GAME,
   payload: {} 
 }
 

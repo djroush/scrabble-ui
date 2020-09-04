@@ -6,7 +6,7 @@ import * as AsyncActionNames from '../actions/AsyncActionNames';
 import { AppState, RequestStatus, GameStatus } from '../store/State';
 import {updateName, updateGameId} from '../reducers/Game';
 import {shuffleTiles, returnPlayedTile, returnPlayedTiles} from '../reducers/Rack';
-import {returnExchangeTileLast, returnExchangeTiles, takeRackTile, exchangeTiles} from '../reducers/Exchange';
+import {returnExchangeTileLast, returnExchangeTiles, takeRackTile} from '../reducers/Exchange';
 
 import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
@@ -108,11 +108,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     
-    //TODO: this will be replaced by middleware eventually
-    case ActionNames.EXCHANGE_TILES: {
-     newState = exchangeTiles(newState);
-     break; 
-    }
     //ExchangeReducer
     case ActionNames.EXCHANGE_KEYDOWN: {
       const exchangeKeyDownAction: Actions.ExchangeKeyDown = action
@@ -126,6 +121,65 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       } else {
         newState = takeRackTile(newState, key);
       }
+      break;
+    }
+    //GameInfo
+    case ActionNames.NEW_GAME: {
+      newState = {
+        input: {
+          name: '',
+          gameId: '',    
+        },
+        game: {
+          version: "",
+          id:"",
+          playerId:"",
+          playerIndex: -1,
+          activePlayerIndex: -1,
+          isPlayerUp: false,
+          status: GameStatus.UNKNOWN,
+        },
+        rack: {
+          tiles: [], 
+        },
+        exchange: {
+          tiles: [], 
+        },
+      
+        board: {
+          activeIndex: null,
+          focusedIndex: null,
+          squares: null,
+        },
+        turn: {
+          playedTiles:[]
+        },
+        lastTurn: {
+          action: 'UNKNOWN',
+          playerIndex: -1,
+          points: 0,
+        },
+        players: [],
+        service: {
+          gameUnknown: {
+            status: RequestStatus.UNKNOWN,
+            error: null,
+          },
+          gamePending: {
+            status: RequestStatus.UNKNOWN,
+            error: null,
+          },
+          gameRefresh: {
+            status: RequestStatus.UNKNOWN,
+            error: null,
+          }, 
+          gameActive: {
+            status: RequestStatus.UNKNOWN,
+            error: null,
+          },
+        },        
+      }
+
       break;
     }
     //BoardReducer
@@ -150,8 +204,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
     }
-    
-    
     case AsyncActionNames.ASYNC_GAME_UNKNOWN_REQUEST: {
      newState = gameUnknownRequest(newState);
      break; 
@@ -193,7 +245,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      const {data, eTag} = asyncGameRefreshSuccessAction.payload
      
      newState = gameRefreshSuccess(newState, data, eTag);
-     
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE: {
@@ -218,8 +269,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
    newState = gameActiveFailure(newState, error);
    break; 
   }
-
-    default:
+  default:
   }
   return newState;
 }

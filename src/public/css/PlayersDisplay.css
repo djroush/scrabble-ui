@@ -30,3 +30,7 @@
   font-style: italic;
   font-weight: bold;
 }
+.player.forfeit {
+  color: #cccccc;
+  background-color: #666666;
+}

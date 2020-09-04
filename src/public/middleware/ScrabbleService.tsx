@@ -3,6 +3,7 @@ import {Store} from 'redux'
 import { AppAction, Type } from '../actions/Actions'; 
 import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
+import * as ActionCreator from '../actions/ActionCreator';
 import {AppState, RequestStatus} from '../store/State';
 
 //TODO: need to make it so middle responses show in redux logger for separate actions? 
@@ -50,7 +51,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         if (data.status >= 400) {
           throw new Error(data.message)
         }
-
         return data
       }).then((data) => {
         setTimeout(() => awaitPlayers(), 5000);
@@ -61,6 +61,26 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       });
     }
   }    
+  
+  const leaveGame = (): void => {
+    if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
+      next(AsyncActionCreator.gamePendingRequest())
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId, {
+        method: 'DELETE',
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then(() => {
+        next(ActionCreator.newGame());
+      }).catch((error) => {
+        next(AsyncActionCreator.gamePendingFailure(error));
+      });
+    }
+  }
 
   const startGame = (): void => {
     if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
@@ -216,7 +236,27 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     }
   }
 
-    
+  const forfeitGame = (): void => {
+    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+      next(AsyncActionCreator.gameActiveRequest())
+
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/forfeit', {
+        method: 'POST',
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then(() => {
+        next(ActionCreator.newGame());
+      }).catch((error) => {
+        next(AsyncActionCreator.gameActiveFailure(error));
+      });
+    }
+  }
+
   if (action.type === Type.SYNC) {
     return next(action);
   }
@@ -260,14 +300,24 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     }
     case ActionNames.PLAY_TILES: {
       playTiles();
+      break;
     }
     case ActionNames.EXCHANGE_TILES: {
       exchangeTiles();
+      break;
     }
     case ActionNames.PASS_TURN: {
       passTurn();
+      break;
     }
-
+    case ActionNames.LEAVE_GAME: {
+      leaveGame();
+      break;
+    }
+    case ActionNames.FORFEIT_GAME: {
+      forfeitGame();
+      break;
+    }
   }
 };
 

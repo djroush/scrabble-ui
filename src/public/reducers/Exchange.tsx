@@ -47,8 +47,6 @@ export const returnExchangeTileLast = (appState: AppState): AppState => {
   return appState;
 }
 
-
-//TODO: finish implement this here
 export const returnExchangeLetterIndex = (appState: AppState, exchangeIndex: number): AppState => {
   let rackTiles: Tile[] = [...appState.rack.tiles];
   let exchangeTiles: Tile[] = [...appState.exchange.tiles];
@@ -72,20 +70,6 @@ export const returnExchangeTiles = (appState: AppState): AppState => {
   
   appState.rack.tiles = rackTiles;
   appState.exchange.tiles = exchangeTiles;
-  
-  return appState;
-}
-
-export const exchangeTiles = (appState: AppState) => {
-  let rackTiles: Tile[] = [...appState.rack.tiles];
-  let exchangeTiles: Tile[] = [...appState.exchange.tiles];
-  
-  //TODO: invoke middleware here
-   rackTiles = rackTiles.concat(exchangeTiles);    
-   exchangeTiles = []
-   
-   appState.rack.tiles = rackTiles;
-   appState.exchange.tiles = exchangeTiles;
   
   return appState;
 }

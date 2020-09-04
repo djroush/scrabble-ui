@@ -119,6 +119,23 @@ export const passTurn = () : Actions.PassTurn => ({
   payload: {}
 });
 
+//GameInfo 
+export const leaveGame = () : Actions.LeaveGame => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.LEAVE_GAME,
+  payload: {}
+});
+export const forfeitGame = () : Actions.ForfeitGame => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.FORFEIT_GAME,
+  payload: {}
+});
+export const newGame = () : Actions.NewGame => ({
+  type: Actions.Type.SYNC,
+  action: ActionNames.NEW_GAME,
+  payload: {}
+});
+
 
 //Board
 export const initializeBoardSquares = () : Actions.InitializeBoardSquares => ({

@@ -27,7 +27,9 @@ export const PASS_TURN = "PASS_TURN"
 export const CHALLENGE_TURN = "CHALLENGE_TURN"
 
 //GameInfo
+export const LEAVE_GAME = "LEAVE_GAME"
 export const FORFEIT_GAME = "FORFEIT_GAME"
+export const NEW_GAME = "NEW_GAME"
 
 // Board stuff
 export const INITIALIZE_BOARD_SQUARES = "INITIALIZE_BOARD_SQUARES"
