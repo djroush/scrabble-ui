@@ -49,22 +49,15 @@ const initialState : AppState = {
   },
   players: [],
   service: {
-    gameUnknown: {
-      status: RequestStatus.UNKNOWN,
-      error: null,
-    },
-    gamePending: {
+    gameState: {
       status: RequestStatus.UNKNOWN,
       error: null,
     },
     gameRefresh: {
       status: RequestStatus.UNKNOWN,
       error: null,
-    }, 
-    gameActive: {
-      status: RequestStatus.UNKNOWN,
-      error: null,
-    },  },
+    },
+  },
 
 };
 const AppReducer = (state: AppState = initialState, action: Actions.AppAction) => {
@@ -145,7 +138,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
         exchange: {
           tiles: [], 
         },
-      
         board: {
           activeIndex: null,
           focusedIndex: null,
@@ -161,11 +153,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
         },
         players: [],
         service: {
-          gameUnknown: {
-            status: RequestStatus.UNKNOWN,
-            error: null,
-          },
-          gamePending: {
+          gameState: {
             status: RequestStatus.UNKNOWN,
             error: null,
           },
@@ -173,10 +161,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
             status: RequestStatus.UNKNOWN,
             error: null,
           }, 
-          gameActive: {
-            status: RequestStatus.UNKNOWN,
-            error: null,
-          },
         },        
       }
 

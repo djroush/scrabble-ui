@@ -4,18 +4,18 @@ import {getNewBoard} from '../reducers/Board'
 import * as GameStatusHelper from '../helper/GameStatusHelper'
 
 export const gameUnknownRequest = (appState: AppState) => {
-  let {status, error, ...others} = {...appState.service.gameUnknown};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.REQUESTING;
   error = null;
-  appState.service.gameUnknown = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 
 export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess) => {
-  let {status, error, ...others} = {...appState.service.gameUnknown};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.SUCCESSFUL;
   error = null;
-  appState.service.gameUnknown = {status, error, ...others};
+  appState.service.gameState = {status, error, ...others};
   //make a common method to handle all updates
      
   if (data) {
@@ -27,26 +27,26 @@ export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess
 }
 
 export const gameUnknownFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, error, ...others} = {...appState.service.gameUnknown};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.ERRORED;
   error = error1;
-  appState.service.gameUnknown = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 
 export const gamePendingRequest = (appState: AppState) => {
-  let {status, error, ...others} = {...appState.service.gamePending};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.REQUESTING;
   error = null;
-  appState.service.gamePending = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 
 export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
-  let {status, error, ...others} = {...appState.service.gamePending};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.SUCCESSFUL;
   error = null;
-  appState.service.gamePending = {status, error, ...others};
+  appState.service.gameState = {status, error, ...others};
 
   if (data) {
     appState.board = getNewBoard();  
@@ -59,10 +59,10 @@ export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess
 }
 
 export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, error, ...others} = {...appState.service.gamePending};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.ERRORED;
   error = error1;
-  appState.service.gamePending = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 
@@ -82,9 +82,7 @@ export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess
   appState.service.gameRefresh = {status, error, ...others};
 
    const noActiveRequests: boolean = 
-     appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
-     appState.service.gamePending.status !== RequestStatus.REQUESTING && 
-     appState.service.gameActive.status !== RequestStatus.REQUESTING;
+     appState.service.gameState.status !== RequestStatus.REQUESTING; 
 
   if ((eTag && eTag === appState.game.version) || !data || !noActiveRequests) {
     return appState;
@@ -102,18 +100,18 @@ export const gameRefreshFailure = (appState: AppState, error1: ErrorState) => {
 }
 
 export const gameActiveRequest = (appState: AppState) => {
-  let {status, error, ...others} = {...appState.service.gameActive};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.REQUESTING;
   error = null;
-  appState.service.gameActive = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 
 export const gameActiveSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
-  let {status, error, ...others} = {...appState.service.gameActive};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.SUCCESSFUL;
   error = null;
-  appState.service.gameActive = {status, error, ...others};
+  appState.service.gameState = {status, error, ...others};
 
   if (eTag && eTag === appState.game.version || !data) {
     return appState;
@@ -123,10 +121,10 @@ export const gameActiveSuccess = (appState: AppState, data: GameResponseSuccess,
 }
 
 export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, error, ...others} = {...appState.service.gameActive};
+  let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.ERRORED;
   error = error1;
-  appState.service.gameActive = {status, error, ...others};  
+  appState.service.gameState = {status, error, ...others};  
   return appState;
 }
 

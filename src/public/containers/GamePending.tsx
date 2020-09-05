@@ -27,10 +27,10 @@ function GamePending(props: GamePendingProps) {
 
 const mapStateToProps = (appState : AppState): GamePendingStateProps => {
   return {
-    errorMessage: appState.service.gamePending.error &&  appState.service.gamePending.error.message || null,
-    isLoading: appState.service.gamePending.status === RequestStatus.REQUESTING, 
-    isSuccessful: appState.service.gamePending.status === RequestStatus.SUCCESSFUL,
-    isError: appState.service.gamePending.status === RequestStatus.ERRORED,
+    errorMessage: appState.service.gameState.error &&  appState.service.gameState.error.message || null,
+    isLoading: appState.service.gameState.status === RequestStatus.REQUESTING, 
+    isSuccessful: appState.service.gameState.status === RequestStatus.SUCCESSFUL,
+    isError: appState.service.gameState.status === RequestStatus.ERRORED,
     hasMultiplePlayers: appState.players.length >= 2,
     playersInfo: appState.players
   };

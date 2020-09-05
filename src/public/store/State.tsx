@@ -18,10 +18,8 @@ export type AppState = {
   lastTurn: LastTurnState,
 };
 export type ServiceState = {
-  gameUnknown: RequestState,
-  gamePending: RequestState,
+  gameState: RequestState,
   gameRefresh: RequestState,
-  gameActive: RequestState,
 }
 
 export type RequestState = {

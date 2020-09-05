@@ -10,7 +10,7 @@ import {AppState, RequestStatus} from '../store/State';
 const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
 
   const createGame = (): void => {
-    if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameUnknownRequest())
   
       fetch('http://localhost:8080/scrabble/game' + queryString, {
@@ -38,7 +38,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }    
    
   const joinGame = (): void => {
-    if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameUnknownRequest())
       fetch('http://localhost:8080/scrabble/game/' + gameId + queryString, {
         method: 'POST',
@@ -63,7 +63,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }    
   
   const leaveGame = (): void => {
-    if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gamePendingRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId, {
         method: 'DELETE',
@@ -83,7 +83,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const startGame = (): void => {
-    if (appState.service.gamePending.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gamePendingRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + "/start", {
         method: 'POST',
@@ -109,11 +109,13 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
      const {playerId,id, version, isPlayerUp} = store.getState().game
      let eTag = '';
 
+
+/*     appState.service.gameState
+     appState.service.gameRefresh
+*/     
     //TODO: move this into appState.service.updateGame
-    if (appState.service.gameUnknown.status !== RequestStatus.REQUESTING && 
-        appState.service.gamePending.status !== RequestStatus.REQUESTING && 
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING && 
         appState.service.gameRefresh.status !== RequestStatus.REQUESTING && 
-        appState.service.gameActive.status !== RequestStatus.REQUESTING  &&
         !isPlayerUp) {
           //TODO: need another variable to indicate user has taken their turn
       next(AsyncActionCreator.gameRefreshRequest())
@@ -150,7 +152,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   } 
   
   const playTiles = (): void => {
-    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
       const turn = appState.turn
       const squares = turn.playedTiles.map(playedTile => {
@@ -185,7 +187,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
   
   const exchangeTiles = (): void => {
-    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
       const tiles = appState.exchange.tiles
       
@@ -213,7 +215,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const passTurn = (): void => {
-    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/pass', {
         method: 'POST',
@@ -237,7 +239,7 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 
   const forfeitGame = (): void => {
-    if (appState.service.gameActive.status !== RequestStatus.REQUESTING) {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
 
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/forfeit', {

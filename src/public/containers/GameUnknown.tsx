@@ -34,10 +34,10 @@ const mapStateToProps = (appState : AppState): GameUnknownStateProps => {
   return {
     gameId: appState.input.gameId, 
     name: appState.input.name,
-    errorMessage: appState.service.gameUnknown.error &&  appState.service.gameUnknown.error.message || null,
-    isLoading: appState.service.gameUnknown.status === RequestStatus.REQUESTING, 
-    isSuccessful: appState.service.gameUnknown.status === RequestStatus.SUCCESSFUL,
-    isError: appState.service.gameUnknown.status === RequestStatus.ERRORED,
+    errorMessage: appState.service.gameState.error &&  appState.service.gameState.error.message || null,
+    isLoading: appState.service.gameState.status === RequestStatus.REQUESTING, 
+    isSuccessful: appState.service.gameState.status === RequestStatus.SUCCESSFUL,
+    isError: appState.service.gameState.status === RequestStatus.ERRORED,
   }
 }
 

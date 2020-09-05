@@ -19,9 +19,9 @@ function GameActive(props: GameActiveProps) {
 
 const mapStateToProps = (appState : AppState): GameActiveStateProps => {
   return {
-    errorMessage: appState.service.gameActive.error &&  appState.service.gameActive.error.message || null,
-    isLoading: appState.service.gameActive.status === RequestStatus.REQUESTING, 
-    isError: appState.service.gameActive.status === RequestStatus.ERRORED,
+    errorMessage: appState.service.gameState.error &&  appState.service.gameState.error.message || null,
+    isLoading: appState.service.gameState.status === RequestStatus.REQUESTING, 
+    isError: appState.service.gameState.status === RequestStatus.ERRORED,
   };
 }
 
