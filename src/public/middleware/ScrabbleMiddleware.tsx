@@ -6,8 +6,7 @@ import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 import * as ActionCreator from '../actions/ActionCreator';
 import {AppState, RequestStatus} from '../store/State';
 
-//TODO: need to make it so middle responses show in redux logger for separate actions? 
-const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
+const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
 
   const createGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
@@ -27,11 +26,8 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
-        //TODO: cancel this when it's my turn
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownSuccess(data));
       }).catch((error) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -53,10 +49,8 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownSuccess(data));
       }).catch((error) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -105,52 +99,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
     }
   }
 
-  const awaitPlayers = (): void => {
-     const {playerId,id, version, isPlayerUp} = store.getState().game
-     let eTag = '';
-
-
-/*     appState.service.gameState
-     appState.service.gameRefresh
-*/     
-    //TODO: move this into appState.service.updateGame
-    if (appState.service.gameState.status !== RequestStatus.REQUESTING && 
-        appState.service.gameRefresh.status !== RequestStatus.REQUESTING && 
-        !isPlayerUp) {
-          //TODO: need another variable to indicate user has taken their turn
-      next(AsyncActionCreator.gameRefreshRequest())
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {
-        method: 'GET',
-        headers: {
-          'ETag': version
-        },
-      }).then((response) => {
-        //TODO: figure out how to break the chain here
-        eTag = response.headers.get('ETag');
-        if (response.status < 300 || response.status >= 400) {
-          return response.json()
-        } else {
-          setTimeout(() => awaitPlayers(), 5000);
-          next(AsyncActionCreator.gameRefreshSuccess(null, eTag));
-        }
-      }).then((data) => {
-          if (!!data && data.status >= 400) {
-            throw new Error(data.message)
-          }
-          if (data) {
-             next(AsyncActionCreator.gameRefreshSuccess(data, eTag));
-             if (data.game.state !== 'ABANDONED' && data.game.state !== 'ABORTED' && data.game.state !== 'FINISHED') {
-               setTimeout(() => awaitPlayers(), 5000);
-             }
-          }
-      }).catch((error) => {
-        setTimeout(() => awaitPlayers(), 5000);
-
-        next(AsyncActionCreator.gameRefreshFailure(error));
-      });
-    }
-  } 
-  
   const playTiles = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
@@ -177,11 +125,10 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameActiveSuccess(data));
       }).catch((error) => {
         next(AsyncActionCreator.gameActiveFailure(error));
-        //TODO: on error, reset played tils back to rack?
+        //TODO: on error, reset played tiles back to rack?
       });
     }
   }
@@ -205,7 +152,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameActiveSuccess(data));
       }).catch((error) => {
         next(AsyncActionCreator.gameActiveFailure(error));
@@ -230,7 +176,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
         }
         return data
       }).then((data) => {
-        setTimeout(() => awaitPlayers(), 5000);
         next(AsyncActionCreator.gameActiveSuccess(data));
       }).catch((error) => {
         next(AsyncActionCreator.gameActiveFailure(error));
@@ -296,10 +241,6 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
       startGame();
       break;
     }
-    case ActionNames.AWAIT_PLAYERS: {
-      awaitPlayers();
-      break;
-    }
     case ActionNames.PLAY_TILES: {
       playTiles();
       break;
@@ -323,4 +264,4 @@ const apiMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (actio
   }
 };
 
-export default apiMiddleware;
+export default scrabbleMiddleware;

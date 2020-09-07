@@ -33,7 +33,6 @@ const initialState : AppState = {
   exchange: {
     tiles: [], 
   },
-
   board: {
     activeIndex: null,
     focusedIndex: null,

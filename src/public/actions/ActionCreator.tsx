@@ -41,9 +41,9 @@ export const startGame = () : Actions.StartGame => ({
   action: ActionNames.START_GAME,
   payload: {}
 });
-export const awaitUpdate = () : Actions.AwaitPlayers => ({
+export const refreshGame = () : Actions.RefreshGame => ({
   type: Actions.Type.ASYNC,
-  action: ActionNames.AWAIT_PLAYERS,
+  action: ActionNames.REFRESH_GAME,
   payload: {}
 });
 
@@ -64,13 +64,13 @@ export const returnPlayedTile = (squareIndex: number, tile: Tile) : Actions.Retu
   }
 });
 //Used for click and keypress, index is not required for the latter
-export const returnExchangedTile = (tile: Tile, index?: number) : Actions.ReturnExchangedTile => ({
+/*export const returnExchangedTile = (tile: Tile, index?: number) : Actions.ReturnExchangedTile => ({
   type: Actions.Type.SYNC,
   action: ActionNames.RETURN_EXCHANGED_TILE,
   payload: {
     tile, index
   }
-});
+});*/
 export const returnPlayedTiles = () : Actions.ReturnPlayedTiles => ({
   type: Actions.Type.SYNC,
   action: ActionNames.RETURN_PLAYED_TILES,

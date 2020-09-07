@@ -18,7 +18,7 @@ export const takeRackTile = (appState: AppState, key: string) => {
       const rackTile = rackTiles[index]; 
       if (rackTile.letter == key) {
         break;
-      } else if (rackTile.isBlank) {
+      } else if (rackTile.blank) {
         blankIndex = rackIndex;
       }
       rackIndex++;

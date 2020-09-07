@@ -27,7 +27,7 @@ export type Square = {
    col: number,
    tile: {
     letter: string,
-    isBlank: boolean
+    blank: boolean
   },
 }
 
@@ -44,7 +44,7 @@ export type Player = {
   name: string,
   score: number,
   skipTurnCount: number,
-  isForfeited: boolean 
+  forfeited: boolean 
 }
 
 export type GameResponseError = {}

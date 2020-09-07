@@ -16,13 +16,10 @@ export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess
   status = RequestStatus.SUCCESSFUL;
   error = null;
   appState.service.gameState = {status, error, ...others};
-  //make a common method to handle all updates
      
   if (data) {
     appState.board = getNewBoard();  
   }
-  //TODO: set game.playerIndex
-  
   return parseGameResponse(appState, data);
 }
 
@@ -81,10 +78,11 @@ export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess
   error = null;
   appState.service.gameRefresh = {status, error, ...others};
 
-   const noActiveRequests: boolean = 
-     appState.service.gameState.status !== RequestStatus.REQUESTING; 
+   //FIXME: this is probably not needed
+   //const noActiveRequests: boolean = 
+   //  appState.service.gameState.status !== RequestStatus.REQUESTING; 
 
-  if ((eTag && eTag === appState.game.version) || !data || !noActiveRequests) {
+  if ((eTag && eTag === appState.game.version) || !data /*|| !noActiveRequests*/) {
     return appState;
   } else {
     return parseGameResponse(appState, data);  
@@ -129,7 +127,6 @@ export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
 }
 
 const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
-  
   const id: string = data.game.id.toString()
   const playerId: string = data.game.playerId.toString();
   const playerIndex: number = data.players.findIndex(player => player.id === playerId);
@@ -143,25 +140,22 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   tiles = data.rack.tiles.map(letter => {
     return {
       letter: letter,
-      isBlank: ' ' === letter
+      blank: ' ' === letter
     }
   });
   appState.rack = {tiles, ...othersRack}
- 
+  
   appState.turn = {playedTiles: []}
   appState.exchange = { tiles: []}
- 
   appState.players = data.players
-  
   appState.lastTurn = data.lastTurn;
     
   let {squares, ...others2} = appState.board  
-  
   const updatedSquares: SquareState[] = [];
   data.board.squares.forEach(square => {
     const index = square.row*15+square.col
     const existingSquare = squares && squares[index]
-    const tile = square.tile || {letter: null, isBlank: null}
+    const tile = square.tile || {letter: null, blank: null}
     const updatedSquare: SquareState = {
       tile: tile,
       modifier: existingSquare.modifier,

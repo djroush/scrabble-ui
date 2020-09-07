@@ -5,7 +5,7 @@ import {AppAction} from '../actions/Actions'
 import PlayerActionsView from '../views/PlayerActionsView'
 
 import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn} from '../actions/ActionCreator'
-import { AppState } from '../store/State';
+import { AppState, GameStatus } from '../store/State';
 
 export type PlayerActionsProps =  PlayerActionsStateProps & PlayerActionsDispatchProps;
 
@@ -15,6 +15,7 @@ type PlayerActionsStateProps = {
   hasMultipleRackLetters: boolean;
   isPlayersTurn: boolean;
   wasPlayersTurn: boolean;
+  isActive: boolean;
 }
 
 type PlayerActionsDispatchProps = {
@@ -32,7 +33,8 @@ const mapStateToProps = (appState : AppState) => {
     hasExchangeLetters: appState.exchange.tiles.length > 0,
     hasMultipleRackLetters: appState.rack.tiles.length > 1,
     isPlayersTurn: appState.game.isPlayerUp,
-    wasPlayersTurn: playerIndex === ((appState.lastTurn && appState.lastTurn.playerIndex) || -1) || !appState.lastTurn
+    wasPlayersTurn: playerIndex === ((appState.lastTurn && appState.lastTurn.playerIndex) || -1) || !appState.lastTurn,
+    isActive: appState.game.status === GameStatus.ACTIVE,  
   }
 }
 

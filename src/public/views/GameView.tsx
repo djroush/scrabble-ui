@@ -20,31 +20,22 @@ const GameView = (props: GameProps) => {
 
   function getViewForStatus(status: GameStatus): JSX.Element {
     switch(status) {
-     
       case GameStatus.UNKNOWN: {
         return <GameUnknown/>;
       }
       case GameStatus.PENDING: {
         return <GamePending/>;
       }
+      case GameStatus.ENDGAME: {
+        return <GameActive/>;
+      }
       case GameStatus.ACTIVE: {
         return <GameActive/>;
       }
-      //FIXME: This should really be the active view, need to implement logic for 
-      // ENDGAME->FINISHED before changing this
-      case GameStatus.ENDGAME:{ 
-        return <GameFinishedView/>;
-      } 
       case GameStatus.FINISHED: { 
         return <GameFinishedView/>;
       }
-/*      case GameStatus.ABORTED: {
-        return <GameAbortedView/>;
-      }
-      case GameStatus.ABANDONED: {
-        return <GameAbandonedView/>;
-      }
-*/    }
+    }
   }
 };
 

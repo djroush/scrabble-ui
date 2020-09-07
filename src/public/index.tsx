@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, Store } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import apiMiddleware from './middleware/ScrabbleService'
+import refreshMiddleware from './middleware/RefreshMiddleware'
+import scrabbleMiddleware from './middleware/ScrabbleMiddleware'
 import { createLogger } from 'redux-logger';
 
 import './index.css';
@@ -11,11 +12,15 @@ import './index.css';
 import {AppState} from './store/State';
 import {AppAction} from './actions/Actions'
 import AppReducer from './reducers/App';
-import App from './views/App';
+import App from './containers/AppContainer';
 
 const loggerMiddleware = createLogger();
-const store: Store<AppState, AppAction> = createStore(AppReducer, applyMiddleware(thunkMiddleware,loggerMiddleware, 
-apiMiddleware));
+const store: Store<AppState, AppAction> = createStore(AppReducer, applyMiddleware(
+  thunkMiddleware, 
+  refreshMiddleware,
+  scrabbleMiddleware,
+  loggerMiddleware
+))
 
 const render = () => ReactDOM.render(
   <Provider store={store}>

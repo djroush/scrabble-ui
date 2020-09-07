@@ -28,8 +28,8 @@ export const returnPlayedTiles = (appState: AppState) => {
   squares[activeIndex].direction = null;
   playedTiles.forEach((playedTile: PlayedTile) => {
       const {index, tile} = playedTile;
-      squares[index].tile = {letter: null, isBlank: null};
-      tile.letter = tile.isBlank ? ' ' : tile.letter;
+      squares[index].tile = {letter: null, blank: null};
+      tile.letter = tile.blank ? ' ' : tile.letter;
       returnedTiles.push(tile);
       activeIndex = Math.min(activeIndex, index);
   });
@@ -55,8 +55,8 @@ export const returnPlayedTile = (appState: AppState) => {
   squares[activeIndex].direction = null;
   const returnedPlayedTile: PlayedTile = playedTiles.splice(tilesPlayed-1, 1)[0]
   const {index, tile} = returnedPlayedTile;
-  squares[index].tile = {letter: null, isBlank: null};
-  tile.letter = tile.isBlank ? ' ' : tile.letter;
+  squares[index].tile = {letter: null, blank: null};
+  tile.letter = tile.blank ? ' ' : tile.letter;
   tiles.push(tile);
   activeIndex = index;
 

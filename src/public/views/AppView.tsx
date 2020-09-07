@@ -1,12 +1,23 @@
-  import React from 'react';
+  import React, {useEffect} from 'react';
 
 import '../css/App.css';
 
 import Board from '../containers/Board';
 import LetterDistributionView from '../views/LetterDistribution';
-import Game from '../containers/Game' 
+import Game from '../containers/Game'
+import {AppProps} from '../containers/AppContainer' 
 
-const App = () => {
+const AppView = (props: AppProps) => {
+ 
+  useEffect(() => {
+    const timerId = setInterval(() => props.onTimeout(), 5000);
+    return () => {
+      clearInterval(timerId);
+    };
+  });
+
+  
+  
   return (
   <div className="App">
     <div className="left">
@@ -22,4 +33,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AppView;

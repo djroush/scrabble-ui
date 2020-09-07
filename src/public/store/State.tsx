@@ -60,7 +60,7 @@ export type ExchangeState = {
 };
 export type Tile = {
   letter: string
-  isBlank: boolean
+  blank: boolean
 }
 
 export type BoardState = {
@@ -73,7 +73,7 @@ export type PlayerInfo = {
   name: string,
   score: number,
   skipTurnCount: number,
-  isForfeited: boolean
+  forfeited: boolean
 };
 export type TurnState = {
   playedTiles: PlayedTile[]

@@ -102,7 +102,7 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
     rackTile = tiles[index]; 
     if (rackTile.letter === key) {
       break;
-    } else if (rackTile.isBlank) {
+    } else if (rackTile.blank) {
       blankIndex = rackIndex;
     }
     rackIndex++;
@@ -117,7 +117,7 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
       tiles.splice(tileIndex, 1)[0];
       square.tile = {
         letter: key,
-        isBlank: !hasTile && blankIndex >= 0
+        blank: !hasTile && blankIndex >= 0
       }
       rack.tiles = tiles;
       board.squares[newIndex] = square;
