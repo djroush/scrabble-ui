@@ -2,10 +2,11 @@
   display:block;
   position:relative;
   background-color: white;
-  height: 100%;
+  height: auto;
   width: fit-content;
   max-width: fit-content;
   min-width: 47vw;
+  min-height: fit-content;
 }
 table {
   display: inline-block;

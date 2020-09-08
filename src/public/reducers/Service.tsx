@@ -129,7 +129,7 @@ export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
 const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const id: string = data.game.id.toString()
   const playerId: string = data.game.playerId.toString();
-  const playerIndex: number = data.players.findIndex(player => player.id === playerId);
+  const playerIndex: number = data.game.playerIndex;
   const version: string = data.game.version.toString();
   const activePlayerIndex: number  = data.game.activePlayerIndex;
   const status = GameStatusHelper.getStatus(data.game.state);
@@ -152,16 +152,18 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
     
   let {squares, ...others2} = appState.board  
   const updatedSquares: SquareState[] = [];
+  
+  let index = 0;
   data.board.squares.forEach(square => {
-    const index = square.row*15+square.col
     const existingSquare = squares && squares[index]
-    const tile = square.tile || {letter: null, blank: null}
+    const tile = square  || {letter: null, blank: null}
     const updatedSquare: SquareState = {
       tile: tile,
       modifier: existingSquare.modifier,
       direction: existingSquare.direction,
     }
     updatedSquares.push(updatedSquare);
+    index += 1;
   });
   squares = updatedSquares;
   appState.board = { squares, ...others2}

@@ -2,7 +2,7 @@ import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
 import {AppAction} from '../actions/Actions'
-import SquareView from '../views/Square'
+import SquareView from '../views/SquareView'
 import {AppState, Modifier, Direction, Tile} from '../store/State'
 
 import {squareKeyDown, squareMouseDown, squareMouseUp} from '../actions/ActionCreator'

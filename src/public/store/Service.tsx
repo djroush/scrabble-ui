@@ -9,6 +9,7 @@ export type GameResponseSuccess = {
 export type Game = {
   id: string,
   playerId: string,
+  playerIndex: number,
   version: string,
   state: string,  
   activePlayerIndex: number
@@ -19,17 +20,13 @@ export type Rack = {
   tiles: string[]
 }
 export type Board = {
-  squares: Square[],
+  squares: Tile[],
 }
 
-export type Square = {
-   row: number,
-   col: number,
-   tile: {
-    letter: string,
-    blank: boolean
-  },
-}
+export type Tile = {
+  letter: string,
+  blank: boolean
+} 
 
 export type LastTurn = {
   action: 'UNKNOWN' | 'PLAY_TILES' | 'EXCHANGE_TILES' | 'PASS_TURN' | 'CHALLENGE_TURN' | 'FORFEIT_GAME'

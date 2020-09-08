@@ -94,38 +94,35 @@ export const squareKeyDown = (appState: AppState, newIndex: number, key: string,
   }
   
   //Check if this letter (or a blank) exists on the rack
-  let rackIndex: number = 0;
+  let rackIndex: number = -1;
   let blankIndex: number = -1;
-  let rackTile = null;
+
   const rackSize = tiles.length;
   for (let index = 0; index < rackSize; index++) {
-    rackTile = tiles[index]; 
+    const rackTile = tiles[index]; 
     if (rackTile.letter === key) {
-      break;
+      rackIndex = index;
     } else if (rackTile.blank) {
-      blankIndex = rackIndex;
+      blankIndex = index;
     }
-    rackIndex++;
   };
   //Take the tile from the rack, put it on the board and add it to the turn
-  const hasTile = rackIndex < rackSize;
+  const hasTile = rackIndex >= 0;
   const hasBlankTile = blankIndex >= 0;
+
   if (hasTile || hasBlankTile) {
-      const tileIndex =  hasTile ? rackIndex : blankIndex;
-      rackTile = hasTile ?  tiles[rackIndex] : tiles[blankIndex];
-      rackTile.letter = key
-      tiles.splice(tileIndex, 1)[0];
-      square.tile = {
-        letter: key,
-        blank: !hasTile && blankIndex >= 0
-      }
+      const tileIndex =  hasTile && !(hasBlankTile && shiftKey) ? rackIndex : blankIndex;
+      const rackTile = tiles.splice(tileIndex, 1)[0];
+      rackTile.letter = key;
+      square.tile = rackTile;
       rack.tiles = tiles;
+      
       board.squares[newIndex] = square;
-      const newPlayedTile: PlayedTile = {
+      const playedTile: PlayedTile = {
         index: newIndex,
         tile: rackTile
       }
-      playedTiles.push(newPlayedTile);
+      playedTiles.push(playedTile);
       turn.playedTiles = playedTiles;
   } else {
     return appState;

@@ -37,7 +37,7 @@ const LastTurnView = (props: TurnProps)  => {
   }
        
   
-  const message: string = !!lastTurn && !!lastTurn.action ? getMessage(lastTurn,players) : '';
+  const message: string = !!lastTurn && !!lastTurn.action ? getMessage(lastTurn,players) : 'A new game has been started, Good Luck!';
   return (
   <div className="lastTurn">
     <span>{message}</span>
