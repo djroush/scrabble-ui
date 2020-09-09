@@ -35,6 +35,7 @@ export type LastTurn = {
   playerIndex: number, 
   loseTurnPlayerIndex?: number,
   points: number,
+  newTileIndexes: number[]
 }
 
 

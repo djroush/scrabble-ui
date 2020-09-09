@@ -60,3 +60,29 @@
   outline-style: outset;
   outline-width: medium;
 }
+
+
+.tile.new {
+  animation: color-me-in 8s;
+}
+
+@keyframes color-me-in {
+  0% {
+    color: red;
+  }
+  20% {
+    color: darkred;
+  }
+  40% {
+    color: red;
+  }
+  60% {
+    color: black;
+  }
+  80% {
+    color: crimson;
+  }
+  100% {
+    color: initial;
+  }
+}

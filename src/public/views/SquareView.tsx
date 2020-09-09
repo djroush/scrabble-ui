@@ -12,14 +12,17 @@ const SquareView = (props: SquareProps) => {
     }
   });
   
-  const {index, tile, direction, modifier, onMouseUp, onMouseDown, onKeyDown} = props;
+  const {index, tile, direction, modifier, newTileIndexes, onMouseUp, onMouseDown, onKeyDown} = props;
   const hasTile = !!tile && !!tile.letter;
   const dirClass: string = direction === null  || hasTile ? "" : " " + direction;
   const squareClass= "square " + modifier + dirClass;
+  const isNewTile = newTileIndexes.indexOf(index) > -1
   
  
-  const blank = hasTile && tile.blank ? " blank" : "";
-  const tileClass= (hasTile ? "tile" : "") + blank;
+  const blankClass = hasTile && tile.blank ? " blank" : "";
+  const newClass = isNewTile ? " new" : ""; 
+  const tileClass = (hasTile ? "tile" : "") + newClass + blankClass;
+  
   const letter = tile && tile.letter ? tile.letter : "";
   const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>  
    return (

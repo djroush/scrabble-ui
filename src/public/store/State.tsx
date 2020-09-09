@@ -37,6 +37,7 @@ export type LastTurnState = {
   playerIndex: number, 
   loseTurnPlayerIndex?: number,
   points: number,
+  newTileIndexes: number[]
 }
 
 export enum RequestStatus {UNKNOWN, REQUESTING, SUCCESSFUL, ERRORED}

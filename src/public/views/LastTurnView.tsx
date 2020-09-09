@@ -12,7 +12,8 @@ const LastTurnView = (props: TurnProps)  => {
                               
       switch (lastTurn.action) {
         case "PLAY_TILES": {
-          return playerName + " played their turn and scored " + lastTurn.points + " points"; 
+          const tileCount = lastTurn.newTileIndexes.length
+          return playerName + " played " + tileCount + " tile" + (tileCount !== 1 ? "s" : "") + " and scored " + lastTurn.points + " points"; 
         }
         case "EXCHANGE_TILES": {
           return playerName + " used their turn to exchange tiles";

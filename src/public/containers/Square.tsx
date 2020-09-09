@@ -11,13 +11,13 @@ export type SquareProps = SquareOwnProps & SquareStateProps & SquareDispatchProp
 
 type SquareOwnProps =  {
   index: number;
-}
+};
 type SquareStateProps = {
   isActive: boolean;
   tile?: Tile;
   modifier: Modifier;
   direction: Direction;
-
+  newTileIndexes: number[];
 }; 
 type SquareDispatchProps = {
   onMouseUp: () => void;
@@ -28,9 +28,10 @@ type SquareDispatchProps = {
 const mapStateToProps = (state: AppState, props: SquareOwnProps) => {
   const isActive = state.board.activeIndex === props.index && state.board.focusedIndex == props.index
   const {tile, modifier, direction} =  state.board.squares[props.index];
+  const newTileIndexes: number[] = state.lastTurn && state.lastTurn.newTileIndexes || []
 
   return {
-    isActive, tile, modifier, direction
+    isActive, tile, modifier, direction, newTileIndexes
   }
 };
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>, props: SquareOwnProps) => {
