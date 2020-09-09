@@ -24,12 +24,12 @@ const LastTurnView = (props: TurnProps)  => {
           return playerName + " has passed their turn";
         }
         case "CHALLENGE_TURN": {
-          lastTurn.loseTurnPlayerIndex
-          const losingPlayerName : string = players[lastTurn.loseTurnPlayerIndex].name
+          const losingPlayerIndex: number = lastTurn.loseTurnPlayerIndex;
+          const losingPlayerName : string = players[losingPlayerIndex].name
           if (lastTurn.loseTurnPlayerIndex === lastTurn.playerIndex) {
-            return losingPlayerName + " challenged the previous turn and lost, " + losingPlayerName + " loses a turn";
+            return playerName + " challenged the previous turn and lost, " + losingPlayerName + " loses a turn";
           } else {
-            return losingPlayerName + " challenged the previous turn and won, " + playerName + " loses a turn";
+            return playerName + " challenged the previous turn and won, " + losingPlayerName + " loses a turn";
           }
         }
         default: return playerName + " did something...";

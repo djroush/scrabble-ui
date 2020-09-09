@@ -134,7 +134,10 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const activePlayerIndex: number  = data.game.activePlayerIndex;
   const status = GameStatusHelper.getStatus(data.game.state);
   const isPlayerUp = playerIndex === activePlayerIndex
-  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp,status};
+  const wasPlayerUp: boolean = data.game.lastPlayerToPlayTilesIndex === playerIndex || false
+  const canChallenge: boolean = data.game.canChallenge && !wasPlayerUp   
+  
+  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, status};
 
   let {tiles, ...othersRack} = appState.rack;
   tiles = data.rack.tiles.map(letter => {

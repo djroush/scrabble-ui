@@ -5,8 +5,8 @@ import '../css/PlayerActions.css';
 import {PlayerActionsProps} from '../containers/PlayerActions'
 
 const PlayerActionsView = (props: PlayerActionsProps) => {
-  const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, isPlayersTurn, wasPlayersTurn, isActive,
-         clickShuffle, clickReturn, clickExchange, clickPlayTiles, clickPassTurn} = props;
+  const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, isPlayersTurn, wasPlayersTurn, isActive, canChallenge,
+         clickShuffle, clickReturn, clickExchange, clickPlayTiles, clickPassTurn, clickChallengeTurn} = props;
   return (
   <div className="playerActions">
       {hasMultipleRackLetters
@@ -29,11 +29,10 @@ const PlayerActionsView = (props: PlayerActionsProps) => {
         ? <button id="passButton" type="button" onClick={clickPassTurn}>Pass turn</button>
         : <button id="passButton" type="button" disabled>Pass turn</button>
       }
-      {wasPlayersTurn
+      {wasPlayersTurn || !canChallenge
         ? <button id="challengeButton" type="button" disabled>Challenge</button>
-        : <button id="challengeButton" type="button">Challenge</button>
+        : <button id="challengeButton" type="button" onClick={clickChallengeTurn}>Challenge turn</button>
       }
-
       
   </div>
   );

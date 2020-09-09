@@ -13,6 +13,8 @@ export type Game = {
   version: string,
   state: string,  
   activePlayerIndex: number
+  lastPlayerToPlayTilesIndex: number
+  canChallenge: boolean
 }
 
 

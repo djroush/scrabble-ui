@@ -49,7 +49,8 @@ export type GameState = {
   playerIndex: number
   activePlayerIndex: number
   isPlayerUp: boolean
-  status: GameStatus, 
+  canChallenge: boolean
+  status: GameStatus,
 
 };
 export type RackState = {

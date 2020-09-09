@@ -3,7 +3,14 @@ import * as ActionNames from './ActionNames'
 
 import {Tile} from '../store/State'
 
-//Game
+//App
+export const refreshGame = () : Actions.RefreshGame => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.REFRESH_GAME,
+  payload: {}
+});
+
+//GameUnknown
 export const inputKeyDown = (key: string, isCreate: boolean) : Actions.InputKeyDown => ({
   type: Actions.Type.ASYNC,
   action: ActionNames.INPUT_KEYDOWN,
@@ -36,14 +43,11 @@ export const joinGame = () : Actions.JoinGame => ({
   action: ActionNames.JOIN_GAME,
   payload: {}
 });
+
+//GamePending
 export const startGame = () : Actions.StartGame => ({
   type: Actions.Type.ASYNC,
   action: ActionNames.START_GAME,
-  payload: {}
-});
-export const refreshGame = () : Actions.RefreshGame => ({
-  type: Actions.Type.ASYNC,
-  action: ActionNames.REFRESH_GAME,
   payload: {}
 });
 
@@ -63,14 +67,6 @@ export const returnPlayedTile = (squareIndex: number, tile: Tile) : Actions.Retu
     squareIndex, tile
   }
 });
-//Used for click and keypress, index is not required for the latter
-/*export const returnExchangedTile = (tile: Tile, index?: number) : Actions.ReturnExchangedTile => ({
-  type: Actions.Type.SYNC,
-  action: ActionNames.RETURN_EXCHANGED_TILE,
-  payload: {
-    tile, index
-  }
-});*/
 export const returnPlayedTiles = () : Actions.ReturnPlayedTiles => ({
   type: Actions.Type.SYNC,
   action: ActionNames.RETURN_PLAYED_TILES,
@@ -118,6 +114,12 @@ export const passTurn = () : Actions.PassTurn => ({
   action: ActionNames.PASS_TURN,
   payload: {}
 });
+export const challengeTurn = () : Actions.ChallengeTurn => ({
+  type: Actions.Type.ASYNC,
+  action: ActionNames.CHALLENGE_TURN,
+  payload: {}
+});
+
 
 //GameInfo 
 export const leaveGame = () : Actions.LeaveGame => ({

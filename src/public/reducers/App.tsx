@@ -25,6 +25,7 @@ const initialState : AppState = {
     playerIndex: -1,
     activePlayerIndex: -1,
     isPlayerUp: false,
+    canChallenge: false,
     status: GameStatus.UNKNOWN,
   },
   rack: {
@@ -117,10 +118,11 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     }
     //GameInfo
     case ActionNames.NEW_GAME: {
+      const name = newState.input.name;
+      const gameId = '';
       newState = {
         input: {
-          name: '',
-          gameId: '',    
+          name, gameId    
         },
         game: {
           version: "",
@@ -129,6 +131,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           playerIndex: -1,
           activePlayerIndex: -1,
           isPlayerUp: false,
+          canChallenge: false,
           status: GameStatus.UNKNOWN,
         },
         rack: {

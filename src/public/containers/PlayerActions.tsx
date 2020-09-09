@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {AppAction} from '../actions/Actions'
 import PlayerActionsView from '../views/PlayerActionsView'
 
-import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn} from '../actions/ActionCreator'
+import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn, challengeTurn} from '../actions/ActionCreator'
 import { AppState, GameStatus } from '../store/State';
 
 export type PlayerActionsProps =  PlayerActionsStateProps & PlayerActionsDispatchProps;
@@ -16,6 +16,7 @@ type PlayerActionsStateProps = {
   isPlayersTurn: boolean;
   wasPlayersTurn: boolean;
   isActive: boolean;
+  canChallenge: boolean;
 }
 
 type PlayerActionsDispatchProps = {
@@ -24,6 +25,7 @@ type PlayerActionsDispatchProps = {
   clickExchange: () => void;
   clickPlayTiles: () => void;
   clickPassTurn: () => void;
+  clickChallengeTurn: () => void;
 }; 
 
 const mapStateToProps = (appState : AppState) => {
@@ -34,7 +36,8 @@ const mapStateToProps = (appState : AppState) => {
     hasMultipleRackLetters: appState.rack.tiles.length > 1,
     isPlayersTurn: appState.game.isPlayerUp,
     wasPlayersTurn: playerIndex === ((appState.lastTurn && appState.lastTurn.playerIndex) || -1) || !appState.lastTurn,
-    isActive: appState.game.status === GameStatus.ACTIVE,  
+    isActive: appState.game.status === GameStatus.ACTIVE,
+    canChallenge: appState.game.canChallenge
   }
 }
 
@@ -48,6 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
     clickExchange: () => dispatch(exchangeTiles()),
     clickPlayTiles: () => dispatch(playTiles()),
     clickPassTurn: () => dispatch(passTurn()),
+    clickChallengeTurn: () => dispatch(challengeTurn()),
   }
 };
 

@@ -183,6 +183,26 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     }
   }
 
+  const challengeTurn = (): void => {
+    if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
+      
+      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/challenge', {
+        method: 'POST',
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status >= 400) {
+          throw new Error(data.message)
+        }
+        return data
+      }).then((data) => {
+        next(AsyncActionCreator.gameActiveSuccess(data));
+      }).catch((error) => {
+        next(AsyncActionCreator.gameActiveFailure(error));
+      });
+    }
+  }
+
   const forfeitGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
@@ -251,6 +271,10 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     }
     case ActionNames.PASS_TURN: {
       passTurn();
+      break;
+    }
+    case ActionNames.CHALLENGE_TURN: {
+      challengeTurn();
       break;
     }
     case ActionNames.LEAVE_GAME: {
