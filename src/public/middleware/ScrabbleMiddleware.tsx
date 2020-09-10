@@ -12,11 +12,15 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameUnknownRequest())
   
-      fetch('http://localhost:8080/scrabble/game' + queryString, {
+      const player = {
+        name: appState.input.name
+      }
+      fetch('http://localhost:8080/scrabble/game', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
+        body: JSON.stringify(player)
       }).then((response) => {
         return response.json();
       }).then((data) => {
@@ -36,11 +40,17 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const joinGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameUnknownRequest())
-      fetch('http://localhost:8080/scrabble/game/' + gameId + queryString, {
+      
+      const player = {
+        name: appState.input.name
+      }
+      
+      fetch('http://localhost:8080/scrabble/game/' + gameId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
+        body: JSON.stringify(player)
       }).then((response) => {
         return response.json();
       }).then((data) => {
