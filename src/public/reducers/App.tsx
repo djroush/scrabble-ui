@@ -8,7 +8,6 @@ import {updateName, updateGameId} from '../reducers/Game';
 import {shuffleTiles, returnPlayedTile, returnPlayedTiles} from '../reducers/Rack';
 import {returnExchangeTileLast, returnExchangeTiles, takeRackTile} from '../reducers/Exchange';
 
-import {getNewBoard} from '../reducers/Board';
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure,
         gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure, gameActiveRequest,  gameActiveSuccess,  gameActiveFailure } from '../reducers/Service'
@@ -19,9 +18,9 @@ const initialState : AppState = {
     gameId: '',    
   },
   game: {
-    version: "",
-    id:"",
-    playerId:"",
+    version: null,
+    id:null,
+    playerId:null,
     playerIndex: -1,
     activePlayerIndex: -1,
     isPlayerUp: false,
@@ -46,6 +45,7 @@ const initialState : AppState = {
     action: 'UNKNOWN',
     playerIndex: -1,
     points: 0,
+    newTileIndexes: []
   },
   players: [],
   service: {
@@ -125,9 +125,9 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           name, gameId    
         },
         game: {
-          version: "",
-          id:"",
-          playerId:"",
+          version: null,
+          id:null,
+          playerId:null,
           playerIndex: -1,
           activePlayerIndex: -1,
           isPlayerUp: false,
@@ -152,6 +152,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           action: 'UNKNOWN',
           playerIndex: -1,
           points: 0,
+          newTileIndexes:[]
         },
         players: [],
         service: {
@@ -165,12 +166,9 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           }, 
         },        
       }
+      sessionStorage.removeItem('gameState');
 
-      break;
-    }
-    //BoardReducer
-    case ActionNames.INITIALIZE_BOARD_SQUARES: {
-      newState.board = getNewBoard();
+
       break;
     }
     //SquareReducer

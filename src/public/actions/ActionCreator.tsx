@@ -138,14 +138,6 @@ export const newGame = () : Actions.NewGame => ({
   payload: {}
 });
 
-
-//Board
-export const initializeBoardSquares = () : Actions.InitializeBoardSquares => ({
-  type: Actions.Type.SYNC,
-  action: ActionNames.INITIALIZE_BOARD_SQUARES,
-  payload: {}
-});
-
 //Square
 export const squareMouseUp = () : Actions.SquareMouseUp => ({
   type: Actions.Type.SYNC,

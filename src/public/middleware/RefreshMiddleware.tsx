@@ -1,20 +1,32 @@
 import {Store} from 'redux'
 
 import { AppAction } from '../actions/Actions'; 
-import {AppState, RequestStatus, GameStatus} from '../store/State';
+import {AppState, RequestStatus, GameStatus, StorageState} from '../store/State';
 import * as ActionNames from '../actions/ActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 
 const refreshMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
   const refreshGame = (): void => {
-     const {playerId,id, version} = store.getState().game
-     let eTag = '';
+    
+    let {playerId,id, version} = store.getState().game 
+    let eTag = '';
 
+    const storageState: StorageState = JSON.parse(sessionStorage.getItem('gameState'))
     const appState: AppState = store.getState();
     const gameStatus: GameStatus = appState.game.status;
-    if (appState.service.gameState.status !== RequestStatus.REQUESTING && 
-        appState.service.gameRefresh.status !== RequestStatus.REQUESTING && 
-        (gameStatus !== GameStatus.FINISHED && gameStatus !== GameStatus.UNKNOWN && gameStatus !== GameStatus.ABORTED)) {
+    
+    const requestInProgress: boolean = appState.service.gameState.status === RequestStatus.REQUESTING || 
+        appState.service.gameRefresh.status === RequestStatus.REQUESTING
+    const updateNeeded = gameStatus !== GameStatus.FINISHED && gameStatus !== GameStatus.UNKNOWN && gameStatus !== GameStatus.ABORTED
+    const canRejoinPreviousGame: boolean = !!storageState 
+    if (!requestInProgress && (updateNeeded || canRejoinPreviousGame)) {
+
+     if (!playerId && !id && canRejoinPreviousGame) {
+        const {gameId,playerId:playerId1} = {...storageState}
+        id = gameId;
+        playerId = playerId1;
+        version = "0";
+     }
 
       next(AsyncActionCreator.gameRefreshRequest())
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId , {

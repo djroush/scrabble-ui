@@ -1,15 +1,16 @@
 import React from 'react';
 
-import  '../css/GameFinished.css';
+import  '../css/GameAborted.css';
 
 import PlayersDisplay from '../containers/PlayersDisplay';
-import GameFinishedResult from '../containers/GameFinishedResultContainer'
 import GameInfo from '../containers/GameInfo' 
 
-const GameFinishedView = () => {
+const GameAbortedView = () => {
   return (
-    <div className="gameFinished">
-        <GameFinishedResult/>
+    <div className="gameAborted">
+        <div className="gameResult">
+          <h1>This game has been aborted after all other players have left</h1>
+        </div>
         <div>
           <PlayersDisplay/>
           <p/>
@@ -19,4 +20,4 @@ const GameFinishedView = () => {
   );
 }
   
-export default GameFinishedView;
+export default GameAbortedView;

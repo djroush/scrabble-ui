@@ -241,7 +241,6 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const appState: AppState = store.getState();
   const {playerId,id} = appState.game;
   const {name, gameId} = appState.input;
-  const queryString = "?player=" + name     //TODO: encode input for playerName?
   
   switch (action.action) {
     case ActionNames.INPUT_KEYDOWN: {

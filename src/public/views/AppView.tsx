@@ -10,13 +10,12 @@ import {AppProps} from '../containers/AppContainer'
 const AppView = (props: AppProps) => {
  
   useEffect(() => {
+    props.onTimeout();
     const timerId = setInterval(() => props.onTimeout(), 5000);
     return () => {
       clearInterval(timerId);
     };
   });
-
-  
   
   return (
   <div className="App">

@@ -1,0 +1,11 @@
+.gameAborted {
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+  height: 100%;
+}
+
+.gameAborted > div {
+  flex-direction: column;
+  display: inline-flex;
+}

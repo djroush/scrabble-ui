@@ -2,11 +2,11 @@ import React from 'react';;
 
 import '../css/GameResult.css';
 
-import {GameResultProps} from '../containers/GameResult';
+import {GameFinishedResultProps} from '../containers/GameFinishedResultContainer';
 import { PlayerInfo } from 'store/State';
 
 
-const GameResultView = (props: GameResultProps) => {
+const GameFinishedResultView = (props: GameFinishedResultProps) => {
   const {playersInfo} = props;
 
   const getWinner = (playersInfo: PlayerInfo[]) : PlayerInfo => {
@@ -29,7 +29,6 @@ const GameResultView = (props: GameResultProps) => {
     return playersInfo[maxScoreIndex];
   };
   
-
   const winner: PlayerInfo = getWinner(playersInfo);
    
   return (
@@ -37,8 +36,6 @@ const GameResultView = (props: GameResultProps) => {
     <h1>Congratulations <span>{winner.name}</span>!<br/>You've won this game.</h1>
   </div>
   );
-  
-
 }
 
-export default GameResultView;
+export default GameFinishedResultView;

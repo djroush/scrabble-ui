@@ -11,6 +11,7 @@ const GameInfoView = (props: GameInfoProps) => {
   switch(status) {
     case 'PENDING':
       return <button id="leaveGamebutton" type="button" onClick={clickLeaveGame}>Leave&nbsp;Game</button>;
+    case 'ABORTED':
     case 'ENDGAME':
     case 'FINISHED':
       return <button id="newGameButton" type="button" onClick={clickNewGame}>New&nbsp;Game</button>

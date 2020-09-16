@@ -6,19 +6,12 @@ import {GameStatus} from '../store/State';
 import {GameProps} from '../containers/Game';
 import GameActive from '../containers/GameActive'
 import GameFinishedView from '../views/GameFinishedView'
+import GameAbortedView from '../views/GameAbortedView'
 import GameUnknown from '../containers/GameUnknown'
 import GamePending from '../containers/GamePending'
 
-
 const GameView = (props: GameProps) => {
-  const gameStatusView = getViewForStatus(props.status);
-  return (
-    <div className="game">
-      {gameStatusView}
-    </div>
-  );
-
-  function getViewForStatus(status: GameStatus): JSX.Element {
+  const getViewForStatus = (status: GameStatus): JSX.Element => {
     switch(status) {
       case GameStatus.UNKNOWN: {
         return <GameUnknown/>;
@@ -29,6 +22,9 @@ const GameView = (props: GameProps) => {
       case GameStatus.ENDGAME: {
         return <GameActive/>;
       }
+      case GameStatus.ABORTED: {
+        return <GameAbortedView/>;
+      }
       case GameStatus.ACTIVE: {
         return <GameActive/>;
       }
@@ -37,6 +33,12 @@ const GameView = (props: GameProps) => {
       }
     }
   }
+  const gameStatusView = getViewForStatus(props.status);
+  return (
+    <div className="game">
+      {gameStatusView}
+    </div>
+  );
 };
 
 export default GameView;

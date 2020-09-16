@@ -31,9 +31,6 @@ export const LEAVE_GAME = "LEAVE_GAME"
 export const FORFEIT_GAME = "FORFEIT_GAME"
 export const NEW_GAME = "NEW_GAME"
 
-// Board stuff
-export const INITIALIZE_BOARD_SQUARES = "INITIALIZE_BOARD_SQUARES"
-
 // Square stuff 
 export const SQUARE_MOUSEUP = "SQUARE_MOUSEUP"
 export const SQUARE_KEYDOWN = "SQUARE_KEYDOWN"

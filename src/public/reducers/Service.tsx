@@ -1,7 +1,5 @@
-import { AppState, RequestStatus, ErrorState,SquareState } from '../store/State';
+import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState } from '../store/State';
 import {GameResponseSuccess} from '../store/Service'
-import {getNewBoard} from '../reducers/Board'
-import * as GameStatusHelper from '../helper/GameStatusHelper'
 
 export const gameUnknownRequest = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gameState};
@@ -17,9 +15,6 @@ export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess
   error = null;
   appState.service.gameState = {status, error, ...others};
      
-  if (data) {
-    appState.board = getNewBoard();  
-  }
   return parseGameResponse(appState, data);
 }
 
@@ -45,9 +40,6 @@ export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess
   error = null;
   appState.service.gameState = {status, error, ...others};
 
-  if (data) {
-    appState.board = getNewBoard();  
-  }
   if (eTag && eTag === appState.game.version) {
     return appState;
   } else {
@@ -132,10 +124,18 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const playerIndex: number = data.game.playerIndex;
   const version: string = data.game.version.toString();
   const activePlayerIndex: number  = data.game.activePlayerIndex;
-  const status = GameStatusHelper.getStatus(data.game.state);
+  const status: GameStatus = getGameStatus(data.game.state);
   const isPlayerUp = playerIndex === activePlayerIndex
   const wasPlayerUp: boolean = data.game.lastPlayerToPlayTilesIndex === playerIndex || false
   const canChallenge: boolean = data.game.canChallenge && !wasPlayerUp   
+  
+  const storageState: StorageState = {gameId: id, playerId}
+
+  if (status === GameStatus.ABORTED || status === GameStatus.FINISHED || status === GameStatus.ABANDONED) {
+    sessionStorage.removeItem('gameState');
+  } else {
+    sessionStorage.setItem('gameState', JSON.stringify(storageState));
+  }
   
   appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, status};
 
@@ -157,13 +157,16 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const updatedSquares: SquareState[] = [];
   
   let index = 0;
+  
+  const needsModifiers: boolean = !(squares && squares[0] && squares[0].modifier)
+  
   data.board.squares.forEach(square => {
     const existingSquare = squares && squares[index]
     const tile = square  || {letter: null, blank: null}
+    const modifier = needsModifiers ? getScoreModifier(index) : existingSquare && existingSquare.modifier
+    const direction = existingSquare && existingSquare.direction  
     const updatedSquare: SquareState = {
-      tile: tile,
-      modifier: existingSquare.modifier,
-      direction: existingSquare.direction,
+      tile, modifier, direction
     }
     updatedSquares.push(updatedSquare);
     index += 1;
@@ -173,3 +176,53 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
 
   return appState;
 }
+
+ const getGameStatus = (status: string): GameStatus => {
+  switch(status) {
+    case 'PENDING': {
+      return GameStatus.PENDING;
+    }
+    case 'ABANDONED': {
+      return GameStatus.ABANDONED;
+    }
+    case 'ACTIVE': {
+      return GameStatus.ACTIVE;
+    }
+    case 'ENDGAME': {
+      return GameStatus.ENDGAME;
+    }
+    case 'FINISHED': {
+      return GameStatus.FINISHED;
+    }
+    case 'ABORTED': {
+      return GameStatus.ABORTED;
+    }
+  }
+  return GameStatus.UNKNOWN;
+}
+
+
+const getScoreModifier = (index: number): string => {
+  const row = Math.floor(index / 15);
+  const col = index % 15;
+
+  if (row == 7 && col == 7) {
+    return 'center2';
+  } else if ((row % 7 == 0 && col % 8 ==  3) ||
+    (row %  8 == 3 &&  col % 7 ==  0) ||
+    (row % 10 == 2 && (col == 6 || col == 8)) ||
+    (row % 10 == 2 && (col == 6 || col == 8)) ||
+    ((row == 6 || row == 8) && (col % 10 == 2 || col == 6 || col == 8))
+     ) {
+    return 'letter2';
+  } else if (row % 4 == 1 && col % 4 == 1 && !(row % 12 == 1 && col % 12 == 1)) {
+    return 'letter3';
+  } else if ((row == col || row + col == 14) &&
+          ((row >= 1 && row <= 4) || (row >= 10 && row <= 13)))  {
+    return 'word2';
+    //The center tile is handled above by DOUBLE_WORD
+  } else if (row % 7 == 0 && col % 7 == 0) {
+    return 'word3';
+  }
+  return '';
+};

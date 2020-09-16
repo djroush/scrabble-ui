@@ -1,5 +1,5 @@
 //TODO: this is a duplicate definition, remove it later
-export type Direction = 'horizontal' | 'vertical' | null 
+export type Direction = 'horizontal' | 'vertical' | null | ""  
 export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2'; 
 
 
@@ -90,3 +90,8 @@ export type SquareState = {
   modifier: string,
   direction: Direction,
  }
+ 
+export type StorageState = {
+  gameId: string,
+  playerId: string,
+}

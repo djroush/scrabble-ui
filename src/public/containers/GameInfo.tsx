@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 
 import GameInfoView from '../views/GameInfoView';
 
-import { AppState } from '../store/State';
-import * as GameStatusHelper from '../helper/GameStatusHelper'
+import { AppState, GameStatus } from '../store/State';
 import { AppAction } from 'actions/Actions';
 import { leaveGame, forfeitGame, newGame } from '../actions/ActionCreator'
 
@@ -27,8 +26,32 @@ function Game(props: GameInfoProps) {
   return <GameInfoView {...props}/>;
 };
 
+export const getStatusName = (status: GameStatus): string => {
+  switch(status) {
+    case GameStatus.PENDING: {
+      return 'PENDING';
+    }
+    case GameStatus.ABANDONED: {
+      return 'ABANDONED';
+    }
+    case GameStatus.ACTIVE: {
+      return 'ACTIVE';
+    }
+    case GameStatus.ENDGAME: {
+      return 'ENDGAME';
+    }
+    case GameStatus.FINISHED: {
+      return 'FINISHED';
+    }
+    case GameStatus.ABORTED: {
+      return 'ABORTED';
+    }
+  }
+  return 'UNKNOWN';
+}
+
 const mapStateToProps = (appState : AppState): GameInfoStateProps => {
-  const status = GameStatusHelper.getStatusName(appState.game.status)
+  const status = getStatusName(appState.game.status)
   return {
     id: appState.game.id,
     status: status  
