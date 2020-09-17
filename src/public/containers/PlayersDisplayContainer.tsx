@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import { AppState, PlayerInfo, GameStatus } from '../store/State';
+import { AppState, PlayerInfo, GameStatus } from '../types/State';
 import PlayersDisplayView from '../views/PlayersDisplayView';
 
 

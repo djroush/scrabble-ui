@@ -1,4 +1,4 @@
-import { AppState } from '../store/State';
+import { AppState } from '../types/State';
 
 export const updateName = (appState: AppState, newName: string) => {
   let {name, ...others} = {...appState.input}

@@ -1,4 +1,4 @@
-import { AppState, Tile, PlayedTile } from '../store/State';
+import { AppState, Tile, PlayedTile } from '../types/State';
 
 export const takeRackTile = (appState: AppState, key: string) => {
   const rackTiles: Tile[] = [...appState.rack.tiles];
@@ -8,7 +8,6 @@ export const takeRackTile = (appState: AppState, key: string) => {
   const tilesPlayed = playedTiles.length;
   const areTilesPlayed = tilesPlayed > 0;
   const isAlphabetic: boolean = key >= 'A' && key <= 'Z' || key === ' ';
-  //TODO: check what Space.toUppercase() looks like
 
   if (isAlphabetic && !areTilesPlayed) {
     let rackIndex: number = 0;

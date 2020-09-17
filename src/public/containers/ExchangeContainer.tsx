@@ -1,9 +1,9 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
-import {AppAction} from '../actions/Actions'
-import {exchangeKeyDown} from '../actions/ActionCreator'
+import {AppAction} from '../actions/SyncActions'
+import {exchangeKeyDown} from '../actions/SyncActionCreator'
 import ExchangeView from '../views/ExchangeView';
-import { AppState, Tile } from '../store/State';
+import { AppState, Tile } from '../types/State';
 
 export type ExchangeProps = ExchangeStateProps & ExchangeDispatchProps;
 

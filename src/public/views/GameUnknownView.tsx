@@ -1,11 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 
-import '../css/GameUnknown.css';
+import '../styles/GameUnknownStyle.css';
 
-import ErrorMessageView from '../views/ErrorMessage'
-import Spinner from '../views/Spinner'
+import ErrorMessageView from '../views/ErrorMessageView'
+import Spinner from '../views/SpinnerView'
 
-import type {GameUnknownProps} from '../containers/GameUnknown'
+import type {GameUnknownProps} from '../containers/GameUnknownContainer'
 
 const GamePendingView = (props: GameUnknownProps) => {
   const gameIdInput = useRef(null);

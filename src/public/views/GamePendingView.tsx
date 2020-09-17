@@ -1,13 +1,13 @@
 import React from 'react';
 
-import '../css/GamePending.css';
+import '../styles/GamePendingStyle.css';
 
-import ErrorMessageView from '../views/ErrorMessage'
-import Spinner from '../views/Spinner'
+import ErrorMessageView from '../views/ErrorMessageView'
+import Spinner from '../views/SpinnerView'
 
-import {GamePendingProps} from '../containers/GamePending'
-import { PlayerInfo } from 'store/State';
-import GameInfo from '../containers/GameInfo';
+import {GamePendingProps} from '../containers/GamePendingContainer'
+import GameInfo from '../containers/GameInfoContainer';
+import { PlayerInfo } from '../types/State';
 
 const GamePendingView = (props: GamePendingProps) => {
   const {hasMultiplePlayers, playersInfo, clickStart, isLoading, isError, errorMessage} = props;

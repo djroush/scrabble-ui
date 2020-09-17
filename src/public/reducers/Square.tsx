@@ -1,4 +1,4 @@
-import { AppState, BoardState, SquareState, Tile, PlayedTile, GameStatus } from '../store/State';
+import { AppState, BoardState, SquareState, Tile, PlayedTile, GameStatus } from '../types/State';
 import { returnPlayedTiles, returnPlayedTile } from '../reducers/Rack';
 
 const BOARD_WIDTH = 15;

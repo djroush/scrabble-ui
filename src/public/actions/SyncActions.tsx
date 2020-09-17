@@ -1,7 +1,7 @@
-import * as ActionNames from './ActionNames'
+import * as ActionNames from './SyncActionNames'
 import {AsyncAction} from '../actions/AsyncActions'
 
-import {Tile} from '../store/State';
+import {Tile} from '../types/State';
 
 //AppActions
 export type AppAction = SyncAction | AsyncAction

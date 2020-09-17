@@ -1,12 +1,12 @@
 import React from 'react';
 
-import '../css/Board.css';
+import '../styles/BoardStyle.css';
 
-import Square from '../containers/Square';
+import Square from '../containers/SquareContainer';
 
-import {BoardProps} from '../containers/Board'
+import {BoardProps} from '../containers/BoardContainer'
 
-const Board = (props: BoardProps) => {
+const BoardView = (props: BoardProps) => {
   const WIDTH: number = 15;
   const HEIGHT: number = 15; 
   const rowsElems: JSX.Element[] = [];
@@ -34,4 +34,4 @@ const Board = (props: BoardProps) => {
   
 
 }
-export default Board;
+export default BoardView;

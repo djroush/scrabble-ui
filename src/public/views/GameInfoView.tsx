@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../css/GameInfo.css';
+import '../styles/GameInfoStyle.css';
 
-import {GameInfoProps} from '../containers/GameInfo'
+import {GameInfoProps} from '../containers/GameInfoContainer'
 
 const GameInfoView = (props: GameInfoProps) => {
   const {id, status, clickLeaveGame, clickForfeitGame, clickNewGame} = props

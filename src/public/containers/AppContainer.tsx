@@ -2,8 +2,8 @@ import React, {Dispatch} from 'react';
 import { connect } from 'react-redux';
 
 import AppView from '../views/AppView';
-import { AppAction } from '../actions/Actions';
-import {refreshGame} from '../actions/ActionCreator';
+import { AppAction } from '../actions/SyncActions';
+import {refreshGame} from '../actions/SyncActionCreator';
 
 export type AppProps = AppStateProps & AppDispatchProps ;
 export type AppStateProps = {}

@@ -1,7 +1,7 @@
-import * as Actions from './Actions'
-import * as ActionNames from './ActionNames'
+import * as Actions from './SyncActions'
+import * as ActionNames from './SyncActionNames'
 
-import {Tile} from '../store/State'
+import {Tile} from '../types/State'
 
 //App
 export const refreshGame = () : Actions.RefreshGame => ({

@@ -1,9 +1,9 @@
-import * as Actions from '../actions/Actions';
+import * as Actions from '../actions/SyncActions';
 import * as AsyncActions from '../actions/AsyncActions';
-import * as ActionNames from '../actions/ActionNames';
+import * as SyncActionNames from '../actions/SyncActionNames';
 import * as AsyncActionNames from '../actions/AsyncActionNames';
 
-import { AppState, RequestStatus, GameStatus } from '../store/State';
+import { AppState, RequestStatus, GameStatus } from '../types/State';
 import {updateName, updateGameId} from '../reducers/Game';
 import {shuffleTiles, returnPlayedTile, returnPlayedTiles} from '../reducers/Rack';
 import {returnExchangeTileLast, returnExchangeTiles, takeRackTile} from '../reducers/Exchange';
@@ -64,13 +64,13 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
   let newState: AppState = {...state};
   switch (action.action) {
     //GameReducer
-    case ActionNames.UPDATE_NAME: {
+    case SyncActionNames.UPDATE_NAME: {
       const updateNameAction: Actions.UpdateName = action;
       const {name} = updateNameAction.payload;
       updateName(newState, name);
       break;
     }
-    case ActionNames.UPDATE_GAME_ID: {
+    case SyncActionNames.UPDATE_GAME_ID: {
       const updateGameIdAction: Actions.UpdateGameId = action;
       const {gameId} = updateGameIdAction.payload;
       updateGameId(newState, gameId);
@@ -78,12 +78,12 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     }
 
     //RackReducer    
-    case ActionNames.RETURN_PLAYED_TILE: {
+    case SyncActionNames.RETURN_PLAYED_TILE: {
      newState = returnPlayedTile(newState);
      break; 
     }
 
-    case ActionNames.RETURN_PLAYED_TILES: {
+    case SyncActionNames.RETURN_PLAYED_TILES: {
       const hasPlayedLetters: boolean  = newState.turn.playedTiles.length > 0;
       const hasExchangeLetters: boolean =  newState.exchange.tiles.length > 0;
       if (hasPlayedLetters) {
@@ -96,13 +96,13 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     //PlayerActions    
-    case ActionNames.SHUFFLE_TILES: {
+    case SyncActionNames.SHUFFLE_TILES: {
      newState = shuffleTiles(newState);
      break; 
     }
     
     //ExchangeReducer
-    case ActionNames.EXCHANGE_KEYDOWN: {
+    case SyncActionNames.EXCHANGE_KEYDOWN: {
       const exchangeKeyDownAction: Actions.ExchangeKeyDown = action
       const {key, isShift} = exchangeKeyDownAction.payload;
       if (key === 'Backspace') {
@@ -117,7 +117,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       break;
     }
     //GameInfo
-    case ActionNames.NEW_GAME: {
+    case SyncActionNames.NEW_GAME: {
       const name = newState.input.name;
       const gameId = '';
       newState = {
@@ -172,17 +172,17 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
       break;
     }
     //SquareReducer
-    case ActionNames.SQUARE_MOUSEUP: {
+    case SyncActionNames.SQUARE_MOUSEUP: {
      newState = squareMouseUp(newState);
      break; 
     }
-    case ActionNames.SQUARE_MOUSEDOWN: {
+    case SyncActionNames.SQUARE_MOUSEDOWN: {
      const squareMouseDownAction: Actions.SquareMouseDown = action
      const {index} = squareMouseDownAction.payload;
      newState = squareMouseDown(newState, index);
      break; 
     }
-    case ActionNames.SQUARE_KEYDOWN: {
+    case SyncActionNames.SQUARE_KEYDOWN: {
      const squareKeyDownAction: Actions.SquareKeyDown = action
      const {index, key, shiftKey} = squareKeyDownAction.payload;
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);

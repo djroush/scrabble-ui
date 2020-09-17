@@ -1,14 +1,14 @@
 import React from 'react';
 
-import '../css/Game.css';
+import '../styles/GameStyle.css';
 
-import {GameStatus} from '../store/State';
-import {GameProps} from '../containers/Game';
-import GameActive from '../containers/GameActive'
+import {GameStatus} from '../types/State';
+import {GameProps} from '../containers/GameContainer';
+import GameActive from '../containers/GameActiveContainer'
 import GameFinishedView from '../views/GameFinishedView'
 import GameAbortedView from '../views/GameAbortedView'
-import GameUnknown from '../containers/GameUnknown'
-import GamePending from '../containers/GamePending'
+import GameUnknown from '../containers/GameUnknownContainer'
+import GamePending from '../containers/GamePendingContainer'
 
 const GameView = (props: GameProps) => {
   const getViewForStatus = (status: GameStatus): JSX.Element => {

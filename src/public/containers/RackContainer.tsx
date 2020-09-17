@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import { AppState, Tile } from '../store/State';
-import RackView from '../views/Rack';
+import { AppState, Tile } from '../types/State';
+import RackView from '../views/RackView';
 
 
 type RackStateProps = {

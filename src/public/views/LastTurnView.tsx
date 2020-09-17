@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../css/LastTurn.css';
-import { TurnProps } from '../containers/LastTurn'
-import { LastTurnState, PlayerInfo } from 'store/State';
+import '../styles/LastTurnStyle.css';
+import { TurnProps } from '../containers/LastTurnContainer'
+import { LastTurnState, PlayerInfo } from '../types/State';
 
 const LastTurnView = (props: TurnProps)  => {
   const {lastTurn, players} = props;

@@ -1,8 +1,8 @@
 import {Store} from 'redux'
 
-import { AppAction } from '../actions/Actions'; 
-import {AppState, RequestStatus, GameStatus, StorageState} from '../store/State';
-import * as ActionNames from '../actions/ActionNames';
+import { AppAction } from '../actions/SyncActions'; 
+import {AppState, RequestStatus, GameStatus, StorageState} from '../types/State';
+import * as SyncActionNames from '../actions/SyncActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 
 const refreshMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
@@ -54,7 +54,7 @@ const refreshMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (a
     }
   } 
 
-  if (action.action === ActionNames.REFRESH_GAME) {
+  if (action.action === SyncActionNames.REFRESH_GAME) {
     refreshGame();
   } else {
     next(action);

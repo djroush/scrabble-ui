@@ -1,11 +1,11 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/Actions'
+import {AppAction} from '../actions/SyncActions'
 import SquareView from '../views/SquareView'
-import {AppState, Modifier, Direction, Tile} from '../store/State'
+import {AppState, Modifier, Direction, Tile} from '../types/State'
 
-import {squareKeyDown, squareMouseDown, squareMouseUp} from '../actions/ActionCreator'
+import {squareKeyDown, squareMouseDown, squareMouseUp} from '../actions/SyncActionCreator'
 
 export type SquareProps = SquareOwnProps & SquareStateProps & SquareDispatchProps
 

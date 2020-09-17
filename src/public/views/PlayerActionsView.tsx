@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../css/PlayerActions.css';
+import '../styles/PlayerActionsStyle.css';
 
-import {PlayerActionsProps} from '../containers/PlayerActions'
+import {PlayerActionsProps} from '../containers/PlayerActionsContainer'
 
 const PlayerActionsView = (props: PlayerActionsProps) => {
   const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, isPlayersTurn, wasPlayersTurn, isActive, canChallenge,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import { AppState, LastTurnState, PlayerInfo } from '../store/State';
+import { AppState, LastTurnState, PlayerInfo } from '../types/State';
 import TurnView from '../views/LastTurnView';
 
 

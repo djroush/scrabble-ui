@@ -1,6 +1,6 @@
 import React from 'react';
 
-import "../css/ErrorMessage.css";
+import "../styles/ErrorMessageStyle.css";
 
 export type ErrorMessageProps = {
   errorMessage: string

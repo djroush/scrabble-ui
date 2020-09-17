@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import GameInfoView from '../views/GameInfoView';
 
-import { AppState, GameStatus } from '../store/State';
-import { AppAction } from 'actions/Actions';
-import { leaveGame, forfeitGame, newGame } from '../actions/ActionCreator'
+import { AppState, GameStatus } from '../types/State';
+import { AppAction } from 'actions/SyncActions';
+import { leaveGame, forfeitGame, newGame } from '../actions/SyncActionCreator'
 
 
 export type GameInfoProps = GameInfoStateProps & GameInfoDispatchProps;

@@ -1,10 +1,10 @@
 import {Store} from 'redux'
 
-import { AppAction, Type } from '../actions/Actions'; 
-import * as ActionNames from '../actions/ActionNames';
+import { AppAction, Type } from '../actions/SyncActions'; 
+import * as SyncActionNames from '../actions/SyncActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
-import * as ActionCreator from '../actions/ActionCreator';
-import {AppState, RequestStatus} from '../store/State';
+import * as ActionCreator from '../actions/SyncActionCreator';
+import {AppState, RequestStatus} from '../types/State';
 
 const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
 
@@ -243,7 +243,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const {name, gameId} = appState.input;
   
   switch (action.action) {
-    case ActionNames.INPUT_KEYDOWN: {
+    case SyncActionNames.INPUT_KEYDOWN: {
       const inputKeyDownAction = action.payload;
       const {isCreate,key} = inputKeyDownAction;
       if (key === 'Enter') {
@@ -258,39 +258,39 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
       
       break;
     }
-    case ActionNames.CREATE_GAME: {
+    case SyncActionNames.CREATE_GAME: {
       createGame();
       break;
     }
-    case ActionNames.JOIN_GAME: {
+    case SyncActionNames.JOIN_GAME: {
       joinGame();
       break;
     }
-    case ActionNames.START_GAME: {
+    case SyncActionNames.START_GAME: {
       startGame();
       break;
     }
-    case ActionNames.PLAY_TILES: {
+    case SyncActionNames.PLAY_TILES: {
       playTiles();
       break;
     }
-    case ActionNames.EXCHANGE_TILES: {
+    case SyncActionNames.EXCHANGE_TILES: {
       exchangeTiles();
       break;
     }
-    case ActionNames.PASS_TURN: {
+    case SyncActionNames.PASS_TURN: {
       passTurn();
       break;
     }
-    case ActionNames.CHALLENGE_TURN: {
+    case SyncActionNames.CHALLENGE_TURN: {
       challengeTurn();
       break;
     }
-    case ActionNames.LEAVE_GAME: {
+    case SyncActionNames.LEAVE_GAME: {
       leaveGame();
       break;
     }
-    case ActionNames.FORFEIT_GAME: {
+    case SyncActionNames.FORFEIT_GAME: {
       forfeitGame();
       break;
     }

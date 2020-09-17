@@ -1,5 +1,5 @@
 
-import { AppState, Tile, PlayedTile, SquareState, Direction } from '../store/State';
+import { AppState, Tile, PlayedTile, SquareState, Direction } from '../types/State';
 
 export const shuffleTiles = (appState: AppState) => {
   const tiles: Tile[] = appState.rack.tiles;

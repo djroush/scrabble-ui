@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import GameView from '../views/GameView';
 
-import { AppState, GameStatus } from '../store/State';
+import { AppState, GameStatus } from '../types/State';
 
 export type GameProps = GameStateProps;
 

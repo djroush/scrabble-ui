@@ -1,11 +1,11 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/Actions'
+import {AppAction} from '../actions/SyncActions'
 import PlayerActionsView from '../views/PlayerActionsView'
 
-import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn, challengeTurn} from '../actions/ActionCreator'
-import { AppState, GameStatus } from '../store/State';
+import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn, challengeTurn} from '../actions/SyncActionCreator'
+import { AppState, GameStatus } from '../types/State';
 
 export type PlayerActionsProps =  PlayerActionsStateProps & PlayerActionsDispatchProps;
 

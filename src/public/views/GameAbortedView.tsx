@@ -1,9 +1,9 @@
 import React from 'react';
 
-import  '../css/GameAborted.css';
+import  '../styles/GameAbortedStyle.css';
 
-import PlayersDisplay from '../containers/PlayersDisplay';
-import GameInfo from '../containers/GameInfo' 
+import PlayersDisplay from '../containers/PlayersDisplayContainer';
+import GameInfo from '../containers/GameInfoContainer' 
 
 const GameAbortedView = () => {
   return (

@@ -1,8 +1,8 @@
 import * as AsyncActionTypes from '../actions/AsyncActionNames';
 import * as AsyncActions from '../actions/AsyncActions';
-import {Type} from '../actions/Actions';
-import { GameResponseSuccess } from 'store/Service';
-import { ErrorState } from 'store/State';
+import {Type} from '../actions/SyncActions';
+import { GameResponseSuccess } from '../types/Service';
+import { ErrorState } from '../types/State';
 
 export const gameUnknownRequest = () : AsyncActions.GameUnknownRequest => ({
   type: Type.SYNC,

@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {SquareState, AppState, GameStatus} from '../store/State';
+import {SquareState, AppState, GameStatus} from '../types/State';
 
-import BoardView from '../views/Board';
+import BoardView from '../views/BoardView';
 
 export type BoardStateProps = {
     activeIndex: number,

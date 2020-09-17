@@ -63,15 +63,18 @@
 
 
 .tile.new {
-  animation: color-me-in 8s;
+  animation: tile-hilight 6s;
 }
 
-@keyframes color-me-in {
+@keyframes tile-hilight {
   0% {
+    color: black;
+  }
+  10% {
     color: red;
   }
-  20% {
-    color: darkred;
+  30% {
+    color: black;
   }
   40% {
     color: red;
@@ -83,6 +86,6 @@
     color: crimson;
   }
   100% {
-    color: initial;
+    color: black;
   }
 }

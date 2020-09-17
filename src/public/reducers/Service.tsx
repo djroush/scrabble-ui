@@ -1,5 +1,5 @@
-import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState } from '../store/State';
-import {GameResponseSuccess} from '../store/Service'
+import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState } from '../types/State';
+import {GameResponseSuccess} from '../types/Service'
 
 export const gameUnknownRequest = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gameState};

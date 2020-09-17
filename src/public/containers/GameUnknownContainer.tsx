@@ -1,11 +1,11 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/Actions';
+import {AppAction} from '../actions/SyncActions';
 
-import { AppState, RequestStatus} from '../store/State';
+import { AppState, RequestStatus} from '../types/State';
 import GameUnknownView from '../views/GameUnknownView'
-import {inputKeyDown, updateName, updateGameId, createGame, joinGame} from '../actions/ActionCreator'
+import {inputKeyDown, updateName, updateGameId, createGame, joinGame} from '../actions/SyncActionCreator'
 
 export type GameUnknownProps = GameUnknownStateProps & GameUnknownDispatchProps;
 

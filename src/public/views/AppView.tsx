@@ -1,10 +1,10 @@
   import React, {useEffect} from 'react';
 
-import '../css/App.css';
+import '../styles/AppStyle.css';
 
-import Board from '../containers/Board';
-import LetterDistributionView from '../views/LetterDistribution';
-import Game from '../containers/Game'
+import Board from '../containers/BoardContainer';
+import LetterDistributionView from '../views/LetterDistributionView';
+import Game from '../containers/GameContainer'
 import {AppProps} from '../containers/AppContainer' 
 
 const AppView = (props: AppProps) => {

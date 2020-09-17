@@ -1,4 +1,4 @@
-//Actions for AJAX requests to scrabble service
+//SyncActions for AJAX requests to scrabble service
 export const ASYNC_GAME_UNKNOWN_REQUEST = "GAME_UKNOWN_REQUEST"
 export const ASYNC_GAME_UNKNOWN_SUCCESS = "GAME_UKNOWN_SUCCESS"
 export const ASYNC_GAME_UNKNOWN_FAILURE = "GAME_UKNOWN_FAILURE"

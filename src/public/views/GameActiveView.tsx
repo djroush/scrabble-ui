@@ -1,16 +1,16 @@
 import React from 'react';
 
-import '../css/GameActive.css';
+import '../styles/GameActiveStyle.css';
 
-import PlayerActions from '../containers/PlayerActions';
-import PlayersDisplay from '../containers/PlayersDisplay';
-import GameInfo from '../containers/GameInfo' 
-import Rack from '../containers/Rack';
-import LastTurn from '../containers/LastTurn';
-import ExchangeLetters from '../containers/Exchange';
-import { GameActiveProps } from 'containers/GameActive';
-import Spinner from './Spinner';
-import ErrorMessageView from './ErrorMessage';
+import PlayerActions from '../containers/PlayerActionsContainer';
+import PlayersDisplay from '../containers/PlayersDisplayContainer';
+import GameInfo from '../containers/GameInfoContainer' 
+import Rack from '../containers/RackContainer';
+import LastTurn from '../containers/LastTurnContainer';
+import ExchangeLetters from '../containers/ExchangeContainer';
+import { GameActiveProps } from 'containers/GameActiveContainer';
+import SpinnerView from './SpinnerView';
+import ErrorMessageView from './ErrorMessageView';
 
 const GameActiveView = (props: GameActiveProps) => {
   const { isLoading, isError, errorMessage} = props
@@ -23,7 +23,7 @@ const GameActiveView = (props: GameActiveProps) => {
         </div>
         <div>
           <LastTurn/>
-         {isLoading ? <Spinner/> : ''}
+         {isLoading ? <SpinnerView/> : ''}
          {isError ? <ErrorMessageView errorMessage={errorMessage}/> : ''}
         </div>
         <div>

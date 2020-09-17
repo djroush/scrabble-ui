@@ -1,9 +1,9 @@
 import React from 'react';
 
-import '../css/PlayersDisplay.css';
+import '../styles/PlayersDisplayStyle.css';
 
-import {PlayersDisplayProps} from '../containers/PlayersDisplay';
-import {PlayerInfo} from '../store/State'; 
+import {PlayersDisplayProps} from '../containers/PlayersDisplayContainer';
+import {PlayerInfo} from '../types/State'; 
 
 //TODO: need to add skipTurnCount, forfeited icons
 const PlayersDisplayView = (props: PlayersDisplayProps) =>  {

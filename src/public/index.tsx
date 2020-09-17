@@ -9,8 +9,8 @@ import { createLogger } from 'redux-logger';
 
 import './index.css';
 
-import {AppState} from './store/State';
-import {AppAction} from './actions/Actions'
+import {AppState} from './types/State';
+import {AppAction} from './actions/SyncActions'
 import AppReducer from './reducers/App';
 import App from './containers/AppContainer';
 

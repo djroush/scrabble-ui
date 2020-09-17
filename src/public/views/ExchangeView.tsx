@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../css/Exchange.css';
-import { ExchangeProps } from '../containers/Exchange'
-import { Tile } from '../store/State' 
+import '../styles/ExchangeStyle.css';
+import { ExchangeProps } from '../containers/ExchangeContainer'
+import { Tile } from '../types/State' 
 
 const Exchange = (props: ExchangeProps)  => {
   const {tiles, onKeyDown} = props;

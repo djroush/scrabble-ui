@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import GamePendingView from '../views/GamePendingView';
 
-import { AppState, RequestStatus, PlayerInfo } from '../store/State';
-import {startGame} from '../actions/ActionCreator'
-import { AppAction } from 'actions/Actions';
+import { AppState, RequestStatus, PlayerInfo } from '../types/State';
+import {startGame} from '../actions/SyncActionCreator'
+import { AppAction } from 'actions/SyncActions';
 
 export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
 

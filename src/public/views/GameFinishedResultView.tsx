@@ -1,9 +1,9 @@
 import React from 'react';;
 
-import '../css/GameResult.css';
+import '../styles/GameFinishedResultStyle.css';
 
 import {GameFinishedResultProps} from '../containers/GameFinishedResultContainer';
-import { PlayerInfo } from 'store/State';
+import { PlayerInfo } from '../types/State';
 
 
 const GameFinishedResultView = (props: GameFinishedResultProps) => {

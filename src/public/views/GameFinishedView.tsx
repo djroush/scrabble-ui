@@ -1,10 +1,10 @@
 import React from 'react';
 
-import  '../css/GameFinished.css';
+import  '../styles/GameFinishedStyle.css';
 
-import PlayersDisplay from '../containers/PlayersDisplay';
+import PlayersDisplay from '../containers/PlayersDisplayContainer';
 import GameFinishedResult from '../containers/GameFinishedResultContainer'
-import GameInfo from '../containers/GameInfo' 
+import GameInfo from '../containers/GameInfoContainer' 
 
 const GameFinishedView = () => {
   return (

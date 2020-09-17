@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 
-import '../css/Square.css';
+import '../styles/SquareStyle.css';
 
-import {SquareProps} from '../containers/Square'; 
+import {SquareProps} from '../containers/SquareContainer'; 
 
 const SquareView = (props: SquareProps) => {
   const tdElem = useRef(null);

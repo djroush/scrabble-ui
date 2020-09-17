@@ -1,7 +1,7 @@
 import * as AsyncActionNames from './AsyncActionNames'
-import {Type} from './Actions'
+import {Type} from './SyncActions'
 import { GameResponseSuccess } from 'store/Service';
-import {ErrorState} from '../store/State' 
+import {ErrorState} from '../types/State' 
 
 //AjaxActions
 export type AsyncAction = GameUnknownAction | GamePendingAction | GameRefreshAction | GameActiveAction;

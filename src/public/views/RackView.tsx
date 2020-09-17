@@ -1,8 +1,8 @@
 import React from 'react';
 
-import '../css/Rack.css';
-import { RackProps } from '../containers/Rack'
-import { Tile } from '../store/State' 
+import '../styles/RackStyle.css';
+import { RackProps } from '../containers/RackContainer'
+import { Tile } from '../types/State' 
 
 const Rack = (props: RackProps)  => {
   const {tiles} = props;
@@ -18,4 +18,3 @@ const Rack = (props: RackProps)  => {
 }
 
 export default Rack;
-
