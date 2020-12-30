@@ -47,6 +47,6 @@
   },
   "resolutions": {
     "lodash": "^4.17.19",
-    "node-fetch":"^2.6.1"
+    "node-fetch": "^2.6.1"
   }
 }

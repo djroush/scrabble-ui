@@ -1,12 +1,11 @@
 import React from 'react';
 
 import '../styles/LastTurnStyle.css';
-import { TurnProps } from '../containers/LastTurnContainer'
+import { LastTurnProps } from '../containers/LastTurnContainer'
 import { LastTurnState, PlayerInfo } from '../types/State';
 
-const LastTurnView = (props: TurnProps)  => {
-  const {lastTurn, players} = props;
-
+const LastTurnView = (props: LastTurnProps)  => {
+  const {canChallenge, playerIndex,lastTurn, players, clickBypassChallenge, clickChallengeTurn} = props;
   const getMessage = (lastTurn: LastTurnState, players: PlayerInfo[]): string => {
     const playerName: string = players[lastTurn.playerIndex].name
                               
@@ -36,12 +35,35 @@ const LastTurnView = (props: TurnProps)  => {
         default: return playerName + " did something...";
       }
   }
-       
   
-  const message: string = !!lastTurn && !!lastTurn.action ? getMessage(lastTurn,players) : 'A new game has been started, Good Luck!';
+  const getOptionsDiv = (canChallenge: boolean, playerIndex: number, lastTurn: LastTurnState): JSX.Element => {
+    var isChallengeAction: boolean = lastTurn.action === 'PLAY_TILES' && lastTurn.state === 'AWAITING_CHALLENGE';
+    var showChallengeOption: boolean = canChallenge && playerIndex != lastTurn.playerIndex; 
+    if (!isChallengeAction || !showChallengeOption) {
+      return <div/>
+    } else {
+      return (   
+      <div className="wordList">    
+        <div> Do you wish to challenge any of these words: <br/>{wordList}</div>
+        <div className="options">
+          <button id="challengeTurn" type="button" onClick={clickChallengeTurn}>Challenge turn</button>
+          <button id="byPassChallenge" type="button" onClick={clickBypassChallenge}>Bypass challenge</button>
+        </div>
+      </div>
+      )
+
+    }
+  }
+  
+  const words = lastTurn.wordsPlayed || []
+  const wordList = '[' + words.join(', ') + ']';
+  const message: string = lastTurn && lastTurn.action !== 'GAME_STARTED' ? getMessage(lastTurn,players) 
+      : 'A new game has been started, Good Luck!';
+  const optionsDiv = getOptionsDiv(canChallenge, playerIndex, lastTurn);
   return (
   <div className="lastTurn">
-    <span>{message}</span>
+    <div>{message}</div>
+    {optionsDiv}
   </div>
   );
   

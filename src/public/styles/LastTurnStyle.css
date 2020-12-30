@@ -1,13 +1,29 @@
 .lastTurn {
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 1%;
   padding: 0%;
   width: 100%;
-  justify-content: space-evenly;  
+  justify-content: space-evenly;
+  background-color: white  
 }
-.lastTurn span {
-  border: 2px solid black;
+.lastTurn div {
+  display: inline-block;
+  text-align: center;
   background-color: white;
-  padding: 4%;
+  padding: 2%;
+}
+.lastTurn  .wordList {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.lastTurn  .options {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.lastTurn  button {
+  margin: 1%;
+  padding: 1%;
 }

@@ -66,6 +66,10 @@
   animation: tile-hilight 6s;
 }
 
+.blank.tile.new {
+  animation: blank-tile-hilight 6s;
+}
+
 @keyframes tile-hilight {
   0% {
     color: black;
@@ -89,3 +93,28 @@
     color: black;
   }
 }
+
+@keyframes blank-tile-hilight {
+  0% {
+    color: #a0a0a0;
+  }
+  10% {
+    color: red;
+  }
+  30% {
+    color: #a0a0a0;
+  }
+  40% {
+    color: red;
+  }
+  60% {
+    color: #a0a0a0;
+  }
+  80% {
+    color: crimson;
+  }
+  100% {
+    color: #a0a0a0;
+  }
+}
+

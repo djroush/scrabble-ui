@@ -1,26 +1,45 @@
-import React from 'react'
+import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
+import {AppAction} from '../actions/SyncActions'
+import {challengeTurn} from '../actions/SyncActionCreator'
+
 import { AppState, LastTurnState, PlayerInfo } from '../types/State';
-import TurnView from '../views/LastTurnView';
+import LastTurnView from '../views/LastTurnView';
 
+export type LastTurnProps = LastTurnStateProps & LastTurnDispatchProps;
 
-type TurnStateProps = {
+type LastTurnStateProps = {
   lastTurn: LastTurnState;
-  players: PlayerInfo[];
-}; 
-export type TurnProps = TurnStateProps
+  players: PlayerInfo[]; 
+  playerIndex: number;
+  canChallenge: boolean;
+};
 
-const mapStateToProps = (state: AppState) => ({
+type LastTurnDispatchProps = {
+  clickChallengeTurn: () => void;
+  clickBypassChallenge: () => void;
+}; 
+ 
+const mapStateToProps = (state: AppState) => {
+  return {
     lastTurn: state.lastTurn,
     players: state.players,
-})
-
-const Turn = (props: TurnProps) => {
-  return (
-    <TurnView {...props} />
-  );
+    playerIndex: state.game.playerIndex,
+    canChallenge: state.game.canChallenge,
+  }
 }
 
-export default connect(mapStateToProps)(Turn)
+const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
+  return {
+    clickChallengeTurn: () => dispatch(challengeTurn(true)),
+    clickBypassChallenge: () => dispatch(challengeTurn(false)),
+  }
+};
+
+function LastTurn(props: LastTurnProps) {
+  return <LastTurnView {...props} />;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LastTurn)
 

@@ -149,7 +149,9 @@ export interface PassTurn {
 export interface ChallengeTurn {
   type: Type,
   action: typeof ActionNames.CHALLENGE_TURN,
-  payload: {} 
+  payload: {
+    challenge: boolean
+  } 
 }
 
 

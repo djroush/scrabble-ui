@@ -24,8 +24,8 @@ const initialState : AppState = {
     playerIndex: -1,
     activePlayerIndex: -1,
     isPlayerUp: false,
-    canChallenge: false,
     status: GameStatus.UNKNOWN,
+    canChallenge: false,
   },
   rack: {
     tiles: [], 
@@ -43,9 +43,12 @@ const initialState : AppState = {
   },
   lastTurn: {
     action: 'UNKNOWN',
+    state: null,
     playerIndex: -1,
     points: 0,
-    newTileIndexes: []
+    wordsPlayed: null,
+    newTileIndexes: [],
+    enactChallenge: null
   },
   players: [],
   service: {
@@ -131,8 +134,8 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           playerIndex: -1,
           activePlayerIndex: -1,
           isPlayerUp: false,
-          canChallenge: false,
           status: GameStatus.UNKNOWN,
+          canChallenge: false,
         },
         rack: {
           tiles: [], 
@@ -150,9 +153,12 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
         },
         lastTurn: {
           action: 'UNKNOWN',
+          state: null,
           playerIndex: -1,
           points: 0,
-          newTileIndexes:[]
+          wordsPlayed:[],
+          newTileIndexes:[],
+          enactChallenge: null
         },
         players: [],
         service: {

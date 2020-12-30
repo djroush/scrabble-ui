@@ -14,7 +14,6 @@ export type Game = {
   state: string,  
   activePlayerIndex: number
   lastPlayerToPlayTilesIndex: number
-  canChallenge: boolean
 }
 
 
@@ -30,11 +29,17 @@ export type Tile = {
   blank: boolean
 } 
 
+export type LastTurnStateEnum = "AWAITING_ACTION" | "AWAITING_CHALLENGE"
+
+export type LastTurnActionEnum = 'UNKNOWN' | 'GAME_STARTED' | 'PLAY_TILES' | 'EXCHANGE_TILES' | 'PASS_TURN' | 'CHALLENGE_TURN' | 'FORFEIT_GAME'
+
 export type LastTurn = {
-  action: 'UNKNOWN' | 'PLAY_TILES' | 'EXCHANGE_TILES' | 'PASS_TURN' | 'CHALLENGE_TURN' | 'FORFEIT_GAME'
+  action: LastTurnActionEnum,
+  state: LastTurnStateEnum
   playerIndex: number, 
   loseTurnPlayerIndex?: number,
   points: number,
+  wordsPlayed: String[],
   newTileIndexes: number[]
 }
 

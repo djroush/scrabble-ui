@@ -193,11 +193,20 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     }
   }
 
-  const challengeTurn = (): void => {
+  const challengeTurn = (challenge: boolean): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
+      
+      var challengeRequest = {
+        challengeTurn: challenge,
+        version : appState.game.version,        
+      }
       
       fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/challenge', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(challengeRequest)
       }).then((response) => {
         return response.json();
       }).then((data) => {
@@ -283,7 +292,10 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
       break;
     }
     case SyncActionNames.CHALLENGE_TURN: {
-      challengeTurn();
+      const challengeTurnAction = action.payload;
+      const {challenge} = challengeTurnAction;
+
+      challengeTurn(challenge);
       break;
     }
     case SyncActionNames.LEAVE_GAME: {

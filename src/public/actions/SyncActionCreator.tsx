@@ -114,10 +114,10 @@ export const passTurn = () : Actions.PassTurn => ({
   action: ActionNames.PASS_TURN,
   payload: {}
 });
-export const challengeTurn = () : Actions.ChallengeTurn => ({
+export const challengeTurn = (challenge: boolean) : Actions.ChallengeTurn => ({
   type: Actions.Type.ASYNC,
   action: ActionNames.CHALLENGE_TURN,
-  payload: {}
+  payload: { challenge }
 });
 
 

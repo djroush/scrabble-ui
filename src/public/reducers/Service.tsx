@@ -127,7 +127,7 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const status: GameStatus = getGameStatus(data.game.state);
   const isPlayerUp = playerIndex === activePlayerIndex
   const wasPlayerUp: boolean = data.game.lastPlayerToPlayTilesIndex === playerIndex || false
-  const canChallenge: boolean = data.game.canChallenge && !wasPlayerUp   
+  const canChallenge: boolean = data.game.canChallenge && !wasPlayerUp
   
   const storageState: StorageState = {gameId: id, playerId}
 
@@ -151,7 +151,7 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   appState.turn = {playedTiles: []}
   appState.exchange = { tiles: []}
   appState.players = data.players
-  appState.lastTurn = data.lastTurn;
+  appState.lastTurn = { ...data.lastTurn, enactChallenge: null }
     
   let {squares, ...others2} = appState.board  
   const updatedSquares: SquareState[] = [];

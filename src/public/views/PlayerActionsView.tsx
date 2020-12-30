@@ -5,8 +5,8 @@ import '../styles/PlayerActionsStyle.css';
 import {PlayerActionsProps} from '../containers/PlayerActionsContainer'
 
 const PlayerActionsView = (props: PlayerActionsProps) => {
-  const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, isPlayersTurn, wasPlayersTurn, isActive, canChallenge,
-         clickShuffle, clickReturn, clickExchange, clickPlayTiles, clickPassTurn, clickChallengeTurn} = props;
+  const {hasPlayedLetters, hasExchangeLetters, hasMultipleRackLetters, isPlayersTurn, isActive,
+         clickShuffle, clickReturn, clickExchange, clickPlayTiles, clickPassTurn} = props;
   return (
   <div className="playerActions">
       {hasMultipleRackLetters
@@ -23,17 +23,8 @@ const PlayerActionsView = (props: PlayerActionsProps) => {
       }
       {hasPlayedLetters && isActive && isPlayersTurn
         ? <button id="playButton" type="button" onClick={clickPlayTiles}>Play tiles</button>
-        : <button id="playButton" type="button" disabled>Play tiles</button>
-      }
-      {isPlayersTurn && isActive && isPlayersTurn
-        ? <button id="passButton" type="button" onClick={clickPassTurn}>Pass turn</button>
-        : <button id="passButton" type="button" disabled>Pass turn</button>
-      }
-      {wasPlayersTurn || !canChallenge
-        ? <button id="challengeButton" type="button" disabled>Challenge</button>
-        : <button id="challengeButton" type="button" onClick={clickChallengeTurn}>Challenge turn</button>
-      }
-      
+        : <button id="passButton" type="button" onClick={clickPassTurn}>Pass turn</button>
+      }      
   </div>
   );
 }

@@ -1,3 +1,7 @@
+
+import {LastTurnActionEnum, LastTurnStateEnum} from '../types/Service'
+
+
 //TODO: this is a duplicate definition, remove it later
 export type Direction = 'horizontal' | 'vertical' | null | ""  
 export type Modifier = '' | 'center2' | 'word3' | 'word2' | 'letter3' | 'letter2'; 
@@ -32,12 +36,18 @@ export type ErrorState = {
   message: string
 }
 
+
+
+
 export type LastTurnState = {
-  action: 'UNKNOWN' | 'PLAY_TILES' | 'EXCHANGE_TILES' | 'PASS_TURN' | 'CHALLENGE_TURN' | 'FORFEIT_GAME'
+  action: LastTurnActionEnum
+  state: LastTurnStateEnum
   playerIndex: number, 
   loseTurnPlayerIndex?: number,
   points: number,
-  newTileIndexes: number[]
+  newTileIndexes: number[],
+  wordsPlayed: String[],
+  enactChallenge: boolean | null
 }
 
 export enum RequestStatus {UNKNOWN, REQUESTING, SUCCESSFUL, ERRORED}
