@@ -7,29 +7,9 @@ import { PlayerInfo } from '../types/State';
 
 
 const GameFinishedResultView = (props: GameFinishedResultProps) => {
-  const {playersInfo} = props;
+  const {playersInfo, winningPlayerIndex} = props;
 
-  const getWinner = (playersInfo: PlayerInfo[]) : PlayerInfo => {
-    let maxScoreIndex : number = 0;
-    let maxScore : number = -100;
-    let needsTieBreaker : boolean = false;
-    
-    playersInfo.forEach((playerInfo: PlayerInfo, index: number) => {
-      if (playerInfo.score > maxScore) {
-        maxScore = playerInfo.score;
-        maxScoreIndex = index;
-        needsTieBreaker = false;
-      } else if (playerInfo.score === maxScore) {
-        needsTieBreaker = true;
-      }  
-    });
-    if (needsTieBreaker) {
-      //revert last turn scores
-    }  
-    return playersInfo[maxScoreIndex];
-  };
-  
-  const winner: PlayerInfo = getWinner(playersInfo);
+  const winner: PlayerInfo = playersInfo[winningPlayerIndex];
    
   return (
   <div className="gameResult">

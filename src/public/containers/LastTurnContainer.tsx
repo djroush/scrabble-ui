@@ -26,7 +26,7 @@ const mapStateToProps = (state: AppState) => {
     lastTurn: state.lastTurn,
     players: state.players,
     playerIndex: state.game.playerIndex,
-    canChallenge: state.game.canChallenge,
+    canChallenge: state.game.canChallenge
   }
 }
 

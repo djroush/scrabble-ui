@@ -14,8 +14,8 @@ export type Game = {
   state: string,  
   activePlayerIndex: number
   lastPlayerToPlayTilesIndex: number
+  winningPlayerIndex: number
 }
-
 
 export type Rack = {
   tiles: string[]

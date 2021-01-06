@@ -8,7 +8,8 @@ import { AppState, PlayerInfo } from '../types/State';
 export type GameFinishedResultProps = GameFinishedResultStateProps;
 
 type GameFinishedResultStateProps = {
-  playersInfo: PlayerInfo[]
+  playersInfo: PlayerInfo[],
+  winningPlayerIndex: number,
 }
 
 function GameFinishedResult(props: GameFinishedResultProps) {
@@ -17,7 +18,8 @@ function GameFinishedResult(props: GameFinishedResultProps) {
 
 const mapStateToProps = (appState : AppState): GameFinishedResultStateProps => {
   return {
-    playersInfo: appState.players
+    playersInfo: appState.players,
+    winningPlayerIndex: appState.game.winningPlayerIndex || 0,
   };
 }
 

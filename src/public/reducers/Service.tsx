@@ -125,9 +125,9 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   const version: string = data.game.version.toString();
   const activePlayerIndex: number  = data.game.activePlayerIndex;
   const status: GameStatus = getGameStatus(data.game.state);
+  const winningPlayerIndex = data.game.winningPlayerIndex
   const isPlayerUp = playerIndex === activePlayerIndex
-  const wasPlayerUp: boolean = data.game.lastPlayerToPlayTilesIndex === playerIndex || false
-  const canChallenge: boolean = data.game.canChallenge && !wasPlayerUp
+  const canChallenge: boolean = !(data.game.lastPlayerToPlayTilesIndex === playerIndex || false)
   
   const storageState: StorageState = {gameId: id, playerId}
 
@@ -137,7 +137,7 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
     sessionStorage.setItem('gameState', JSON.stringify(storageState));
   }
   
-  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, status};
+  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, winningPlayerIndex, status};
 
   let {tiles, ...othersRack} = appState.rack;
   tiles = data.rack.tiles.map(letter => {

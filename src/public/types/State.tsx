@@ -37,8 +37,6 @@ export type ErrorState = {
 }
 
 
-
-
 export type LastTurnState = {
   action: LastTurnActionEnum
   state: LastTurnStateEnum
@@ -57,13 +55,14 @@ export type GameState = {
   version: string,
   id: string,
   playerId: string,
-  playerIndex: number
-  activePlayerIndex: number
-  isPlayerUp: boolean
-  canChallenge: boolean
+  playerIndex: number,
+  activePlayerIndex: number,
+  isPlayerUp: boolean,
+  canChallenge: boolean,
+  winningPlayerIndex: number,
   status: GameStatus,
-
 };
+
 export type RackState = {
   tiles: Tile[],
 };
