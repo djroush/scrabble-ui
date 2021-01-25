@@ -1,10 +1,28 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import '../styles/LastTurnStyle.css';
 import { LastTurnProps } from '../containers/LastTurnContainer'
 import { LastTurnState, PlayerInfo } from '../types/State';
 
 const LastTurnView = (props: LastTurnProps)  => {
+  const lastTurnDiv = useRef(null);
+  
+  useEffect(() => {    
+    lastTurnDiv.current.className = "lastTurn"
+      setTimeout(function() { 
+        const test = handleCallback.bind(props)
+        test(props);
+      }, 5000);
+  });
+
+  const handleCallback = function(oldProps: LastTurnProps) {
+    if (!props.isAwaitingChallenge) {
+      if (oldProps.version === props.version) {
+        lastTurnDiv.current.className = "lastTurn hidden"
+      }
+    }
+  };
+
   const {canChallenge, playerIndex,lastTurn, players, clickBypassChallenge, clickChallengeTurn} = props;
   const getMessage = (lastTurn: LastTurnState, players: PlayerInfo[]): string => {
     const playerName: string = players[lastTurn.playerIndex].name
@@ -40,7 +58,7 @@ const LastTurnView = (props: LastTurnProps)  => {
     var isChallengeAction: boolean = lastTurn.action === 'PLAY_TILES' && lastTurn.state === 'AWAITING_CHALLENGE';
     var showChallengeOption: boolean = canChallenge && playerIndex != lastTurn.playerIndex; 
     if (!isChallengeAction || !showChallengeOption) {
-      return <div/>
+      return null;
     } else {
       return (   
       <div className="wordList">    
@@ -61,15 +79,12 @@ const LastTurnView = (props: LastTurnProps)  => {
       : 'A new game has been started, Good Luck!';
   const optionsDiv = getOptionsDiv(canChallenge, playerIndex, lastTurn);
   return (
-  <div className="lastTurn">
+  <div ref={lastTurnDiv} className="lastTurn">
     <div>{message}</div>
     {optionsDiv}
   </div>
-  );
-  
+  ); 
 }
-
-
 
 export default LastTurnView;
 

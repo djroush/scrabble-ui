@@ -1,16 +1,16 @@
 .lastTurn {
   display: inline-flex;
   flex-direction: column;
-  margin: 1%;
-  padding: 0%;
-  width: 100%;
+  margin: 1% 0%;
+  padding: 2% 0%;
   justify-content: space-evenly;
-  background-color: white  
+  background-color: cornsilk;
+  font-weight: bold;
+  color: rgb(153, 8, 5);
 }
 .lastTurn div {
   display: inline-block;
   text-align: center;
-  background-color: white;
   padding: 2%;
 }
 .lastTurn  .wordList {
@@ -26,4 +26,10 @@
 .lastTurn  button {
   margin: 1%;
   padding: 1%;
+}
+
+.lastTurn.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 3s, opacity 3s;
 }

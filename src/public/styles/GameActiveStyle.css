@@ -9,3 +9,11 @@
   flex-direction: column;
   display: inline-flex;
 }
+
+#activeActions {
+  display: flex;
+  flex-direction: column;
+}
+#activeActions.hidden {
+  visibility: hidden;
+}

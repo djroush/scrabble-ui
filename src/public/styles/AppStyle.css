@@ -33,3 +33,27 @@
   height: 100%;
   margin: auto 0%;
 }
+
+h3 {
+  margin-top: 5vh;
+  font-size: 120%;
+}
+
+button {
+  vertical-align:middle; 
+  display:inline-flex;
+  padding: 1%;
+  align-self: flex-start;
+  white-space: nowrap;
+  background-color: lemonchiffon;
+  font-weight: bold;  
+}
+
+button.secondary {
+  background-color: lightgray;
+  color: #444;
+}
+button.secondary:hover {
+  background-color: rgb(153,8,5);
+  color: #DEDEDE;
+}

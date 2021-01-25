@@ -15,7 +15,7 @@ const GameFinishedResultView = (props: GameFinishedResultProps) => {
   <div className="gameResult">
     <h1>Congratulations <span>{winner.name}</span>!<br/>You've won this game.</h1>
   </div>
-  );
+  );g
 }
 
 export default GameFinishedResultView;

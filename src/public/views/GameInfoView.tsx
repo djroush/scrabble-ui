@@ -10,13 +10,13 @@ const GameInfoView = (props: GameInfoProps) => {
   const getButton = (status: string) : JSX.Element => {
   switch(status) {
     case 'PENDING':
-      return <button id="leaveGamebutton" type="button" onClick={clickLeaveGame}>Leave&nbsp;Game</button>;
+      return <button id="leaveGamebutton" type="button" className="secondary" onClick={clickLeaveGame}>Leave&nbsp;Game</button>;
     case 'ABORTED':
     case 'ENDGAME':
     case 'FINISHED':
-      return <button id="newGameButton" type="button" onClick={clickNewGame}>New&nbsp;Game</button>
+      return <button id="newGameButton" type="button" className="secondary" onClick={clickNewGame}>New&nbsp;Game</button>
     default:
-      return <button id="forfeitButton" type="button" onClick={clickForfeitGame}>Forfeit&nbsp;Game</button>
+      return <button id="forfeitButton" type="button" className="secondary" onClick={clickForfeitGame}>Forfeit&nbsp;Game</button>
     }
   }
   
@@ -24,7 +24,7 @@ const GameInfoView = (props: GameInfoProps) => {
   <div className="gameInfo">
       <span><strong>Game: {id}</strong></span>
       <span><strong>Status: {status}</strong></span>
-      <div>
+      <div id="gameInfoButton">
          {getButton(status)}
       </div>
   </div>

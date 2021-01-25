@@ -5,26 +5,20 @@
   height: 100%
 }
 
-.gameUnknown h3 {
-  margin-top: 5vh;
-}
-
 .gameInputs {
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  float: left;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .gameInputs span {
   display: inline-flex;
-  margin: 0vh 1.5vw;
+  margin: 0vh 0.5vw;
+  font-size: 110%;
 }
 .gameInputs input {
   display:inline-flex;
   margin-left: 0.5vw;
-    
-}
-.gameInputs button {
-  vertical-align:middle; 
-  display:inline-flex;  
+  width: 12vw;
 }

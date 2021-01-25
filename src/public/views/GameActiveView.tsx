@@ -13,18 +13,20 @@ import SpinnerView from './SpinnerView';
 import ErrorMessageView from './ErrorMessageView';
 
 const GameActiveView = (props: GameActiveProps) => {
-  const { isLoading, isError, errorMessage} = props
+  const { isLoading, isPlayersTurn, isAwaitingChallenge, isError, errorMessage} = props
   return (
     <div className="gameActive">
          <div>
           <Rack/>
           <PlayerActions />
-          <ExchangeLetters/>
+          <div id="activeActions" className={(isPlayersTurn && !isAwaitingChallenge) ? "" : "hidden"}>
+            <ExchangeLetters/>
+          </div> 
         </div>
         <div>
           <LastTurn/>
-         {isLoading ? <SpinnerView/> : ''}
-         {isError ? <ErrorMessageView errorMessage={errorMessage}/> : ''}
+         {isLoading ? <SpinnerView/> : null}
+         {isError ? <ErrorMessageView errorMessage={errorMessage}/> : null}
         </div>
         <div>
           <PlayersDisplay/>

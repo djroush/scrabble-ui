@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import "../styles/ErrorMessageStyle.css";
 
@@ -7,8 +7,17 @@ export type ErrorMessageProps = {
 }
 
 const ErrorMessageView = (props: ErrorMessageProps) => {
+  const errorMessageDiv = useRef(null);
+  useEffect(() => {    
+    errorMessageDiv.current.className = "errorMessage"
+    setTimeout(function(){
+      errorMessageDiv.current.className = "errorMessage hidden"
+    }, 6000);
+  });
+
+
  return (
-    <div className="errorMessage"><p><span>{props.errorMessage}</span></p></div>
+    <div ref={errorMessageDiv} className="errorMessage"><p><span>{props.errorMessage}</span></p></div>
  )
 };
 

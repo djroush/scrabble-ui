@@ -9,6 +9,8 @@ export type ExchangeProps = ExchangeStateProps & ExchangeDispatchProps;
 
 type ExchangeStateProps = {
   tiles: Tile[];
+  isExchangeEmpty: boolean;
+  isRackEmpty: boolean;
 }
 type ExchangeDispatchProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
@@ -21,6 +23,8 @@ function Exchange(props: ExchangeProps) {
 const mapStateToProps = (appState : AppState): ExchangeStateProps => {
   return {
     tiles: appState.exchange.tiles,
+    isExchangeEmpty: appState.exchange.tiles.length === 0,
+    isRackEmpty: appState.rack.tiles.length === 0,
   }
 }
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>): ExchangeDispatchProps => {

@@ -19,14 +19,12 @@ const GameView = (props: GameProps) => {
       case GameStatus.PENDING: {
         return <GamePending/>;
       }
+      case GameStatus.ACTIVE:
       case GameStatus.ENDGAME: {
         return <GameActive/>;
       }
       case GameStatus.ABORTED: {
         return <GameAbortedView/>;
-      }
-      case GameStatus.ACTIVE: {
-        return <GameActive/>;
       }
       case GameStatus.FINISHED: { 
         return <GameFinishedView/>;

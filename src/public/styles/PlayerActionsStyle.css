@@ -1,8 +1,18 @@
+
 .playerActions  {
-  margin: 1%;
+  margin: 2% 0%;
+  display: flex;
+  justify-content: space-between;
 }
+
 .playerActions > button {
   padding: 2%;
-  margin: 2%;
-  white-space: nowrap;
+  color: white;
+  background-color: #2886cf;
+  
+}
+
+.playerActions > button:disabled {
+  color: rgba(16,16,16,0.3);
+  background-color:#b8d5f3;
 }

@@ -1,4 +1,14 @@
 .errorMessage {
-  margin: 1%;
-  padding: 1%;
+  margin: 1% 0%;
+  background-color: #A0A0C0;
+  border: 2px solid black;
+}
+.errorMessage p {
+  font-weight: bold;
+  color: white;
+}
+.errorMessage.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 3s, opacity 3s;
 }

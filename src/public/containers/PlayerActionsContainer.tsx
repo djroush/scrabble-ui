@@ -5,7 +5,7 @@ import {AppAction} from '../actions/SyncActions'
 import PlayerActionsView from '../views/PlayerActionsView'
 
 import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn} from '../actions/SyncActionCreator'
-import { AppState, GameStatus } from '../types/State';
+import { AppState } from '../types/State';
 
 export type PlayerActionsProps =  PlayerActionsStateProps & PlayerActionsDispatchProps;
 
@@ -14,7 +14,7 @@ type PlayerActionsStateProps = {
   hasExchangeLetters: boolean;
   hasMultipleRackLetters: boolean;
   isPlayersTurn: boolean;
-  isActive: boolean;
+  isAwaitingChallenge: boolean;
 }
 
 type PlayerActionsDispatchProps = {
@@ -31,7 +31,7 @@ const mapStateToProps = (appState : AppState) => {
     hasExchangeLetters: appState.exchange.tiles.length > 0,
     hasMultipleRackLetters: appState.rack.tiles.length > 1,
     isPlayersTurn: appState.game.isPlayerUp,
-    isActive: appState.game.status === GameStatus.ACTIVE,
+    isAwaitingChallenge: appState.lastTurn.state === 'AWAITING_CHALLENGE'
   }
 }
 

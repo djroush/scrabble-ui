@@ -7,7 +7,7 @@ import { Tile } from '../types/State'
 const Rack = (props: RackProps)  => {
   const {tiles} = props;
   const rackTiles = !tiles ? "" : tiles.map((tile: Tile, index: number) => (
-    <div key={index} className="rackTile"><span><div>{tile.letter}</div></span></div>
+    <div key={index} className="rackTile"><span>{tile.letter}</span></div>
   ));
   
   return (

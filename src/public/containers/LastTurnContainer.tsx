@@ -14,6 +14,9 @@ type LastTurnStateProps = {
   players: PlayerInfo[]; 
   playerIndex: number;
   canChallenge: boolean;
+  isAwaitingChallenge: boolean;
+  isPlayersTurn: boolean;
+  version: number;
 };
 
 type LastTurnDispatchProps = {
@@ -26,7 +29,10 @@ const mapStateToProps = (state: AppState) => {
     lastTurn: state.lastTurn,
     players: state.players,
     playerIndex: state.game.playerIndex,
-    canChallenge: state.game.canChallenge
+    canChallenge: state.game.canChallenge,
+    isAwaitingChallenge: state.lastTurn.state === 'AWAITING_CHALLENGE',
+    isPlayersTurn: state.game.isPlayerUp,
+    version: state.game.version
   }
 }
 
