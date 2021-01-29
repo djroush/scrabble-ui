@@ -11,6 +11,7 @@ type ExchangeStateProps = {
   tiles: Tile[];
   isExchangeEmpty: boolean;
   isRackEmpty: boolean;
+  isAwaitingChallenge: boolean;
 }
 type ExchangeDispatchProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
@@ -20,11 +21,12 @@ function Exchange(props: ExchangeProps) {
   return <ExchangeView {...props}/>;
 };
 
-const mapStateToProps = (appState : AppState): ExchangeStateProps => {
+const mapStateToProps = (state : AppState): ExchangeStateProps => {
   return {
-    tiles: appState.exchange.tiles,
-    isExchangeEmpty: appState.exchange.tiles.length === 0,
-    isRackEmpty: appState.rack.tiles.length === 0,
+    tiles: state.exchange.tiles,
+    isExchangeEmpty: state.exchange.tiles.length === 0,
+    isRackEmpty: state.rack.tiles.length === 0,
+    isAwaitingChallenge: state.lastTurn.state === 'AWAITING_CHALLENGE' 
   }
 }
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>): ExchangeDispatchProps => {

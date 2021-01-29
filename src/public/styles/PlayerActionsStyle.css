@@ -7,9 +7,6 @@
 
 .playerActions > button {
   padding: 2%;
-  color: white;
-  background-color: #2886cf;
-  
 }
 
 .playerActions > button:disabled {

@@ -48,6 +48,10 @@ button {
   background-color: lemonchiffon;
   font-weight: bold;  
 }
+button:hover {
+  background-color: #2886cf;
+  color: ghostwhite;
+}
 
 button.secondary {
   background-color: lightgray;

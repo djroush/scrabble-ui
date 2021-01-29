@@ -30,8 +30,8 @@ const mapStateToProps = (state: AppState) => {
     players: state.players,
     playerIndex: state.game.playerIndex,
     canChallenge: state.game.canChallenge,
-    isAwaitingChallenge: state.lastTurn.state === 'AWAITING_CHALLENGE',
     isPlayersTurn: state.game.isPlayerUp,
+    isAwaitingChallenge: state.lastTurn.state === 'AWAITING_CHALLENGE',
     version: state.game.version
   }
 }

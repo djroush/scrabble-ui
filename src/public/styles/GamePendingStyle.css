@@ -19,5 +19,14 @@
 }
 
 .gamePending div {
-  margin: 1% 
+  margin: 1%; 
 }
+
+.gamePending button:disabled {
+  background-color: #CCCCCC;  
+}
+.gamePending button:disabled:hover {
+  background-color: #CCCCCC;
+  color: rgba(16, 16, 16, 0.3);
+}
+

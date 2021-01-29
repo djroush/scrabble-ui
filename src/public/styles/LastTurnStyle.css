@@ -23,9 +23,8 @@
   flex-direction: row;
   justify-content: center;
 }
-.lastTurn  button {
-  margin: 1%;
-  padding: 1%;
+.lastTurn button {
+  margin: 2%;
 }
 
 .lastTurn.hidden {
