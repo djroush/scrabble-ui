@@ -21,7 +21,6 @@ export type AppState = {
 };
 export type ServiceState = {
   gameState: RequestState,
-  gameRefresh: RequestState,
 }
 
 export type RequestState = {

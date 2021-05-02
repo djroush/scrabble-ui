@@ -1,10 +1,6 @@
 import * as ActionNames from './SyncActionNames'
-import {AsyncAction} from '../actions/AsyncActions'
-
 import {Tile} from '../types/State';
-
-//AppActions
-export type AppAction = SyncAction | AsyncAction
+import {Type} from '.'
 
 //UI interactions triggered by Keyboard, Mouse actions
 export type SyncAction = GameUnknownAction | GamePendingAction | RackAction | ExchangeAction | PlayerActionsAction | GameInfoAction | SquareAction;
@@ -16,9 +12,6 @@ export type PlayerActionsAction = ShuffleTiles | ReturnTiles | ExchangeTiles | P
 export type GameInfoAction = LeaveGame | ForfeitGame | NewGame;
 export type SquareAction = SquareMouseUp | SquareMouseDown | SquareKeyDown
 
-export enum Type {
-    SYNC, ASYNC
-}
 //Game
 export interface InputKeyDown {
   type: Type,

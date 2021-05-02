@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import GameInfoView from '../views/GameInfoView';
 
 import { AppState, GameStatus } from '../types/State';
-import { AppAction } from 'actions/SyncActions';
+import { AppAction } from '../actions';
 import { leaveGame, forfeitGame, newGame } from '../actions/SyncActionCreator'
 
 

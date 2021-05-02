@@ -1,12 +1,66 @@
 import {Store} from 'redux'
 
-import { AppAction, Type } from '../actions/SyncActions'; 
+import { AppAction, Type } from '../actions'; 
 import * as SyncActionNames from '../actions/SyncActionNames';
+import * as AsyncActionNames from '../actions/AsyncActionNames';
+import * as SseActionCreator from '../actions/SseActionCreator';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 import * as ActionCreator from '../actions/SyncActionCreator';
-import {AppState, RequestStatus} from '../types/State';
+import {AppState, GameStatus, RequestStatus, StorageState} from '../types/State';
+import { Game, GameResponseSuccess } from 'types/Service';
 
-const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
+const scrabbleMiddleware: any = (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
+
+  const scrabbleServiceEndpoint = 'http://localhost:8080/v2/scrabble/game/';
+
+  const refreshGame = (): void => {    
+    let {playerId,id, version} = store.getState().game 
+    let eTag = '';
+
+    const storageState: StorageState = JSON.parse(sessionStorage.getItem('gameState'))
+    const appState: AppState = store.getState();
+    const gameStatus: GameStatus = appState.game.status;
+    
+    const requestInProgress: boolean = appState.service.gameState.status === RequestStatus.REQUESTING 
+    const updateNeeded = gameStatus !== GameStatus.FINISHED && gameStatus !== GameStatus.UNKNOWN && gameStatus !== GameStatus.ABORTED
+    const canRejoinPreviousGame: boolean = !!storageState 
+    if (!requestInProgress && (updateNeeded || canRejoinPreviousGame)) {
+
+     if (!playerId && !id && canRejoinPreviousGame) {
+        const {gameId,playerId:playerId1} = {...storageState}
+        id = gameId;
+        playerId = playerId1;
+        version = "0";
+     }
+
+      next(AsyncActionCreator.gameRefreshRequest())
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId , {
+        method: 'GET',
+        headers: {
+          'ETag': version
+        },
+      }).then((response) => {
+        eTag = response.headers.get('ETag');
+        if (response.status < 300 || response.status >= 400) {
+          return response.json()
+        } else {
+          next(AsyncActionCreator.gameRefreshSuccess(null, eTag));
+        }
+      }).then((data) => {
+          if (!!data && data.status >= 400) {
+            throw new Error(data.message)
+          }
+          if (data) {
+            const {id:gameId, playerId} = data.game
+            const gameInfo = {gameId, playerId}
+            next(SseActionCreator.gameAttachAction(gameInfo))
+            next(AsyncActionCreator.gameRefreshSuccess(data, eTag));
+          }
+      }).catch((error) => {
+        next(AsyncActionCreator.gameRefreshFailure(error));
+      });
+    }
+  } 
 
   const createGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
@@ -15,7 +69,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
       const player = {
         name: appState.input.name
       }
-      fetch('http://localhost:8080/scrabble/game', {
+      fetch(scrabbleServiceEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -29,9 +83,12 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
           throw new Error(data.message)
         }
         return data
-      }).then((data) => {
+      }).then((data: GameResponseSuccess) => {
+        const {id:gameId, playerId} = data.game
+        const gameInfo = {gameId, playerId}
+        next(SseActionCreator.gameAttachAction(gameInfo))
         next(AsyncActionCreator.gameUnknownSuccess(data));
-      }).catch((error) => {
+  }).catch((error) => {
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -45,7 +102,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
         name: appState.input.name
       }
       
-      fetch('http://localhost:8080/scrabble/game/' + gameId, {
+      fetch(scrabbleServiceEndpoint + gameId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -58,9 +115,12 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
           throw new Error(data.message)
         }
         return data
-      }).then((data) => {
+      }).then((data: GameResponseSuccess) => {
+        const {id:gameId, playerId} = data.game
+        const gameInfo = {gameId, playerId}
+        next(SseActionCreator.gameAttachAction(gameInfo))
         next(AsyncActionCreator.gameUnknownSuccess(data));
-      }).catch((error) => {
+  }).catch((error) => {
         next(AsyncActionCreator.gameUnknownFailure(error));
       });
     }
@@ -69,7 +129,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const leaveGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gamePendingRequest())
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId, {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId, {
         method: 'DELETE',
       }).then((response) => {
         return response.json();
@@ -78,7 +138,8 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
           throw new Error(data.message)
         }
         return data
-      }).then(() => {
+      }).then((data) => {
+        next(SseActionCreator.gameDetachAction())
         next(ActionCreator.newGame());
       }).catch((error) => {
         next(AsyncActionCreator.gamePendingFailure(error));
@@ -89,7 +150,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const startGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gamePendingRequest())
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + "/start", {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + "/start", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +182,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
         }
       });
       
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/play', {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + '/play', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +209,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
       next(AsyncActionCreator.gameActiveRequest())
       const tiles = appState.exchange.tiles
       
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/exchange', {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + '/exchange', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -173,7 +234,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
   const passTurn = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/pass', {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + '/pass', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +262,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
         version : appState.game.version,        
       }
       
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/challenge', {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + '/challenge', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -226,7 +287,7 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
       next(AsyncActionCreator.gameActiveRequest())
 
-      fetch('http://localhost:8080/scrabble/game/' + id + "/" + playerId + '/forfeit', {
+      fetch(scrabbleServiceEndpoint + id + "/" + playerId + '/forfeit', {
         method: 'POST',
       }).then((response) => {
         return response.json();
@@ -235,15 +296,16 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
           throw new Error(data.message)
         }
         return data
-      }).then(() => {
+      }).then((data) => {
         next(ActionCreator.newGame());
+        next(SseActionCreator.gameDetachAction())
       }).catch((error) => {
         next(AsyncActionCreator.gameActiveFailure(error));
       });
     }
   }
 
-  if (action.type === Type.SYNC) {
+  if (action.type !== Type.ASYNC) {
     return next(action);
   }
   
@@ -304,6 +366,10 @@ const scrabbleMiddleware: any =  (store: Store<AppState, AppAction>) => (next: (
     }
     case SyncActionNames.FORFEIT_GAME: {
       forfeitGame();
+      break;
+    }
+    case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
+      refreshGame();
       break;
     }
   }

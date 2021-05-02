@@ -1,6 +1,6 @@
 import * as AsyncActionTypes from '../actions/AsyncActionNames';
 import * as AsyncActions from '../actions/AsyncActions';
-import {Type} from '../actions/SyncActions';
+import {Type} from '.';
 import { GameResponseSuccess } from '../types/Service';
 import { ErrorState } from '../types/State';
 
@@ -12,9 +12,7 @@ export const gameUnknownRequest = () : AsyncActions.GameUnknownRequest => ({
 export const gameUnknownSuccess = (data: GameResponseSuccess) : AsyncActions.GameUnknownSuccess => ({
   type: Type.SYNC,
   action: AsyncActionTypes.ASYNC_GAME_UNKNOWN_SUCCESS,
-  payload: {
-    data
-  }
+  payload: data
 });
 export const gameUnknownFailure = (error: ErrorState) : AsyncActions.GameUnknownFailure => ({
   type: Type.SYNC,

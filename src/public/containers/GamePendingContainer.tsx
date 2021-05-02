@@ -5,7 +5,7 @@ import GamePendingView from '../views/GamePendingView';
 
 import { AppState, RequestStatus, PlayerInfo } from '../types/State';
 import {startGame} from '../actions/SyncActionCreator'
-import { AppAction } from 'actions/SyncActions';
+import { AppAction } from 'actions';
 
 export type GamePendingProps = GamePendingStateProps & GamePendingDispatchProps;
 

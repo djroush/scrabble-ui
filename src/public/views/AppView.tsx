@@ -8,13 +8,9 @@ import Game from '../containers/GameContainer'
 import {AppProps} from '../containers/AppContainer' 
 
 const AppView = (props: AppProps) => {
- 
+  const {refreshGame} = props
   useEffect(() => {
-    props.onTimeout();
-    const timerId = setInterval(() => props.onTimeout(), 5000);
-    return () => {
-      clearInterval(timerId);
-    };
+    refreshGame();
   });
   
   return (
