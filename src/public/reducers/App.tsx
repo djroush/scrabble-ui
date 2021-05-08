@@ -1,4 +1,5 @@
-import * as Actions from '../actions/SyncActions';
+import { AppAction } from '../actions';
+import * as SyncActions from '../actions/SyncActions';
 import * as AsyncActions from '../actions/AsyncActions';
 import * as SyncActionNames from '../actions/SyncActionNames';
 import * as AsyncActionNames from '../actions/AsyncActionNames';
@@ -10,7 +11,7 @@ import {returnExchangeTileLast, returnExchangeTiles, takeRackTile} from '../redu
 
 import {squareMouseDown, squareMouseUp, squareKeyDown} from '../reducers/Square';
 import {gameUnknownRequest, gameUnknownSuccess, gameUnknownFailure, gamePendingRequest, gamePendingSuccess, gamePendingFailure,
-        gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure, gameActiveRequest,  gameActiveSuccess,  gameActiveFailure } from '../reducers/Service'
+  gameRefreshRequest, gameRefreshSuccess, gameRefreshFailure, gameActiveRequest,  gameActiveSuccess,  gameActiveFailure } from '../reducers/Service'
 
 const initialState : AppState = {
   input: {
@@ -26,6 +27,7 @@ const initialState : AppState = {
     isPlayerUp: false,
     status: GameStatus.UNKNOWN,
     canChallenge: false,
+    winningPlayerIndex: -1
   },
   rack: {
     tiles: [], 
@@ -55,26 +57,22 @@ const initialState : AppState = {
     gameState: {
       status: RequestStatus.UNKNOWN,
       error: null,
-    },
-    gameRefresh: {
-      status: RequestStatus.UNKNOWN,
-      error: null,
-    },
+    }
   },
 
 };
-const AppReducer = (state: AppState = initialState, action: Actions.AppAction) => {
+const AppReducer = (state: AppState = initialState, action: AppAction) => {
   let newState: AppState = {...state};
   switch (action.action) {
     //GameReducer
     case SyncActionNames.UPDATE_NAME: {
-      const updateNameAction: Actions.UpdateName = action;
+      const updateNameAction: SyncActions.UpdateName = action;
       const {name} = updateNameAction.payload;
       updateName(newState, name);
       break;
     }
     case SyncActionNames.UPDATE_GAME_ID: {
-      const updateGameIdAction: Actions.UpdateGameId = action;
+      const updateGameIdAction: SyncActions.UpdateGameId = action;
       const {gameId} = updateGameIdAction.payload;
       updateGameId(newState, gameId);
       break;
@@ -106,7 +104,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
     
     //ExchangeReducer
     case SyncActionNames.EXCHANGE_KEYDOWN: {
-      const exchangeKeyDownAction: Actions.ExchangeKeyDown = action
+      const exchangeKeyDownAction: SyncActions.ExchangeKeyDown = action
       const {key, isShift} = exchangeKeyDownAction.payload;
       if (key === 'Backspace') {
         if (isShift) {
@@ -133,6 +131,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
           playerId:null,
           playerIndex: -1,
           activePlayerIndex: -1,
+          winningPlayerIndex: null,
           isPlayerUp: false,
           status: GameStatus.UNKNOWN,
           canChallenge: false,
@@ -166,10 +165,6 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
             status: RequestStatus.UNKNOWN,
             error: null,
           },
-          gameRefresh: {
-            status: RequestStatus.UNKNOWN,
-            error: null,
-          }, 
         },        
       }
       sessionStorage.removeItem('gameState');
@@ -183,13 +178,13 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     case SyncActionNames.SQUARE_MOUSEDOWN: {
-     const squareMouseDownAction: Actions.SquareMouseDown = action
+     const squareMouseDownAction: SyncActions.SquareMouseDown = action
      const {index} = squareMouseDownAction.payload;
      newState = squareMouseDown(newState, index);
      break; 
     }
     case SyncActionNames.SQUARE_KEYDOWN: {
-     const squareKeyDownAction: Actions.SquareKeyDown = action
+     const squareKeyDownAction: SyncActions.SquareKeyDown = action
      const {index, key, shiftKey} = squareKeyDownAction.payload;
      newState = squareKeyDown(newState, index, key.toLocaleUpperCase(), shiftKey);
      break; 
@@ -199,9 +194,10 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_UNKNOWN_SUCCESS: {
-     const asyncCreateGameSuccessAction: AsyncActions.GameUnknownSuccess = action;
-     const {data} = asyncCreateGameSuccessAction.payload
-     newState = gameUnknownSuccess(newState, data);
+      const asyncGameUnkownSuccessAction: AsyncActions.GameUnknownSuccess = action;
+      const {payload} = asyncGameUnkownSuccessAction
+      
+     newState = gameUnknownSuccess(newState, payload);
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_UNKNOWN_FAILURE: {
@@ -215,9 +211,7 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS: {
-     const asyncGamePendingSuccessAction: AsyncActions.GamePendingSuccess = action;
-     const {data, eTag} = asyncGamePendingSuccessAction.payload
-     newState = gamePendingSuccess(newState, data, eTag);
+     newState = gamePendingSuccess(newState);
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_PENDING_FAILURE: {
@@ -227,30 +221,28 @@ const AppReducer = (state: AppState = initialState, action: Actions.AppAction) =
      break; 
     }
     case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
-     newState = gameRefreshRequest(newState);
-     break; 
-    }
-    case AsyncActionNames.ASYNC_GAME_REFRESH_SUCCESS: {
-     const asyncGameRefreshSuccessAction: AsyncActions.GameRefreshSuccess = action;
-     const {data, eTag} = asyncGameRefreshSuccessAction.payload
-     
-     newState = gameRefreshSuccess(newState, data, eTag);
-     break; 
-    }
-    case AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE: {
-     const asyncGameRefreshFailureAction: AsyncActions.GameRefreshFailure = action;
-     const {error} = asyncGameRefreshFailureAction.payload;
-     newState = gameRefreshFailure(newState, error);
-     break; 
-    }
+      newState = gameRefreshRequest(newState);
+      break; 
+     }
+     case AsyncActionNames.ASYNC_GAME_REFRESH_SUCCESS: {
+      const asyncGameRefreshSuccessAction: AsyncActions.GameRefreshSuccess = action;
+      const {data, eTag} = asyncGameRefreshSuccessAction.payload
+      
+      newState = gameRefreshSuccess(newState, data, eTag);
+      break; 
+     }
+     case AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE: {
+      const asyncGameRefreshFailureAction: AsyncActions.GameRefreshFailure = action;
+      const {error} = asyncGameRefreshFailureAction.payload;
+      newState = gameRefreshFailure(newState, error);
+      break; 
+     }
     case AsyncActionNames.ASYNC_GAME_ACTIVE_REQUEST: {
      newState = gameActiveRequest(newState);
      break; 
     }
   case AsyncActionNames.ASYNC_GAME_ACTIVE_SUCCESS: {
-   const asyncGameActiveSuccessAction: AsyncActions.GameActiveSuccess = action;
-   const {data, eTag} = asyncGameActiveSuccessAction.payload
-   newState = gameActiveSuccess(newState, data, eTag);
+   newState = gameActiveSuccess(newState);
    break; 
   }
   case AsyncActionNames.ASYNC_GAME_ACTIVE_FAILURE: {

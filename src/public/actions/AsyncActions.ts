@@ -1,7 +1,7 @@
 import * as AsyncActionNames from './AsyncActionNames'
-import {Type} from './SyncActions'
-import { GameResponseSuccess } from 'store/Service';
+import {Type} from '.'
 import {ErrorState} from '../types/State' 
+import { GameResponseSuccess } from 'types/Service';
 
 //AjaxActions
 export type AsyncAction = GameUnknownAction | GamePendingAction | GameRefreshAction | GameActiveAction;
@@ -15,15 +15,11 @@ export interface GameUnknownRequest {
   action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_REQUEST,
   payload: {}
 }
-
 export interface GameUnknownSuccess {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_SUCCESS
-  payload: {
-    data: GameResponseSuccess
-  }
+  payload: GameResponseSuccess
 }
-
 export interface GameUnknownFailure {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_UNKNOWN_FAILURE
@@ -37,7 +33,6 @@ export interface GamePendingRequest {
   action: typeof AsyncActionNames.ASYNC_GAME_PENDING_REQUEST
   payload: {}
 }
-
 export interface GamePendingSuccess {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_PENDING_SUCCESS
@@ -46,7 +41,6 @@ export interface GamePendingSuccess {
     eTag?: string
   }
 }
-
 export interface GamePendingFailure {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_PENDING_FAILURE
@@ -60,7 +54,6 @@ export interface GameRefreshRequest {
   action: typeof AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST
   payload: {}
 }
-
 export interface GameRefreshSuccess {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_REFRESH_SUCCESS
@@ -69,7 +62,6 @@ export interface GameRefreshSuccess {
     eTag?: string
   }
 }
-
 export interface GameRefreshFailure {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_REFRESH_FAILURE
@@ -83,7 +75,6 @@ export interface GameActiveRequest {
   action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_REQUEST
   payload: {}
 }
-
 export interface GameActiveSuccess {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_SUCCESS
@@ -92,7 +83,6 @@ export interface GameActiveSuccess {
     eTag?: string
   }
 }
-
 export interface GameActiveFailure {
   type: Type,
   action: typeof AsyncActionNames.ASYNC_GAME_ACTIVE_FAILURE

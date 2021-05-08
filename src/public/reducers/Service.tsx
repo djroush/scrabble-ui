@@ -1,5 +1,6 @@
-import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState } from '../types/State';
-import {GameResponseSuccess} from '../types/Service'
+import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState, GameState } from '../types/State';
+import {Game, GameResponseSuccess} from '../types/Service'
+
 
 export const gameUnknownRequest = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gameState};
@@ -10,11 +11,13 @@ export const gameUnknownRequest = (appState: AppState) => {
 }
 
 export const gameUnknownSuccess = (appState: AppState, data: GameResponseSuccess) => {
-  let {status, error, ...others} = {...appState.service.gameState};
-  status = RequestStatus.SUCCESSFUL;
-  error = null;
-  appState.service.gameState = {status, error, ...others};
-     
+  const {status, error, ...others} = {...appState.service.gameState};
+  appState.service.gameState = {
+    status: RequestStatus.SUCCESSFUL,
+    error: null,
+     ...others
+  };
+  
   return parseGameResponse(appState, data);
 }
 
@@ -34,17 +37,13 @@ export const gamePendingRequest = (appState: AppState) => {
   return appState;
 }
 
-export const gamePendingSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+export const gamePendingSuccess = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.SUCCESSFUL;
   error = null;
   appState.service.gameState = {status, error, ...others};
 
-  if (eTag && eTag === appState.game.version) {
-    return appState;
-  } else {
-    return parseGameResponse(appState, data);  
-  }   
+  return appState;
 }
 
 export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
@@ -52,40 +51,6 @@ export const gamePendingFailure = (appState: AppState, error1: ErrorState) => {
   status = RequestStatus.ERRORED;
   error = error1;
   appState.service.gameState = {status, error, ...others};  
-  return appState;
-}
-
-
-export const gameRefreshRequest = (appState: AppState) => {
-  let {status, error, ...others} = {...appState.service.gameRefresh};
-  status = RequestStatus.REQUESTING;
-  error = null;
-  appState.service.gameRefresh = {status, error, ...others};  
-  return appState;
-}
-
-export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
-  let {status, error, ...others} = {...appState.service.gameRefresh};
-  status = RequestStatus.SUCCESSFUL;
-  error = null;
-  appState.service.gameRefresh = {status, error, ...others};
-
-   //FIXME: this is probably not needed
-   //const noActiveRequests: boolean = 
-   //  appState.service.gameState.status !== RequestStatus.REQUESTING; 
-
-  if ((eTag && eTag === appState.game.version) || !data /*|| !noActiveRequests*/) {
-    return appState;
-  } else {
-    return parseGameResponse(appState, data);  
-  }   
-}
-
-export const gameRefreshFailure = (appState: AppState, error1: ErrorState) => {
-  let {status, error, ...others} = {...appState.service.gameRefresh};
-  status = RequestStatus.ERRORED;
-  error = error1;
-  appState.service.gameRefresh = {status, error, ...others};  
   return appState;
 }
 
@@ -97,17 +62,15 @@ export const gameActiveRequest = (appState: AppState) => {
   return appState;
 }
 
-export const gameActiveSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+export const gameActiveSuccess = (appState: AppState) => {
   let {status, error, ...others} = {...appState.service.gameState};
   status = RequestStatus.SUCCESSFUL;
   error = null;
   appState.service.gameState = {status, error, ...others};
+  // let { version, status, ...others2 } = {...appState.game}
 
-  if (eTag && eTag === appState.game.version || !data) {
-    return appState;
-  } else {
-    return parseGameResponse(appState, data);  
-  }   
+  // appStateState.game = {version, status, ...others2}
+  return appState;
 }
 
 export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
@@ -118,26 +81,50 @@ export const gameActiveFailure = (appState: AppState, error1: ErrorState) => {
   return appState;
 }
 
-const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
-  const id: string = data.game.id.toString()
-  const playerId: string = data.game.playerId.toString();
-  const playerIndex: number = data.game.playerIndex;
-  const version: string = data.game.version.toString();
-  const activePlayerIndex: number  = data.game.activePlayerIndex;
+
+export const gameRefreshRequest = (appState: AppState) => {
+    let {status, error, ...others} = {...appState.service.gameState};
+    status = RequestStatus.REQUESTING;
+    error = null;
+    appState.service.gameState = {status, error, ...others};
+    return appState;
+  }
+  
+  export const gameRefreshSuccess = (appState: AppState, data: GameResponseSuccess, eTag?: string) => {
+    let {status, error, ...others} = {...appState.service.gameState};
+    status = RequestStatus.SUCCESSFUL;
+    error = null;
+    appState.service.gameState = {status, error, ...others};
+    
+    if ((eTag && eTag === appState.game.version) || !data) {
+      return appState;
+    } else {
+      return parseGameResponse(appState, data);
+    }
+  }
+  
+  export const gameRefreshFailure = (appState: AppState, error1: ErrorState) : AppState => {
+    let {status, error, ...others} = {...appState.service.gameState};
+    status = RequestStatus.ERRORED;
+    error = error1;
+    appState.service.gameState = {status, error, ...others};
+    return appState;
+  }
+
+const parseGameResponse = (appState: AppState, data: GameResponseSuccess) : AppState => {
+  const {id, playerId} = data.game
   const status: GameStatus = getGameStatus(data.game.state);
-  const winningPlayerIndex = data.game.winningPlayerIndex
-  const isPlayerUp = playerIndex === activePlayerIndex
-  const canChallenge: boolean = !(data.game.lastPlayerToPlayTilesIndex === playerIndex || false)
   
   const storageState: StorageState = {gameId: id, playerId}
 
+  //The else should be somewhere different...
   if (status === GameStatus.ABORTED || status === GameStatus.FINISHED || status === GameStatus.ABANDONED) {
     sessionStorage.removeItem('gameState');
   } else {
     sessionStorage.setItem('gameState', JSON.stringify(storageState));
   }
   
-  appState.game = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, winningPlayerIndex, status};
+  appState.game = parseGame(data.game)
 
   let {tiles, ...othersRack} = appState.rack;
   tiles = data.rack.tiles.map(letter => {
@@ -175,6 +162,21 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) => {
   appState.board = { squares, ...others2}
 
   return appState;
+}
+
+const parseGame = (game: Game): GameState => {
+    const id: string = game.id.toString()
+    const playerId: string = game.playerId.toString();
+    const playerIndex: number = game.playerIndex;
+    const version: string = game.version.toString();
+    const activePlayerIndex: number  = game.activePlayerIndex;
+    const status: GameStatus = getGameStatus(game.state);
+    const winningPlayerIndex = game.winningPlayerIndex
+    const isPlayerUp = playerIndex === activePlayerIndex
+    const canChallenge: boolean = !(game.lastPlayerToPlayTilesIndex === playerIndex || false)
+    const gameState: GameState = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, winningPlayerIndex, status};
+    
+    return gameState
 }
 
  const getGameStatus = (status: string): GameStatus => {
