@@ -6,7 +6,7 @@ import {Tile} from '../types/State'
 
 //App
 export const refreshGame = () : Actions.RefreshGame => ({
-  type: Type.SYNC,
+  type: Type.ASYNC,
   action: ActionNames.REFRESH_GAME,
   payload: {}
 });

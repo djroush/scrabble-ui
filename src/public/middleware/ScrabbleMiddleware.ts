@@ -368,7 +368,7 @@ const scrabbleMiddleware: any = (store: Store<AppState, AppAction>) => (next: (a
       forfeitGame();
       break;
     }
-    case AsyncActionNames.ASYNC_GAME_REFRESH_REQUEST: {
+    case SyncActionNames.REFRESH_GAME: {
       refreshGame();
       break;
     }

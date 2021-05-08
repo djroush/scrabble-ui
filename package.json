@@ -22,7 +22,8 @@
     "react-thunk": "^1.0.0",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "types": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",

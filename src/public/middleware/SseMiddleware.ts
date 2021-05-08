@@ -6,11 +6,11 @@ import { AppAction, Type } from '../actions';
 import * as SseActionNames from '../actions/SseActionNames';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 import {AppState} from '../types/State';
-import { GameResponseSuccess } from 'types/Service';
+import { GameResponseSuccess, } from 'types/Service';
 
 const SseMiddleware: any = (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
    let source: EventSource = null;
-   const sseEndpoint = 'http://localhost:8080/scrabble/sse';
+   const sseEndpoint = 'http://localhost:8080/v1/scrabble/sse';
 
    const attachGame = (sseGameInfo: SseGameInfo): void => {
       const {gameId, playerId} = sseGameInfo;
@@ -20,6 +20,13 @@ const SseMiddleware: any = (store: Store<AppState, AppAction>) => (next: (action
 
       source.addEventListener<any>("game-update", function(event: SseGameUpdateEvent) {
         const data: GameResponseSuccess = JSON.parse(event.data)
+        const state = data?.game?.state
+         if (state === "ABORTED" || state === "FINISHED" || state === "ABANDONED") {
+            sessionStorage.removeItem('gameState');
+         } else {
+            sessionStorage.setItem('gameState', event.data);
+         }
+
         const eTag: string = event.id
         console.log("received game update: " + eTag)
         updateGame(data, eTag) 
