@@ -13,8 +13,6 @@ type GameActiveStateProps = {
   isError: boolean,
   isPlayersTurn: boolean;
   isAwaitingChallenge: boolean;
-
-
 }
 
 function GameActive(props: GameActiveProps) {

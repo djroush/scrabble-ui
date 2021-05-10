@@ -31,6 +31,7 @@ const initialState : AppState = {
   },
   rack: {
     tiles: [], 
+    sortedTiles:[]
   },
   exchange: {
     tiles: [], 
@@ -119,57 +120,10 @@ const AppReducer = (state: AppState = initialState, action: AppAction) => {
     }
     //GameInfo
     case SyncActionNames.NEW_GAME: {
-      const name = newState.input.name;
-      const gameId = '';
-      newState = {
-        input: {
-          name, gameId    
-        },
-        game: {
-          version: null,
-          id:null,
-          playerId:null,
-          playerIndex: -1,
-          activePlayerIndex: -1,
-          winningPlayerIndex: null,
-          isPlayerUp: false,
-          status: GameStatus.UNKNOWN,
-          canChallenge: false,
-        },
-        rack: {
-          tiles: [], 
-        },
-        exchange: {
-          tiles: [], 
-        },
-        board: {
-          activeIndex: null,
-          focusedIndex: null,
-          squares: null,
-        },
-        turn: {
-          playedTiles:[]
-        },
-        lastTurn: {
-          action: 'UNKNOWN',
-          state: null,
-          playerIndex: -1,
-          points: 0,
-          wordsPlayed:[],
-          newTileIndexes:[],
-          enactChallenge: null
-        },
-        players: [],
-        service: {
-          gameState: {
-            status: RequestStatus.UNKNOWN,
-            error: null,
-          },
-        },        
-      }
+      const {input} = newState;
+      input.gameId = ''
+      newState = {...initialState, input}
       sessionStorage.removeItem('gameState');
-
-
       break;
     }
     //SquareReducer

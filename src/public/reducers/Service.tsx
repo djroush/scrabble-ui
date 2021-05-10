@@ -1,5 +1,5 @@
-import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState, GameState } from '../types/State';
-import {Game, GameResponseSuccess} from '../types/Service'
+import { AppState, RequestStatus, GameStatus, ErrorState,SquareState, StorageState, GameState, Tile } from '../types/State';
+import {Game, GameResponseSuccess, Player} from '../types/Service'
 
 
 export const gameUnknownRequest = (appState: AppState) => {
@@ -111,36 +111,37 @@ export const gameRefreshRequest = (appState: AppState) => {
     return appState;
   }
 
-const parseGameResponse = (appState: AppState, data: GameResponseSuccess) : AppState => {
-  const {id, playerId} = data.game
-  const status: GameStatus = getGameStatus(data.game.state);
+const shuffle = (tiles: Tile[]) => {
+  let shuffledTiles: Tile[] = [];
   
-  const storageState: StorageState = {gameId: id, playerId}
-
-  //The else should be somewhere different...
-  if (status === GameStatus.ABORTED || status === GameStatus.FINISHED || status === GameStatus.ABANDONED) {
-    sessionStorage.removeItem('gameState');
-  } else {
-    sessionStorage.setItem('gameState', JSON.stringify(storageState));
+  while (tiles.length > 0) {
+    const index: number = Math.floor(Math.random() * tiles.length);
+    const tile: Tile = tiles.splice(index, 1)[0];
+    shuffledTiles.push(tile);
   }
-  
-  appState.game = parseGame(data.game)
+  return shuffledTiles; 
+}
 
-  let {tiles, ...othersRack} = appState.rack;
-  tiles = data.rack.tiles.map(letter => {
+const parseGameResponse = (appState: AppState, data: GameResponseSuccess) : AppState => {
+  appState.game = parseGame(data.game, data.players)
+
+  let {tiles, sortedTiles} = appState.rack;
+  tiles = (data.rack?.tiles || []).map(letter => {
     return {
-      letter: letter,
-      blank: ' ' === letter
+      letter, blank: ' ' === letter
     }
   });
-  appState.rack = {tiles, ...othersRack}
-  
+  if (!tilesAreSame(tiles, sortedTiles)) {
+    sortedTiles = [...tiles]
+    tiles = shuffle(tiles)
+    appState.rack = {tiles, sortedTiles}
+  }
   appState.turn = {playedTiles: []}
   appState.exchange = { tiles: []}
   appState.players = data.players
   appState.lastTurn = { ...data.lastTurn, enactChallenge: null }
     
-  let {squares, ...others2} = appState.board  
+  let {squares, ...others} = appState.board  
   const updatedSquares: SquareState[] = [];
   
   let index = 0;
@@ -159,26 +160,34 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) : AppS
     index += 1;
   });
   squares = updatedSquares;
-  appState.board = { squares, ...others2}
+  appState.board = { squares, ...others}
+
+  const state = data?.game?.state
+  if (state === "ABORTED" || state === "FINISHED" || state === "ABANDONED") {
+     sessionStorage.removeItem('gameState');
+  } else {
+     sessionStorage.setItem('gameState', JSON.stringify(data));
+  }
 
   return appState;
 }
 
-const parseGame = (game: Game): GameState => {
-    const id: string = game.id.toString()
-    const playerId: string = game.playerId.toString();
-    const playerIndex: number = game.playerIndex;
-    const version: string = game.version.toString();
-    const activePlayerIndex: number  = game.activePlayerIndex;
-    const status: GameStatus = getGameStatus(game.state);
-    const winningPlayerIndex = game.winningPlayerIndex
-    const isPlayerUp = playerIndex === activePlayerIndex
-    const canChallenge: boolean = !(game.lastPlayerToPlayTilesIndex === playerIndex || false)
-    const gameState: GameState = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, winningPlayerIndex, status};
-    
-    return gameState
+const parseGame = (game: Game, players: Player[]): GameState => {
+  const {id, playerId, version, playerIndex, activePlayerIndex, winningPlayerIndex} = game
+  const status: GameStatus = getGameStatus(game.state);
+  const isPlayerUp = playerIndex === activePlayerIndex
+  const canChallenge: boolean = !(game.lastPlayerToPlayTilesIndex === playerIndex || false)
+  const gameState: GameState = {version,id,playerId,playerIndex,activePlayerIndex,isPlayerUp, canChallenge, winningPlayerIndex, status};
+  
+  return gameState
 }
 
+const tilesAreSame = (existing: Tile[], newer: Tile[]) : boolean => {
+  return existing === newer || 
+    (existing?.length === newer?.length && existing?.every(function(value, index) {
+    return value.letter === newer[index].letter;
+  }));
+}
  const getGameStatus = (status: string): GameStatus => {
   switch(status) {
     case 'PENDING': {
@@ -202,7 +211,6 @@ const parseGame = (game: Game): GameState => {
   }
   return GameStatus.UNKNOWN;
 }
-
 
 const getScoreModifier = (index: number): string => {
   const row = Math.floor(index / 15);

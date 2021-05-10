@@ -1,7 +1,7 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/SyncActions'
+import {AppAction} from '../actions/'
 import PlayerActionsView from '../views/PlayerActionsView'
 
 import {shuffleTiles, returnPlayedTiles, returnExchangedTiles, exchangeTiles, playTiles, passTurn} from '../actions/SyncActionCreator'

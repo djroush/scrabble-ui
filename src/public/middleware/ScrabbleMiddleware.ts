@@ -2,65 +2,54 @@ import {Store} from 'redux'
 
 import { AppAction, Type } from '../actions'; 
 import * as SyncActionNames from '../actions/SyncActionNames';
-import * as AsyncActionNames from '../actions/AsyncActionNames';
 import * as SseActionCreator from '../actions/SseActionCreator';
 import * as AsyncActionCreator from '../actions/AsyncActionCreator';
 import * as ActionCreator from '../actions/SyncActionCreator';
-import {AppState, GameStatus, RequestStatus, StorageState} from '../types/State';
-import { Game, GameResponseSuccess } from 'types/Service';
+import {AppState, RequestStatus, StorageState} from '../types/State';
+import { GameResponseSuccess } from 'types/Service';
+import { SseGameInfo } from 'actions/SseActions';
 
 const scrabbleMiddleware: any = (store: Store<AppState, AppAction>) => (next: (action: AppAction) => void) => (action: AppAction)  => {
 
   const scrabbleServiceEndpoint = 'http://localhost:8080/v2/scrabble/game/';
 
-  const refreshGame = (): void => {    
-    let {playerId,id, version} = store.getState().game 
+  const refreshGame = (): void => { 
     let eTag = '';
 
-    const storageState: StorageState = JSON.parse(sessionStorage.getItem('gameState'))
-    const appState: AppState = store.getState();
-    const gameStatus: GameStatus = appState.game.status;
-    
-    const requestInProgress: boolean = appState.service.gameState.status === RequestStatus.REQUESTING 
-    const updateNeeded = gameStatus !== GameStatus.FINISHED && gameStatus !== GameStatus.UNKNOWN && gameStatus !== GameStatus.ABORTED
-    const canRejoinPreviousGame: boolean = !!storageState 
-    if (!requestInProgress && (updateNeeded || canRejoinPreviousGame)) {
+    const storageState: StorageState = JSON.parse(sessionStorage.getItem('gameState'))?.game
+    const {id,playerId} = {...storageState}
+    if (playerId && id) {
+        const version = "0";
 
-     if (!playerId && !id && canRejoinPreviousGame) {
-        const {gameId,playerId:playerId1} = {...storageState}
-        id = gameId;
-        playerId = playerId1;
-        version = "0";
+        next(AsyncActionCreator.gameRefreshRequest())
+        fetch(scrabbleServiceEndpoint + id + "/" + playerId , {
+          method: 'GET',
+          headers: {
+            'ETag': version
+          },
+        }).then((response) => {
+          eTag = response.headers.get('ETag');
+          if (response.status < 300 || response.status >= 400) {
+            return response.json()
+          } else {
+            next(AsyncActionCreator.gameRefreshSuccess(null, eTag));
+          }
+        }).then((data) => {
+            if (!!data && data.status >= 400) {
+              throw new Error(data.message)
+            }
+            if (data) {
+              const {id, playerId} = data.game
+              const gameInfo: SseGameInfo = {gameId:id, playerId}
+              next(SseActionCreator.gameAttachAction(gameInfo))
+              next(AsyncActionCreator.gameRefreshSuccess(data, eTag));
+            }
+        }).catch((error) => {
+          next(AsyncActionCreator.gameRefreshFailure(error));
+        });
      }
+  }
 
-      next(AsyncActionCreator.gameRefreshRequest())
-      fetch(scrabbleServiceEndpoint + id + "/" + playerId , {
-        method: 'GET',
-        headers: {
-          'ETag': version
-        },
-      }).then((response) => {
-        eTag = response.headers.get('ETag');
-        if (response.status < 300 || response.status >= 400) {
-          return response.json()
-        } else {
-          next(AsyncActionCreator.gameRefreshSuccess(null, eTag));
-        }
-      }).then((data) => {
-          if (!!data && data.status >= 400) {
-            throw new Error(data.message)
-          }
-          if (data) {
-            const {id:gameId, playerId} = data.game
-            const gameInfo = {gameId, playerId}
-            next(SseActionCreator.gameAttachAction(gameInfo))
-            next(AsyncActionCreator.gameRefreshSuccess(data, eTag));
-          }
-      }).catch((error) => {
-        next(AsyncActionCreator.gameRefreshFailure(error));
-      });
-    }
-  } 
 
   const createGame = (): void => {
     if (appState.service.gameState.status !== RequestStatus.REQUESTING) {
@@ -116,8 +105,8 @@ const scrabbleMiddleware: any = (store: Store<AppState, AppAction>) => (next: (a
         }
         return data
       }).then((data: GameResponseSuccess) => {
-        const {id:gameId, playerId} = data.game
-        const gameInfo = {gameId, playerId}
+        const {id:gameId, playerId, playerIndex} = data.game
+        const gameInfo = {gameId, playerId, playerIndex}
         next(SseActionCreator.gameAttachAction(gameInfo))
         next(AsyncActionCreator.gameUnknownSuccess(data));
   }).catch((error) => {

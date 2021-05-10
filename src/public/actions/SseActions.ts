@@ -31,21 +31,5 @@ export interface SseGameCompleteEvent {
 }
 export interface SseGameInfo {
   gameId: string,
-  playerId: string
+  playerId: string,
 }
-
-// export interface SseGameUpdateAction {
-//   type: Type,
-//   action: typeof EventNames.GAME_UPDATE_EVENT
-//   payload: SseGameUpdateEvent
-// }
-// export interface SseGameHeartbeatAction {
-//   type: Type,
-//   action: typeof EventNames.GAME_HEARTBEAT_EVENT
-//   payload: SseGameHeartbeatEvent
-// }
-// export interface SseGameCompleteAction {
-//   type: Type,
-//   action: typeof EventNames.GAME_COMPLETE_EVENT
-//   payload: SseGameCompleteEvent
-// }

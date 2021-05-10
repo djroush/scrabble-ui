@@ -62,6 +62,7 @@ export type GameState = {
 
 export type RackState = {
   tiles: Tile[],
+  sortedTiles: Tile[]
 };
 export type ExchangeState = {
   tiles: Tile[],
@@ -98,6 +99,6 @@ export type SquareState = {
  }
  
 export type StorageState = {
-  gameId: string,
+  id: string,
   playerId: string,
 }

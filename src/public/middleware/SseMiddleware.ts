@@ -20,13 +20,6 @@ const SseMiddleware: any = (store: Store<AppState, AppAction>) => (next: (action
 
       source.addEventListener<any>("game-update", function(event: SseGameUpdateEvent) {
         const data: GameResponseSuccess = JSON.parse(event.data)
-        const state = data?.game?.state
-         if (state === "ABORTED" || state === "FINISHED" || state === "ABANDONED") {
-            sessionStorage.removeItem('gameState');
-         } else {
-            sessionStorage.setItem('gameState', event.data);
-         }
-
         const eTag: string = event.id
         console.log("received game update: " + eTag)
         updateGame(data, eTag) 

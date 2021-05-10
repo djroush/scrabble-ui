@@ -1,7 +1,7 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/SyncActions';
+import {AppAction} from '../actions/';
 
 import { AppState, RequestStatus} from '../types/State';
 import GameUnknownView from '../views/GameUnknownView'
