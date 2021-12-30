@@ -11,7 +11,7 @@ type RackStateProps = {
 export type RackProps = RackStateProps
 
 const mapStateToProps = (state: AppState) => ({
-    tiles: state.rack.tiles
+    tiles: state.rack.tiles ?? []
 })
 
 const Rack = (props: RackProps) => {

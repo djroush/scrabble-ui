@@ -134,7 +134,10 @@ const parseGameResponse = (appState: AppState, data: GameResponseSuccess) : AppS
   if (!tilesAreSame(tiles, sortedTiles)) {
     sortedTiles = [...tiles]
     tiles = shuffle(tiles)
-    appState.rack = {tiles, sortedTiles}
+  }
+  appState.rack = {
+    sortedTiles: [...sortedTiles],
+    tiles: [...tiles]
   }
   appState.turn = {playedTiles: []}
   appState.exchange = { tiles: []}
