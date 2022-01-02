@@ -1,7 +1,7 @@
+import { AppAction } from 'actions';
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
 
-import {AppAction} from '../actions/SyncActions'
 import {challengeTurn} from '../actions/SyncActionCreator'
 
 import { AppState, LastTurnState, PlayerInfo } from '../types/State';

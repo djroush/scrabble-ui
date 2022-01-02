@@ -18,7 +18,6 @@ const LastTurnView = (props: LastTurnProps)  => {
     if (lastTurnDiv.current) {
       lastTurnDiv.current.className = "lastTurn"      
     }
-    console.log("[" + props.version + "]useEffect -> lastTurn");
     timer = setTimeout(function() {
       var callbackFunc = handleCallback.bind(this, propsRef.current); 
       callbackFunc();
@@ -33,7 +32,6 @@ const LastTurnView = (props: LastTurnProps)  => {
       if (lastTurnDiv.current) {
         lastTurnDiv.current.className = "lastTurn hidden"          
       }
-      console.log("[" + props.version + "]useEffect callback -> lastTurn hidden");     
     }
   };
 

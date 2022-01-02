@@ -7,6 +7,8 @@ import scrabbleMiddleware from './middleware/ScrabbleMiddleware'
 import sseMiddleware from './middleware/SseMiddleware'
 import { createLogger } from 'redux-logger';
 
+// import { createProxyMiddleware } from 'http-proxy-middleware'
+
 import './index.css';
 
 import {AppState} from './types/State';
@@ -31,3 +33,23 @@ const render = () => ReactDOM.render(
 );
 
 render();
+
+
+
+// const proxyMiddleware = createProxyMiddleware('/api', {
+//   target: 'http://localhost:8080',
+//   ws: false,
+//   pathRewrite: {
+//     '^/api/scrabble': '/scrabble'
+//   },
+// });
+
+// module.exports = function(app) {
+//   app.use(
+//     '/api',
+//     createProxyMiddleware({
+//       target: 'http://localhost:3080',
+//       changeOrigin: true,
+//     })
+//   );
+// };

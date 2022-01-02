@@ -18,17 +18,13 @@ const BoardView = (props: BoardProps) => {
         const square = <Square key={index} index={index}/>;
         rowElems.push(square);
       }
-      rowsElems.push(<tr key={row} data-row={row}>{rowElems}</tr>); 
+      rowsElems.push(<div key={row} data-row={row}>{rowElems}</div>); 
     }
   }
   
   return (
     <div className="board">  
-    <table>
-      <tbody>
-        {rowsElems}
-      </tbody>
-    </table>
+      {rowsElems}
     </div>
   );
   

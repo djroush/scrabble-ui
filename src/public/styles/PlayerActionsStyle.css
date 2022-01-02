@@ -2,7 +2,9 @@
 .playerActions  {
   margin: 2% 0%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-flow: wrap;
 }
 
 .playerActions > button {

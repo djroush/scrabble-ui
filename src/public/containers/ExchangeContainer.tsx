@@ -1,6 +1,6 @@
 import React, {Dispatch} from 'react'
 import { connect } from 'react-redux';
-import {AppAction} from '../actions/SyncActions'
+import {AppAction} from '../actions/'
 import {exchangeKeyDown} from '../actions/SyncActionCreator'
 import ExchangeView from '../views/ExchangeView';
 import { AppState, Tile } from '../types/State';

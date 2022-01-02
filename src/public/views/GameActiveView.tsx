@@ -9,6 +9,7 @@ import Rack from '../containers/RackContainer';
 import LastTurn from '../containers/LastTurnContainer';
 import ExchangeLetters from '../containers/ExchangeContainer';
 import { GameActiveProps } from 'containers/GameActiveContainer';
+import IdleActions from '../containers/IdleActionsContainer'
 import SpinnerView from './SpinnerView';
 import ErrorMessageView from './ErrorMessageView';
 
@@ -19,8 +20,10 @@ const GameActiveView = (props: GameActiveProps) => {
          <div>
           <Rack/>
           <PlayerActions />
-          <div id="activeActions" className={(isPlayersTurn && !isAwaitingChallenge) ? "" : "hidden"}>
-            <ExchangeLetters/>
+          <div id="activeActions">
+            {isPlayersTurn && !isAwaitingChallenge ? 
+            <ExchangeLetters/> : <IdleActions/>
+            }
           </div> 
         </div>
         <div>

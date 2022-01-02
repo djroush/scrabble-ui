@@ -19,14 +19,15 @@ const SquareView = (props: SquareProps) => {
   const isNewTile = newTileIndexes.indexOf(index) > -1
   
  
-  const blankClass = hasTile && tile.blank ? " blank" : "";
+  const isBlank = tile?.blank
+  const blankClass = isBlank ? " blank" : "";
   const newClass = isNewTile ? " new" : ""; 
   const tileClass = (hasTile ? "tile" : "") + newClass + blankClass;
-  
+
   const letter = tile && tile.letter ? tile.letter : "";
-  const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>  
+  const innerSpan = !hasTile ? '' : <span className={tileClass}>{letter}</span>
    return (
-    <td ref={tdElem}
+    <div ref={tdElem}
         tabIndex={index+100} 
         data-index={index} 
         onMouseUp={onMouseUp}
@@ -34,7 +35,7 @@ const SquareView = (props: SquareProps) => {
         onKeyDown={onKeyDown}
         className={squareClass}>
       {innerSpan}
-    </td>
+    </div>
   );
 }
 
